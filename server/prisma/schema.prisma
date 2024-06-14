@@ -13,22 +13,34 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Entity {
+model Report {
+  id                 Int             @id @default(autoincrement())
+  createdAt          DateTime
+  updatedAt          DateTime
+  reportUrl          String
+  resultUrl          String
+  additionalComments String?
+  ReviewRequest      ReviewRequest[]
+}
+
+model ReviewRequest {
   id           Int      @id @default(autoincrement())
   reviews      Review[]
-  reportId     Int
+  report       Report   @relation(fields: [reportId], references: [id])
   creationDate DateTime
   status       Status
-  approvedFlag Boolean
+  approved     Boolean
+  reportId     Int
 }
 
 model Review {
-  id                 Int                @id @default(autoincrement())
-  entity             Entity             @relation(fields: [entityId], references: [id], map: "entity_review_entity_id_fkey")
-  entityId           Int
-  feedbacks          Feedback[]
-  accuracyOfFindings AccuracyOfFindings @relation(fields: [accuracyOfFindingsId], references: [id])
-
+  id                             Int                          @id @default(autoincrement())
+  reviewRequest                  ReviewRequest                @relation(fields: [reviewRequestId], references: [id])
+  reviewRequestId                Int
+  feedbacks                      Feedback[]
+  createdAt                      DateTime
+  updatedAt                      DateTime
+  accuracyOfFindings             AccuracyOfFindings           @relation(fields: [accuracyOfFindingsId], references: [id])
   clarityAndCompleteness         ClarityAndCompleteness       @relation(fields: [clarityAndCompletenessId], references: [id])
   impressionAndRecommendations   ImpressionAndRecommendations @relation(fields: [impressionAndRecommendationsId], references: [id])
   technicalQuality               TechnicalQuality             @relation(fields: [technicalQualityId], references: [id])
@@ -45,11 +57,12 @@ model Review {
 }
 
 model Feedback {
-  id          Int      @id @default(autoincrement())
-  review      Review   @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
-  reviewId    Int
-  comment     String
-  createdDate DateTime
+  id        Int      @id @default(autoincrement())
+  review    Review   @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
+  reviewId  Int
+  comment   String
+  createdAt DateTime
+  updatedAt DateTime
 }
 
 model AccuracyOfFindings {
