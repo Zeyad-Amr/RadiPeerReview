@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { SessionStorage, SessionStorageKeys } from "../utils/session-storage";
