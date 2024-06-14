@@ -13,6 +13,32 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Auth {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  doctor   Doctor? @relation(fields: [doctorId], references: [id])
+  doctorId String? @unique
+}
+
+model Doctor {
+  id             String @id @default(cuid())
+  fname          String
+  lname          String
+  email          String @unique
+  specialization String
+  phone          String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  auth Auth?
+}
+
 model Report {
   id                 Int             @id @default(autoincrement())
   createdAt          DateTime
@@ -126,3 +152,9 @@ enum Status {
   Assigned
   Reviewed
 }
+
+// enum Specialization {
+//   XRAY
+//   CT
+//   MRI
+// }
