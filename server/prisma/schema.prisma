@@ -17,12 +17,18 @@ model Auth {
   id       String @id @default(cuid())
   username String @unique
   password String
+  role     Role @default(DOCTOR)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   doctor   Doctor? @relation(fields: [doctorId], references: [id])
   doctorId String? @unique
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
 }
 
 model Doctor {
