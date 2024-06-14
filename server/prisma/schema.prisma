@@ -1,0 +1,160 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Auth {
+  id       String @id @default(cuid())
+  username String @unique
+  password String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  doctor   Doctor? @relation(fields: [doctorId], references: [id])
+  doctorId String? @unique
+}
+
+model Doctor {
+  id             String @id @default(cuid())
+  fname          String
+  lname          String
+  email          String @unique
+  specialization String
+  phone          String @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  auth Auth?
+}
+
+model Report {
+  id                 Int             @id @default(autoincrement())
+  createdAt          DateTime
+  updatedAt          DateTime
+  reportUrl          String
+  resultUrl          String
+  additionalComments String?
+  ReviewRequest      ReviewRequest[]
+}
+
+model ReviewRequest {
+  id           Int      @id @default(autoincrement())
+  reviews      Review[]
+  report       Report   @relation(fields: [reportId], references: [id])
+  creationDate DateTime
+  status       Status
+  approved     Boolean
+  reportId     Int
+}
+
+model Review {
+  id                             Int                          @id @default(autoincrement())
+  reviewRequest                  ReviewRequest                @relation(fields: [reviewRequestId], references: [id])
+  reviewRequestId                Int
+  feedbacks                      Feedback[]
+  createdAt                      DateTime
+  updatedAt                      DateTime
+  accuracyOfFindings             AccuracyOfFindings           @relation(fields: [accuracyOfFindingsId], references: [id])
+  clarityAndCompleteness         ClarityAndCompleteness       @relation(fields: [clarityAndCompletenessId], references: [id])
+  impressionAndRecommendations   ImpressionAndRecommendations @relation(fields: [impressionAndRecommendationsId], references: [id])
+  technicalQuality               TechnicalQuality             @relation(fields: [technicalQualityId], references: [id])
+  overallAssessment              OverallAssessment            @relation(fields: [overallAssessmentId], references: [id])
+  feedbackToRadiologist          String?
+  complianceAndStandardization   ComplianceAndStandardization @relation(fields: [complianceAndStandardizationId], references: [id])
+  additionalReviewerComments     String?
+  accuracyOfFindingsId           Int
+  clarityAndCompletenessId       Int
+  impressionAndRecommendationsId Int
+  technicalQualityId             Int
+  overallAssessmentId            Int
+  complianceAndStandardizationId Int
+}
+
+model Feedback {
+  id        Int      @id @default(autoincrement())
+  review    Review   @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
+  reviewId  Int
+  comment   String
+  createdAt DateTime
+  updatedAt DateTime
+}
+
+model AccuracyOfFindings {
+  id                    Int             @id @default(autoincrement())
+  correctnessOfFindings Boolean
+  commentsOnAccuracy    String?
+  missedFindings        MissedFinding[] @relation("AccuracyOfFindingsMissedFinding")
+  Review                Review[]
+}
+
+model MissedFinding {
+  id                   Int                @id @default(autoincrement())
+  description          String
+  accuracyOfFindings   AccuracyOfFindings @relation("AccuracyOfFindingsMissedFinding", fields: [accuracyOfFindingsId], references: [id])
+  accuracyOfFindingsId Int
+}
+
+model ClarityAndCompleteness {
+  id                     Int      @id @default(autoincrement())
+  clarityOfLanguage      Int
+  commentsOnLanguage     String?
+  completenessOfReport   Int
+  commentsOnCompleteness String?
+  Review                 Review[]
+}
+
+model ImpressionAndRecommendations {
+  id                               Int      @id @default(autoincrement())
+  accuracyOfImpression             Boolean
+  commentsOnImpression             String?
+  appropriatenessOfRecommendations Int
+  suggestionsForRecommendations    String?
+  Review                           Review[]
+}
+
+model TechnicalQuality {
+  id                     Int      @id @default(autoincrement())
+  imagingTechnique       Int
+  commentsOnTechnique    String?
+  imageQuality           Int
+  commentsOnImageQuality String?
+  Review                 Review[]
+}
+
+model OverallAssessment {
+  id              Int      @id @default(autoincrement())
+  overallQuality  Int
+  generalComments String?
+  Review          Review[]
+}
+
+model ComplianceAndStandardization {
+  id                    Int      @id @default(autoincrement())
+  adherenceToGuidelines Boolean
+  commentsOnCompliance  String?
+  Review                Review[]
+}
+
+enum Status {
+  Created
+  Assigned
+  Reviewed
+}
+
+// enum Specialization {
+//   XRAY
+//   CT
+//   MRI
+// }
