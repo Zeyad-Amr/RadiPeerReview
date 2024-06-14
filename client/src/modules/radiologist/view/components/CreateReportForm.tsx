@@ -5,12 +5,8 @@ import { DoneRounded } from "@mui/icons-material";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import * as Yup from "yup";
 import CustomTextField from "@/core/shared/components/CustomTextField";
-
-interface FormValues {
-  pdfFile: File | null;
-  dicomFile: File | null;
-  additionalComments: string;
-}
+import { ReportInterface } from "../../interfaces/report-interface";
+import ReportModel from "../../models/report-model";
 
 const CreateReportForm: React.FC = () => {
   const pdfFileInputRef = useRef<HTMLInputElement>(null);
@@ -26,37 +22,9 @@ const CreateReportForm: React.FC = () => {
     console.log("Selected DICOM file:", file);
   };
 
-  const createReportSchema = Yup.object().shape({
-    pdfFile: Yup.mixed()
-      .required("A PDF file is required")
-      .test(
-        "fileSize",
-        "File size too large",
-        (value) => value && (value as File).size <= 10485760 // 10 MB
-      )
-      .test(
-        "fileFormat",
-        "Unsupported file format",
-        (value) => value && /\.(pdf)$/i.test((value as File).name) // Check for .pdf extension
-      ),
-    dicomFile: Yup.mixed()
-      .required("A DICOM file is required")
-      .test(
-        "fileSize",
-        "File size too large",
-        (value) => value && (value as File).size <= 10485760 // 10 MB
-      )
-      .test(
-        "fileFormat",
-        "Unsupported file format",
-        (value) => value && /\.(dcm|dicom)$/i.test((value as File).name) // Check for .dcm or .dicom extension
-      ),
-    additionalComments: Yup.string().max(500, "Maximum 500 characters"),
-  });
-
   const handleSubmit = (
-    values: FormValues,
-    { resetForm }: FormikHelpers<FormValues>
+    values: ReportInterface,
+    { resetForm }: FormikHelpers<ReportInterface>
   ) => {
     console.log(values);
     handlePdfFileInputChange(values.pdfFile);
@@ -66,11 +34,9 @@ const CreateReportForm: React.FC = () => {
 
   return (
     <Formik
-      initialValues={
-        { pdfFile: null, dicomFile: null, additionalComments: "" } as FormValues
-      }
+      initialValues={ReportModel.defaultValues()}
       onSubmit={handleSubmit}
-      validationSchema={createReportSchema}
+      validationSchema={ReportModel.reportFormValidations()}
     >
       {({
         values,
@@ -124,10 +90,15 @@ const CreateReportForm: React.FC = () => {
           />
 
           {/* PDF file validation error message */}
-          {touched.pdfFile && errors.pdfFile && (
-            <Box sx={{ color: "red", marginBottom: "1rem" }}>
+          {errors.pdfFile && (
+            <Typography
+              sx={{
+                color: "#FF5630",
+              }}
+              variant="body2"
+            >
               {errors.pdfFile}
-            </Box>
+            </Typography>
           )}
 
           {/* DICOM File Upload Box */}
@@ -172,10 +143,15 @@ const CreateReportForm: React.FC = () => {
           />
 
           {/* DICOM file validation error message */}
-          {touched.dicomFile && errors.dicomFile && (
-            <Box sx={{ color: "red", marginBottom: "1rem" }}>
+          {errors.dicomFile && (
+            <Typography
+              sx={{
+                color: "#FF5630",
+              }}
+              variant="body2"
+            >
               {errors.dicomFile}
-            </Box>
+            </Typography>
           )}
 
           {/* Additional Comments */}
