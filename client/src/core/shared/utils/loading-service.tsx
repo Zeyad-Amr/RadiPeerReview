@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { SyncLoader } from "react-spinners";
 
 class LoadingService {
@@ -37,7 +37,7 @@ class LoadingService {
             }}
           >
             <Box sx={{ display: "flex" }}>
-              <Box
+              {/* <Box
                 component="img"
                 src="https://i.postimg.cc/J4VLnwfN/loading.png"
                 sx={{
@@ -53,19 +53,42 @@ class LoadingService {
                     },
                   },
                 }}
-              />
+              /> */}
 
-              {/* <Typography
+              <Box
                 sx={{
-                  color: "#061540",
-                  fontSize: "3rem",
-                  fontWeight : "500",
-                  letterSpacing: "1rem",
-                  margin: "2rem 1rem",
+                  display: "flex",
+                  margin: "4rem 2rem",
+                  animation: "grow 0.6s infinite alternate",
+                  "@keyframes grow": {
+                    from: {
+                      transform: "scale(1)",
+                    },
+                    to: {
+                      transform: "scale(1.1)",
+                    },
+                  },
                 }}
               >
-                Loading
-              </Typography> */}
+                <Typography
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "4rem",
+                    color: "info.main",
+                  }}
+                >
+                  Radi
+                </Typography>
+                <Typography
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "3rem",
+                    color: "white",
+                  }}
+                >
+                  PeerReview
+                </Typography>
+              </Box>
             </Box>
             <SyncLoader color={"#fff"} loading={true} />
           </Box>
