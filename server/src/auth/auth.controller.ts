@@ -5,7 +5,10 @@ import { handleError } from '@/shared/http-error';
 import { LoginDTO } from './dto/login.dto';
 import { Public } from '@/shared/decorators/public.decorator';
 import { SignupDto } from './dto/signup.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) { }
