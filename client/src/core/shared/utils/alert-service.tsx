@@ -3,12 +3,14 @@ import ReactDOM from "react-dom/client";
 import { Alert, IconButton, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
+type Severity = "error" | "warning" | "info" | "success";
+
 class AlertService {
-  static activeAlerts = 0;
+  static activeAlerts: HTMLDivElement[] = [];
 
   static showAlert(
     message: React.ReactNode,
-    severity: "error" | "warning" | "info" | "success",
+    severity: Severity,
     duration: number = 5000,
     customIcon?: React.ReactNode,
     messageStyle?: React.CSSProperties,
@@ -19,15 +21,21 @@ class AlertService {
 
     const root = ReactDOM.createRoot(alertElement);
 
-    const verticalOffset = AlertService.activeAlerts * 55;
-
     const closeAlert = () => {
       root.unmount();
       alertElement.remove();
-      AlertService.activeAlerts--;
+      AlertService.activeAlerts = AlertService.activeAlerts.filter(
+        (alert) => alert !== alertElement
+      );
+      AlertService.repositionAlerts();
     };
 
-    AlertService.activeAlerts++;
+    AlertService.activeAlerts.push(alertElement);
+
+    const getVerticalOffset = (): number => {
+      const alertIndex = AlertService.activeAlerts.indexOf(alertElement);
+      return 16 + alertIndex * 55;
+    };
 
     root.render(
       <Alert
@@ -46,10 +54,10 @@ class AlertService {
           justifyContent: "center",
           alignItems: "center",
           position: "fixed",
-          top: 16 + verticalOffset,
+          top: getVerticalOffset(),
           right: 16,
           zIndex: 9999,
-          padding: "0.2rem",
+          padding: "0.2rem 0.6rem",
         }}
         onClose={closeAlert}
       >
@@ -68,6 +76,13 @@ class AlertService {
     );
 
     setTimeout(closeAlert, duration);
+    AlertService.repositionAlerts();
+  }
+
+  static repositionAlerts() {
+    AlertService.activeAlerts.forEach((alert, index) => {
+      alert.style.top = `${16 + index * 55}px`;
+    });
   }
 }
 
