@@ -3,10 +3,10 @@
 import Layout from "@/core/layout/Layout";
 import { Box } from "@mui/system";
 
-export default function Dashboard() {
+export default function AddRadiologist() {
   return (
       <Layout >
-        <Box>Dashboard</Box>
+        <Box>Add Radiologist</Box>
       </Layout>
   )
 }
