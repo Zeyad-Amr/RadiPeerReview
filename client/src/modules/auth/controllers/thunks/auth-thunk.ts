@@ -9,18 +9,18 @@ import { AuthInterface } from "../../interfaces/auth-interface";
 import authModel from "../../models/auth-model";
 
 
-//*  Create Allergy
+//* Login thunk
 export const login = createAsyncThunk(
     "auth/login",
     async (data: AuthInterface, thunkApi) => {
         const { rejectWithValue } = thunkApi;
 
         try {
-            await ApiClient.post(
+            const response = await ApiClient.post(
                 Endpoints.auth.login,
                 authModel.toJson(data)
             );
-            return true;
+            return response.data;
         } catch (error: any) {
             const errorResponse: ErrorResponse =
                 error instanceof Error ? ErrorMessage.get(error.message) : error;

@@ -80,7 +80,11 @@ const LoginForm = () => {
                   (res: any) => {
                     // if fullfilled then redirect to dashboard
                     if (res.meta.requestStatus === "fulfilled") {
-                      router.push("/dashboard");
+                      if (res.payload.auth.role === "ADMIN") {
+                        router.push("/dashboard");
+                      } else {
+                        router.push("/radiologist");
+                      }
                     }
                   },
                   (err: any) => {
