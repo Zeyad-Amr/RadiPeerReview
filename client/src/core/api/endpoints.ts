@@ -1,5 +1,5 @@
 const Endpoints = {
-  base: "",
+  base: "https://radipeerreview.onrender.com/api",
   devBase: "http://localhost:4000/api",
   auth: {
     login: "/auth/login",
