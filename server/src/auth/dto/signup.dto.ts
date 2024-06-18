@@ -2,17 +2,17 @@
 import { Type } from "class-transformer";
 import { IsObject, ValidateNested } from "class-validator";
 import { CreateAuthDto } from "./create-auth.dto";
-import { CreateDoctorDto } from "@/doctor/dto/create-doctor.dto";
+import { CreateRadiologistDto } from "@/radiologist/dto/create-radiologist.dto";
 import { ApiProperty } from "@nestjs/swagger";
 
 
 export class SignupDto {
-    @ApiProperty({ type: CreateDoctorDto, required: true })
+    @ApiProperty({ type: CreateRadiologistDto, required: true })
     @IsObject()
     @ValidateNested()
-    @Type(() => CreateDoctorDto)
-    doctor: CreateDoctorDto;
-    
+    @Type(() => CreateRadiologistDto)
+    radiologist: CreateRadiologistDto;
+
     @ApiProperty({ type: CreateAuthDto, required: true })
     @IsObject()
     @ValidateNested()

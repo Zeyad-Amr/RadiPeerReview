@@ -28,11 +28,11 @@ export class AuthController {
   @Post('signup')
   async create(@Body() signupDto: SignupDto) {
     try {
-      const {  auth,doctor } = signupDto
+      const { auth, radiologist } = signupDto
       const newAuth = await this.authService.create({
-        ...auth,doctor:{
-          create:{
-            ...doctor
+        ...auth, radiologist: {
+          create: {
+            ...radiologist
           }
         }
       })

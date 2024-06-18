@@ -12,19 +12,19 @@ export class ReviewRepo extends PrismaGenericRepo<
 > {
   constructor(private prismaService: PrismaService) {
     super('review', prismaService, {
-        reviewRequest: true,
-        feedbacks: true,
-        accuracyOfFindings: true,
-        clarityAndCompleteness: true,
-        impressionAndRecommendations: true,
-        technicalQuality: true,
-        overallAssessment: true,
-        complianceAndStandardization: true,
-      });
+      // reviewRequest: true,
+      feedbacks: true,
+      accuracyOfFindings: true,
+      clarityAndCompleteness: true,
+      impressionAndRecommendations: true,
+      technicalQuality: true,
+      overallAssessment: true,
+      complianceAndStandardization: true,
+    });
   }
-  async createReview(createReviewDto: CreateReviewDto,reviewerId:string) {
+  async createReview(createReviewDto: CreateReviewDto, reviewerId: string) {
     const {
-      reviewRequestId,
+      // reviewRequestId,
       feedbackToRadiologist,
       additionalReviewerComments,
       accuracyOfFindings,
@@ -38,18 +38,18 @@ export class ReviewRepo extends PrismaGenericRepo<
     return await this.prismaService.$transaction(async (prisma) => {
       const review = await prisma.review.create({
         data: {
-          reviewRequest: {
-            connect: {
-              id: reviewRequestId,
-            },
-          },
+          // reviewRequest: {
+          //   connect: {
+          //     id: reviewRequestId,
+          //   },
+          // },
           feedbackToRadiologist,
           additionalReviewerComments,
-          reviwer:{
-            connect:{
-                id:reviewerId
-            }
-          }
+          // reviwer:{
+          //   connect:{
+          //       id:reviewerId
+          //   }
+          // }
         },
       });
 
@@ -60,13 +60,13 @@ export class ReviewRepo extends PrismaGenericRepo<
           data: {
             correctnessOfFindings,
             commentsOnAccuracy,
-            missedFindings: missedFindings
-              ? {
-                  create: {
-                    ...missedFindings,
-                  },
-                }
-              : undefined,
+            // missedFindings: missedFindings
+            //   ? {
+            //       create: {
+            //         ...missedFindings,
+            //       },
+            //     }
+            //   : undefined,
             Review: { connect: { id: review.id } },
           },
         });
