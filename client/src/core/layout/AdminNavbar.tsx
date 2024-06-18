@@ -84,16 +84,16 @@ export default function AdminNavbar({
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
         position="static"
-        sx={{ backgroundColor: "white", boxShadow: "none" }}
+        sx={{ backgroundColor: "primary.lighter", boxShadow: "none" }}
       >
         <Toolbar
           sx={{
             justifyContent: "space-between",
             padding: {
-              lg: "0.5rem 3rem",
-              md: "0.5rem 3rem",
-              sm: "1rem",
-              xs: "1rem",
+              lg: "1rem 3rem",
+              md: "1rem 3rem",
+              sm: "1rem 1rem",
+              xs: "1rem 1rem",
             },
           }}
         >
@@ -109,8 +109,9 @@ export default function AdminNavbar({
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              sx={{ mr: 1, }}
+              sx={{ mr: 1, color:'primary.main'}}
               onClick={() => setOpen(!open)}
+              
             >
               <MenuIcon />
             </IconButton>
@@ -166,7 +167,7 @@ export default function AdminNavbar({
                   color:'white'
                 }
               }}>
-                <NotificationsIcon />
+                <NotificationsIcon sx={{color:'primary.main'}}/>
               </Badge>
             </IconButton>
           </Box>

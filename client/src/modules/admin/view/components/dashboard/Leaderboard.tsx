@@ -18,17 +18,17 @@ const Leaderboard = () => {
         },
     ]
     return (
-        <ChartCard title='Leaderboard' icon={<LeaderboardRoundedIcon />} sx={{ flexDirection: 'column' }}>
+        <ChartCard title='Leaderboard' icon={<LeaderboardRoundedIcon sx={{color:'secondary.main'}}/>} sx={{ flexDirection: 'column' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-                <Typography sx={{ flexBasis: '60%', color: 'primary.main', fontWeight: 'bold' }}>Name</Typography>
-                <Typography sx={{ flexBasis: '40%', color: 'primary.main', fontWeight: 'bold' }}>Accepted Reports</Typography>
+                <Typography sx={{ flexBasis: '60%', color: 'primary.main', fontWeight: 'bold', fontSize:'0.8rem' }}>Name</Typography>
+                <Typography sx={{ flexBasis: '40%', color: 'primary.main', fontWeight: 'bold', fontSize:'0.8rem' }}>Accepted Reports</Typography>
             </Box>
             <hr />
             {
                 data.map((data, i) => (
                     <Box sx={{ display: 'flex', justifyContent: 'space-around', width: '100%', mb: 1 }} key={i}>
-                        <Typography sx={{ flexBasis: '60%', color: 'primary.light' }}>{i + 1}. {data.name}</Typography>
-                        <Typography sx={{ flexBasis: '40%', color: 'primary.light' }}>{data.AcceptedReports}</Typography>
+                        <Typography sx={{ flexBasis: '60%', color: 'primary.light', fontSize:'0.8rem' }}>{i + 1}. {data.name}</Typography>
+                        <Typography sx={{ flexBasis: '40%', color: 'primary.light', fontSize:'0.8rem' }}>{data.AcceptedReports}</Typography>
                     </Box>
 
                 ))

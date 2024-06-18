@@ -28,11 +28,11 @@ const Notifications = [
 
 const NotificationsCard = () => {
     return (
-        <ChartCard title='Notifications' icon={<NotificationsRoundedIcon />} sx={{ flexDirection: 'column' }}>
+        <ChartCard title='Notifications' icon={<NotificationsRoundedIcon sx={{color:'secondary.main'}}/>} sx={{ flexDirection: 'column' }}>
             {
                 Notifications.map((notification, i) => (
                     <Box key={i} sx={{ width: '100%' }}>
-                        <Typography sx={{ fontSize: '0.8rem', color: 'primary.light' }}>{notification.type}</Typography>
+                        <Typography sx={{ fontSize: '0.8rem', color: 'primary.light', mb:0.5 }}>{notification.type}</Typography>
                         <Typography sx={{ fontSize: '0.9rem', color: 'primary.main' }}>{notification.notification}</Typography>
                         {i !== Notifications.length - 1 ? <Box sx={{ width: '100%', height: '2px', backgroundColor: 'primary.lighter', margin: '0.75rem 0' }} /> : null}
                     </Box>
