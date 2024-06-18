@@ -6,37 +6,26 @@ import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import * as Yup from "yup";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { ReportInterface } from "../../interfaces/report-interface";
-import ReportModel from "../../models/report-model";
+import reportModel from "../../models/report-model";
 
 const CreateReportForm: React.FC = () => {
   const pdfFileInputRef = useRef<HTMLInputElement>(null);
   const dicomFileInputRef = useRef<HTMLInputElement>(null);
-
-  const handlePdfFileInputChange = (file: File | null) => {
-    // Handle PDF file change
-    console.log("Selected PDF file:", file);
-  };
-
-  const handleDicomFileInputChange = (file: File | null) => {
-    // Handle DICOM file change
-    console.log("Selected DICOM file:", file);
-  };
 
   const handleSubmit = (
     values: ReportInterface,
     { resetForm }: FormikHelpers<ReportInterface>
   ) => {
     console.log(values);
-    handlePdfFileInputChange(values.pdfFile);
-    handleDicomFileInputChange(values.dicomFile);
+    // dispatch create report
     resetForm();
   };
 
   return (
     <Formik
-      initialValues={ReportModel.defaultValues()}
+      initialValues={reportModel.defaultValues}
       onSubmit={handleSubmit}
-      validationSchema={ReportModel.reportFormValidations()}
+      validationSchema={reportModel.validationSchema}
     >
       {({
         values,
@@ -62,14 +51,14 @@ const CreateReportForm: React.FC = () => {
               padding: "1rem",
               boxSizing: "border-box",
               border: "0.1px solid #ffffff50",
-              marginBottom: "1rem",
+              marginBottom: "0.3rem",
             }}
             onClick={() => pdfFileInputRef.current?.click()}
           >
             <Typography sx={{ color: "white" }}>
               {values.pdfFile
                 ? (values.pdfFile as File).name
-                : "Upload PDF Report"}
+                : "Upload PDF File"}
             </Typography>
             {values.pdfFile ? (
               <DoneRounded sx={{ color: "#29f19c" }} />
@@ -115,7 +104,7 @@ const CreateReportForm: React.FC = () => {
               padding: "1rem",
               boxSizing: "border-box",
               border: "0.1px solid #ffffff50",
-              marginBottom: "1rem",
+              marginBottom: "0.3rem",
             }}
             onClick={() => dicomFileInputRef.current?.click()}
           >
@@ -139,7 +128,7 @@ const CreateReportForm: React.FC = () => {
             }}
             ref={dicomFileInputRef}
             style={{ display: "none" }}
-            // accept=".dcm"
+            accept=".dcm"
           />
 
           {/* DICOM file validation error message */}
