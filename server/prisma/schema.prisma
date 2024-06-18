@@ -42,11 +42,13 @@ model Doctor {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  auth Auth?
+  auth          Auth?
+  reports        Report[]
+  reviews        Review[]
 }
 
 model Report {
-  id                 Int     @id @default(autoincrement())
+  id                 String  @id @default(cuid())
   reportUrl          String
   resultUrl          String
   additionalComments String?
@@ -55,25 +57,27 @@ model Report {
   updatedAt DateTime @updatedAt
 
   ReviewRequest ReviewRequest[]
+  creator       Doctor          @relation(references: [id], fields: [creatorId])
+  creatorId     String
 }
 
 model ReviewRequest {
-  id       Int     @id @default(autoincrement())
+  id       String  @id @default(cuid())
   status   Status
   approved Boolean
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  report   Report   @relation(fields: [reportId], references: [id])
-  reportId Int
-  reviews  Review[]
+  report    Report   @relation(fields: [reportId], references: [id])
+  reportId  String
+  reviews   Review[]
 }
 
 model Review {
-  id                         Int           @id @default(autoincrement())
+  id                         String        @id @default(cuid())
   reviewRequest              ReviewRequest @relation(fields: [reviewRequestId], references: [id])
-  reviewRequestId            Int
+  reviewRequestId            String
   feedbackToRadiologist      String?
   additionalReviewerComments String?
 
@@ -81,92 +85,95 @@ model Review {
   updatedAt DateTime @updatedAt
 
   feedbacks                      Feedback[]
-  accuracyOfFindings             AccuracyOfFindings           @relation(fields: [accuracyOfFindingsId], references: [id])
-  accuracyOfFindingsId           Int
-  clarityAndCompleteness         ClarityAndCompleteness       @relation(fields: [clarityAndCompletenessId], references: [id])
-  clarityAndCompletenessId       Int
-  impressionAndRecommendations   ImpressionAndRecommendations @relation(fields: [impressionAndRecommendationsId], references: [id])
-  impressionAndRecommendationsId Int
-  technicalQuality               TechnicalQuality             @relation(fields: [technicalQualityId], references: [id])
-  technicalQualityId             Int
-  overallAssessment              OverallAssessment            @relation(fields: [overallAssessmentId], references: [id])
-  overallAssessmentId            Int
-  complianceAndStandardization   ComplianceAndStandardization @relation(fields: [complianceAndStandardizationId], references: [id])
-  complianceAndStandardizationId Int
+  accuracyOfFindings             AccuracyOfFindings?           @relation(fields: [accuracyOfFindingsId], references: [id])
+  accuracyOfFindingsId           Int?
+  clarityAndCompleteness         ClarityAndCompleteness?       @relation(fields: [clarityAndCompletenessId], references: [id])
+  clarityAndCompletenessId       Int?
+  impressionAndRecommendations   ImpressionAndRecommendations? @relation(fields: [impressionAndRecommendationsId], references: [id])
+  impressionAndRecommendationsId Int?
+  technicalQuality               TechnicalQuality?             @relation(fields: [technicalQualityId], references: [id])
+  technicalQualityId             Int?
+  overallAssessment              OverallAssessment?            @relation(fields: [overallAssessmentId], references: [id])
+  overallAssessmentId            Int?
+  complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
+  complianceAndStandardizationId Int?
+
+  reviwer   Doctor   @relation(references: [id], fields: [reviwerId])
+  reviwerId String
 }
 
 model Feedback {
-  id      Int    @id @default(autoincrement())
+  id      String @id @default(cuid())
   comment String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   review   Review @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
-  reviewId Int
+  reviewId String
 }
 
 model AccuracyOfFindings {
-  id                    Int             @id @default(autoincrement())
+  id                    Int     @id @default(autoincrement())
   correctnessOfFindings Boolean
   commentsOnAccuracy    String?
 
-  missedFindings        MissedFinding[] @relation("AccuracyOfFindingsMissedFinding")
-  Review                Review[]
+  missedFindings MissedFinding[] @relation("AccuracyOfFindingsMissedFinding")
+  Review         Review[]
 }
 
 model MissedFinding {
-  id                   Int                @id @default(autoincrement())
-  description          String
+  id          Int    @id @default(autoincrement())
+  description String
 
   accuracyOfFindings   AccuracyOfFindings @relation("AccuracyOfFindingsMissedFinding", fields: [accuracyOfFindingsId], references: [id])
   accuracyOfFindingsId Int
 }
 
 model ClarityAndCompleteness {
-  id                     Int      @id @default(autoincrement())
+  id                     Int     @id @default(autoincrement())
   clarityOfLanguage      Int
   commentsOnLanguage     String?
   completenessOfReport   Int
   commentsOnCompleteness String?
 
-  Review                 Review[]
+  Review Review[]
 }
 
 model ImpressionAndRecommendations {
-  id                               Int      @id @default(autoincrement())
+  id                               Int     @id @default(autoincrement())
   accuracyOfImpression             Boolean
   commentsOnImpression             String?
   appropriatenessOfRecommendations Int
   suggestionsForRecommendations    String?
 
-  Review                           Review[]
+  Review Review[]
 }
 
 model TechnicalQuality {
-  id                     Int      @id @default(autoincrement())
+  id                     Int     @id @default(autoincrement())
   imagingTechnique       Int
   commentsOnTechnique    String?
   imageQuality           Int
   commentsOnImageQuality String?
 
-  Review                 Review[]
+  Review Review[]
 }
 
 model OverallAssessment {
-  id              Int      @id @default(autoincrement())
+  id              Int     @id @default(autoincrement())
   overallQuality  Int
   generalComments String?
 
-  Review          Review[]
+  Review Review[]
 }
 
 model ComplianceAndStandardization {
-  id                    Int      @id @default(autoincrement())
+  id                    Int     @id @default(autoincrement())
   adherenceToGuidelines Boolean
   commentsOnCompliance  String?
-  
-  Review                Review[]
+
+  Review Review[]
 }
 
 enum Status {

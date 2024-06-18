@@ -1,27 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { ReviewRepo } from './review.repo';
 
 @Injectable()
 export class ReviewService {
-  create(createReviewDto: CreateReviewDto) {
-    
-    return 'This action adds a new review';
+  constructor(private reviewRepo: ReviewRepo) {}
+
+  async create(createReviewDto: CreateReviewDto,reviewerId:string) {
+    try {
+      const review = await this.reviewRepo.createReview(createReviewDto,reviewerId);
+      return review;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findAll() {
-    return `This action returns all review`;
+  async findAll() {
+    try {
+      const review = await this.reviewRepo.getAll();
+      return review;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
+ async findOne(id: string) {
+    try {
+      const review = await this.reviewRepo.getByID(id);
+      return review;
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
-  }
+  // async update(id: string, updateReviewDto: UpdateReviewDto) {
+  //   try {
+  //     const review = await this.reviewRepo.update(id,updateReviewDto);
+  //     return review;
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+  async remove(id: string) {
+    try {
+      const review = await this.reviewRepo.delete(id);
+      return review;
+    } catch (error) {
+      throw error;
+    }
   }
 }
