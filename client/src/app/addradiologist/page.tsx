@@ -1,12 +1,12 @@
 "use client";
 
 import Layout from "@/core/layout/Layout";
-import { Box } from "@mui/system";
+import AddRadiologistPage from "@/modules/admin/view/pages/radiologist/AddRadiologistPage";
 
 export default function AddRadiologist() {
   return (
-      <Layout >
-        <Box>Add Radiologist</Box>
-      </Layout>
+    <Layout >
+      <AddRadiologistPage />
+    </Layout>
   )
 }

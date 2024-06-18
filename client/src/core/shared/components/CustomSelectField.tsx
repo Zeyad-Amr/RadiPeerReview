@@ -26,6 +26,7 @@ export interface SelectFieldProps<T> {
   multiple?: boolean;
   sx?: any;
   isDisabled?: boolean;
+  placeholder?: string
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -43,6 +44,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   sx,
   multiple = false,
   hideLabel = true,
+  placeholder
 }: SelectFieldProps<T>) => {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -167,6 +169,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           onChange={handleSelectChange}
           onBlur={onBlur}
           disabled={isDisabled}
+          placeholder={placeholder}
           sx={{
             backgroundColor: "#fff",
             height: "3.5rem",
