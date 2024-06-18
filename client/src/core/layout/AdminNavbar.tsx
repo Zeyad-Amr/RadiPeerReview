@@ -7,8 +7,8 @@ import Typography from "@mui/material/Typography";
 import Badge from "@mui/material/Badge";
 
 import MenuIcon from "@mui/icons-material/Menu";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
+// import AccountCircle from "@mui/icons-material/AccountCircle";
+// import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useRouter } from "next/navigation";
 
@@ -61,8 +61,6 @@ export default function AdminNavbar({
 }) {
   React.useState<null | HTMLElement>(null);
   const router = useRouter();
-
-
   const menuId = "primary-search-account-menu";
   const mobileMenuId = "primary-search-account-menu-mobile";
 
@@ -159,31 +157,17 @@ export default function AdminNavbar({
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
               size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={9} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
               aria-label="show 17 new notifications"
               color="inherit"
             >
-              <Badge badgeContent={17} color="error">
+              <Badge badgeContent={17} sx={{
+                 "& .MuiBadge-badge": {
+                  backgroundColor: "secondary.main",
+                  color:'white'
+                }
+              }}>
                 <NotificationsIcon />
               </Badge>
-            </IconButton>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
             </IconButton>
           </Box>
 
@@ -225,15 +209,7 @@ export default function AdminNavbar({
               </Box>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
-              <IconButton
-                size="large"
-                aria-label="show 4 new mails"
-                color="inherit"
-              >
-                <Badge badgeContent={9} color="error">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
+  
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
@@ -243,16 +219,7 @@ export default function AdminNavbar({
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
-              <IconButton
-                size="large"
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
+
             </Box>
           </Box>
         </Toolbar>
