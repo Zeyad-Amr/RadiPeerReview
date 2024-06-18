@@ -8,8 +8,8 @@ import LoginPage from "@/modules/auth/view/pages/LoginPage";
 
 export default function App() {
   return (
-    // <ProtectedLayout>
-      <LoginPage/>
-    // </ProtectedLayout>
+    <ProtectedLayout>
+      <LoginPage />
+    </ProtectedLayout>
   );
 }

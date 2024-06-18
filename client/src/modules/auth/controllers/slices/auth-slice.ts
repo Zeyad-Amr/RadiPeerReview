@@ -7,7 +7,6 @@ import AlertService from "@/core/shared/utils/alert-service";
 
 //* Initial State
 const initialState: AuthState = {
-
     loading: false,
     error: "",
 };
@@ -24,8 +23,6 @@ const authSlice = createSlice({
         },
     },
     extraReducers(builder) {
-
-
         //* Login
         builder.addCase(login.pending, (state, _action) => {
             state.loading = true;
@@ -41,7 +38,6 @@ const authSlice = createSlice({
             state.error = (action.payload as ErrorResponse).message;
             AlertService.showAlert(`${state.error}`, "error");
         });
-
     },
 });
 

@@ -5,7 +5,7 @@ import { SessionStorage, SessionStorageKeys } from '../shared/utils/session-stor
 import Endpoints from './endpoints';
 
 // Create a custom axios instance
-const axiosInstance = axios.create({ baseURL: Endpoints.base });
+const axiosInstance = axios.create({ baseURL: Endpoints.devBase });
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(

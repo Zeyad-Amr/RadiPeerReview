@@ -23,7 +23,6 @@ class AuthModel extends BaseModel<AuthInterface> {
             password: model.password,
         };
     }
-
 }
 const authModel = new AuthModel();
 export default authModel;

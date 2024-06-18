@@ -1,5 +1,5 @@
 const Endpoints = {
-  base: "https://qasr-server-lqj1.onrender.com/api",
+  base: "",
   devBase: "http://localhost:4000/api",
   auth: {
     login: "/auth/login",

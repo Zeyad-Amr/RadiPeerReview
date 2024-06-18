@@ -17,12 +17,18 @@ model Auth {
   id       String @id @default(cuid())
   username String @unique
   password String
+  role     Role   @default(DOCTOR)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   doctor   Doctor? @relation(fields: [doctorId], references: [id])
   doctorId String? @unique
+}
+
+enum Role {
+  ADMIN
+  DOCTOR
 }
 
 model Doctor {
@@ -40,61 +46,71 @@ model Doctor {
 }
 
 model Report {
-  id                 Int             @id @default(autoincrement())
-  createdAt          DateTime
-  updatedAt          DateTime
+  id                 Int     @id @default(autoincrement())
   reportUrl          String
   resultUrl          String
   additionalComments String?
-  ReviewRequest      ReviewRequest[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ReviewRequest ReviewRequest[]
 }
 
 model ReviewRequest {
-  id           Int      @id @default(autoincrement())
-  reviews      Review[]
-  report       Report   @relation(fields: [reportId], references: [id])
-  creationDate DateTime
-  status       Status
-  approved     Boolean
-  reportId     Int
+  id       Int     @id @default(autoincrement())
+  status   Status
+  approved Boolean
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  report   Report   @relation(fields: [reportId], references: [id])
+  reportId Int
+  reviews  Review[]
 }
 
 model Review {
-  id                             Int                          @id @default(autoincrement())
-  reviewRequest                  ReviewRequest                @relation(fields: [reviewRequestId], references: [id])
-  reviewRequestId                Int
+  id                         Int           @id @default(autoincrement())
+  reviewRequest              ReviewRequest @relation(fields: [reviewRequestId], references: [id])
+  reviewRequestId            Int
+  feedbackToRadiologist      String?
+  additionalReviewerComments String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   feedbacks                      Feedback[]
-  createdAt                      DateTime
-  updatedAt                      DateTime
   accuracyOfFindings             AccuracyOfFindings           @relation(fields: [accuracyOfFindingsId], references: [id])
-  clarityAndCompleteness         ClarityAndCompleteness       @relation(fields: [clarityAndCompletenessId], references: [id])
-  impressionAndRecommendations   ImpressionAndRecommendations @relation(fields: [impressionAndRecommendationsId], references: [id])
-  technicalQuality               TechnicalQuality             @relation(fields: [technicalQualityId], references: [id])
-  overallAssessment              OverallAssessment            @relation(fields: [overallAssessmentId], references: [id])
-  feedbackToRadiologist          String?
-  complianceAndStandardization   ComplianceAndStandardization @relation(fields: [complianceAndStandardizationId], references: [id])
-  additionalReviewerComments     String?
   accuracyOfFindingsId           Int
+  clarityAndCompleteness         ClarityAndCompleteness       @relation(fields: [clarityAndCompletenessId], references: [id])
   clarityAndCompletenessId       Int
+  impressionAndRecommendations   ImpressionAndRecommendations @relation(fields: [impressionAndRecommendationsId], references: [id])
   impressionAndRecommendationsId Int
+  technicalQuality               TechnicalQuality             @relation(fields: [technicalQualityId], references: [id])
   technicalQualityId             Int
+  overallAssessment              OverallAssessment            @relation(fields: [overallAssessmentId], references: [id])
   overallAssessmentId            Int
+  complianceAndStandardization   ComplianceAndStandardization @relation(fields: [complianceAndStandardizationId], references: [id])
   complianceAndStandardizationId Int
 }
 
 model Feedback {
-  id        Int      @id @default(autoincrement())
-  review    Review   @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
-  reviewId  Int
-  comment   String
-  createdAt DateTime
-  updatedAt DateTime
+  id      Int    @id @default(autoincrement())
+  comment String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  review   Review @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
+  reviewId Int
 }
 
 model AccuracyOfFindings {
   id                    Int             @id @default(autoincrement())
   correctnessOfFindings Boolean
   commentsOnAccuracy    String?
+
   missedFindings        MissedFinding[] @relation("AccuracyOfFindingsMissedFinding")
   Review                Review[]
 }
@@ -102,6 +118,7 @@ model AccuracyOfFindings {
 model MissedFinding {
   id                   Int                @id @default(autoincrement())
   description          String
+
   accuracyOfFindings   AccuracyOfFindings @relation("AccuracyOfFindingsMissedFinding", fields: [accuracyOfFindingsId], references: [id])
   accuracyOfFindingsId Int
 }
@@ -112,6 +129,7 @@ model ClarityAndCompleteness {
   commentsOnLanguage     String?
   completenessOfReport   Int
   commentsOnCompleteness String?
+
   Review                 Review[]
 }
 
@@ -121,6 +139,7 @@ model ImpressionAndRecommendations {
   commentsOnImpression             String?
   appropriatenessOfRecommendations Int
   suggestionsForRecommendations    String?
+
   Review                           Review[]
 }
 
@@ -130,6 +149,7 @@ model TechnicalQuality {
   commentsOnTechnique    String?
   imageQuality           Int
   commentsOnImageQuality String?
+
   Review                 Review[]
 }
 
@@ -137,6 +157,7 @@ model OverallAssessment {
   id              Int      @id @default(autoincrement())
   overallQuality  Int
   generalComments String?
+
   Review          Review[]
 }
 
@@ -144,6 +165,7 @@ model ComplianceAndStandardization {
   id                    Int      @id @default(autoincrement())
   adherenceToGuidelines Boolean
   commentsOnCompliance  String?
+  
   Review                Review[]
 }
 
