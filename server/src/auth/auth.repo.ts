@@ -7,7 +7,7 @@ import { Prisma, Auth } from "@prisma/client";
 export class AuthRepo extends PrismaGenericRepo<Prisma.AuthCreateInput, Auth, Prisma.AuthInclude> {
     constructor(private prismaService: PrismaService) {
         super('auth', prismaService, {
-            doctor: true
+            radiologist: true
         })
     }
 

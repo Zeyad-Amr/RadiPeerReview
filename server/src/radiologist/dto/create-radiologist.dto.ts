@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Prisma } from '@prisma/client';
+import { Prisma, Specialization } from '@prisma/client';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
 
-export class CreateDoctorDto implements Prisma.DoctorCreateInput {
+export class CreateRadiologistDto implements Prisma.RadiologistCreateInput {
   @ApiProperty({
     type: String,
     example: 'Ahmed',
@@ -30,12 +30,12 @@ export class CreateDoctorDto implements Prisma.DoctorCreateInput {
   email: string;
 
   @ApiProperty({
-    type: String,
-    example: 'X-Ray',
+    type: () => [String], // Use lazy resolver
+    enum: Specialization, // Enum type
+    example: [Specialization.NEURORADIOLOGY],
   })
   @IsNotEmpty()
-  @IsString()
-  specialization: string;
+  specializations: Specialization[];
 
   @ApiProperty({
     type: String,
