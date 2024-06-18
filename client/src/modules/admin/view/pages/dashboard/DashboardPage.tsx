@@ -34,13 +34,13 @@ const DashboardPage = () => {
                 <Grid item lg={6} md={6} sm={6} xs={12}>
                     <CountCard title='Average Rejected Score' number={14.5} icon={<SportsScoreRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={12}>
+                <Grid item lg={3} md={3} sm={6} xs={12}>
                     <Pie />
                 </Grid>
                 <Grid item lg={3} md={3} sm={6} xs={12}>
                     <Leaderboard />
                 </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+                <Grid item lg={6} md={6} sm={6} xs={12}>
                     <NotificationsCard />
                 </Grid>
             </Grid>

@@ -19,11 +19,12 @@ const ChartCard = ({ title, icon, children, sx }: ChartCardProps) => {
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
-                backgroundColor: 'secondary.main',
+                backgroundColor: 'white',
                 padding: ' 0.75rem 1rem',
                 borderTopLeftRadius: ' 1rem',
                 borderTopRightRadius: ' 1rem',
-                color: 'white',
+                color: 'primary.light',
+                borderBottom:'2px solid #eff4fb'
             }}>
                 {icon}
                 <Typography sx={{ ml: 2 }}>{title}</Typography>
