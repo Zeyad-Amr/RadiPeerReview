@@ -111,7 +111,7 @@ const CustomDataTable = <T,>({
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.length > 0 ? (
+              {data?.length > 0 ? (
                 data.map((item: any, index: number) => (
                   <TableRow
                     key={item.id}

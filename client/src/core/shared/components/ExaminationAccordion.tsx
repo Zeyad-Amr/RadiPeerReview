@@ -71,7 +71,7 @@ interface AccordionComponentPropsInterface {
   formDialogMaxWidth?: false | Breakpoint;
   accordionWidth?: string;
   accordionSx?: any;
-  patientId? : string;
+  patientId?: string;
   visitCode?: string;
 }
 
@@ -93,7 +93,7 @@ export default function ExaminationAccordion({
   formDialogMaxWidth = "sm",
   accordionWidth = "100%",
   accordionSx,
-  isAccordionExpanded = false, 
+  isAccordionExpanded = false,
   visitCode,
   patientId
 }: AccordionComponentPropsInterface) {
@@ -118,7 +118,7 @@ export default function ExaminationAccordion({
       sortable: false,
       filterable: false,
       searchable: false,
-      onClick: () => {},
+      onClick: () => { },
     },
   ];
 
@@ -164,8 +164,9 @@ export default function ExaminationAccordion({
         </AccordionSummary>
         <AccordionDetails>
           <CustomDataTable
+            boxShadow={0}
             height="40vh"
-            sx={{ mb: 0 }}
+            sx={{ mb: 0, }}
             showPagination={false}
             showToolbar={false}
             fetchData={(filters: FilterQuery[]) => {
@@ -174,7 +175,7 @@ export default function ExaminationAccordion({
             resetComponent={tableList?.reset}
             totalItems={tableList?.total}
             noDataMessage={
-              "لا يوجد أي بيانات، اضغط على زر الإضافة لإضافة عنصر جديد"
+              "No data available, press the add button to add a new item."
             }
             data={tableList?.items?.map((item: any) => {
               const formattedItem = formatDateProperties(item);
@@ -231,16 +232,16 @@ export default function ExaminationAccordion({
             setShowConfirmationDialog(false);
           });
         }}
-        contentMessage="في حالة حذف العنصر لن تستطيع العودة اليه مجددا, هل انت متأكد من حذف هذا العنصر ؟"
+        contentMessage="If you delete the item, you will not be able to retrieve it again. Are you sure you want to delete this item?"
         open={showConfirmationDialog}
         setOpen={setShowConfirmationDialog}
-        title="حذف عنصر"
+        title="Delete Item"
       />
 
       {/* Create, Edit, or View Item */}
       <CustomizedDialog
         title={
-          isViewMode ? "عرض عنصر" : tableItemData ? "تعديل عنصر" : "اضافة عنصر"
+          isViewMode ? "Show Item" : tableItemData ? "Edit Item" : "Add Item"
         }
         open={isDialogOpen}
         setOpen={setIsDialogOpen}

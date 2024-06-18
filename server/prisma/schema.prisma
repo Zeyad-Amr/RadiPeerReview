@@ -17,36 +17,39 @@ model Auth {
   id       String @id @default(cuid())
   username String @unique
   password String
-  role     Role   @default(DOCTOR)
+  role     Role   @default(RADIOLOGIST)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  doctor   Doctor? @relation(fields: [doctorId], references: [id])
-  doctorId String? @unique
+  radiologist   Radiologist? @relation(fields: [radiologistId], references: [id])
+  radiologistId String?      @unique
 }
 
 enum Role {
   ADMIN
-  DOCTOR
+  RADIOLOGIST
 }
 
-model Doctor {
-  id             String @id @default(cuid())
-  fname          String
-  lname          String
-  email          String @unique
-  specialization String
-  phone          String @unique
+model Radiologist {
+  id              String           @id @default(cuid())
+  fname           String
+  lname           String
+  email           String           @unique
+  specializations Specialization[]
+  phone           String           @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   auth Auth?
+
+  ReviewRequestAsCreator  ReviewRequest[] @relation("CreatorRadiologist")
+  ReviewRequestAsReviewer ReviewRequest[] @relation("ReviewerRadiologist")
 }
 
 model Report {
-  id                 Int     @id @default(autoincrement())
+  id                 String  @id @default(cuid())
   reportUrl          String
   resultUrl          String
   additionalComments String?
@@ -54,119 +57,124 @@ model Report {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ReviewRequest ReviewRequest[]
+  ReviewRequest ReviewRequest @relation(fields: [reviewRequestId], references: [id])
+
+  Review          Review @relation(fields: [reviewId], references: [id])
+  reviewId        String
+  reviewRequestId String
 }
 
 model ReviewRequest {
-  id       Int     @id @default(autoincrement())
-  status   Status
-  approved Boolean
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  report   Report   @relation(fields: [reportId], references: [id])
-  reportId Int
-  reviews  Review[]
+  id         String      @id @default(cuid())
+  status     Status
+  approved   Boolean
+  creator    Radiologist @relation("CreatorRadiologist", fields: [creatorId], references: [id])
+  creatorId  String
+  reviewer   Radiologist @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
+  reviewerId String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  report     Report[]
 }
 
 model Review {
-  id                         Int           @id @default(autoincrement())
-  reviewRequest              ReviewRequest @relation(fields: [reviewRequestId], references: [id])
-  reviewRequestId            Int
+  id String @id @default(cuid())
+
   feedbackToRadiologist      String?
   additionalReviewerComments String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  feedbacks                      Feedback[]
-  accuracyOfFindings             AccuracyOfFindings           @relation(fields: [accuracyOfFindingsId], references: [id])
-  accuracyOfFindingsId           Int
-  clarityAndCompleteness         ClarityAndCompleteness       @relation(fields: [clarityAndCompletenessId], references: [id])
-  clarityAndCompletenessId       Int
-  impressionAndRecommendations   ImpressionAndRecommendations @relation(fields: [impressionAndRecommendationsId], references: [id])
-  impressionAndRecommendationsId Int
-  technicalQuality               TechnicalQuality             @relation(fields: [technicalQualityId], references: [id])
-  technicalQualityId             Int
-  overallAssessment              OverallAssessment            @relation(fields: [overallAssessmentId], references: [id])
-  overallAssessmentId            Int
-  complianceAndStandardization   ComplianceAndStandardization @relation(fields: [complianceAndStandardizationId], references: [id])
-  complianceAndStandardizationId Int
+  feedbacks Feedback[]
+
+  accuracyOfFindings             AccuracyOfFindings?           @relation(fields: [accuracyOfFindingsId], references: [id])
+  accuracyOfFindingsId           String?                       @unique
+  clarityAndCompleteness         ClarityAndCompleteness?       @relation(fields: [clarityAndCompletenessId], references: [id])
+  clarityAndCompletenessId       String?                       @unique
+  impressionAndRecommendations   ImpressionAndRecommendations? @relation(fields: [impressionAndRecommendationsId], references: [id])
+  impressionAndRecommendationsId String?                       @unique
+  technicalQuality               TechnicalQuality?             @relation(fields: [technicalQualityId], references: [id])
+  technicalQualityId             String?                       @unique
+  overallAssessment              OverallAssessment?            @relation(fields: [overallAssessmentId], references: [id])
+  overallAssessmentId            String?                       @unique
+  complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
+  complianceAndStandardizationId String?                       @unique
+  Report                         Report[]
 }
 
 model Feedback {
-  id      Int    @id @default(autoincrement())
+  id      String @id @default(cuid())
   comment String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   review   Review @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
-  reviewId Int
+  reviewId String
 }
 
 model AccuracyOfFindings {
-  id                    Int             @id @default(autoincrement())
+  id                    String  @id @default(cuid())
   correctnessOfFindings Boolean
   commentsOnAccuracy    String?
 
-  missedFindings        MissedFinding[] @relation("AccuracyOfFindingsMissedFinding")
-  Review                Review[]
+  Review        Review?
+  MissedFinding MissedFinding[]
 }
 
 model MissedFinding {
-  id                   Int                @id @default(autoincrement())
-  description          String
+  id          Int    @id @default(autoincrement())
+  description String
 
-  accuracyOfFindings   AccuracyOfFindings @relation("AccuracyOfFindingsMissedFinding", fields: [accuracyOfFindingsId], references: [id])
-  accuracyOfFindingsId Int
+  accuracyOfFindingsId String
+  AccuracyOfFindings   AccuracyOfFindings @relation(fields: [accuracyOfFindingsId], references: [id])
 }
 
 model ClarityAndCompleteness {
-  id                     Int      @id @default(autoincrement())
+  id                     String  @id @default(cuid())
   clarityOfLanguage      Int
   commentsOnLanguage     String?
   completenessOfReport   Int
   commentsOnCompleteness String?
 
-  Review                 Review[]
+  Review Review?
 }
 
 model ImpressionAndRecommendations {
-  id                               Int      @id @default(autoincrement())
+  id                               String  @id @default(cuid())
   accuracyOfImpression             Boolean
   commentsOnImpression             String?
   appropriatenessOfRecommendations Int
   suggestionsForRecommendations    String?
 
-  Review                           Review[]
+  Review Review?
 }
 
 model TechnicalQuality {
-  id                     Int      @id @default(autoincrement())
+  id                     String  @id @default(cuid())
   imagingTechnique       Int
   commentsOnTechnique    String?
   imageQuality           Int
   commentsOnImageQuality String?
 
-  Review                 Review[]
+  Review Review?
 }
 
 model OverallAssessment {
-  id              Int      @id @default(autoincrement())
+  id              String  @id @default(cuid())
   overallQuality  Int
   generalComments String?
 
-  Review          Review[]
+  Review Review?
 }
 
 model ComplianceAndStandardization {
-  id                    Int      @id @default(autoincrement())
+  id                    String  @id @default(cuid())
   adherenceToGuidelines Boolean
   commentsOnCompliance  String?
-  
-  Review                Review[]
+
+  Review Review?
 }
 
 enum Status {
@@ -175,8 +183,23 @@ enum Status {
   Reviewed
 }
 
-// enum Specialization {
-//   XRAY
-//   CT
-//   MRI
-// }
+enum Specialization {
+  NEURORADIOLOGY
+  MUSCULOSKELETAL_RADIOLOGY
+  ABDOMINAL_RADIOLOGY
+  CARDIOVASCULAR_RADIOLOGY
+  BREAST_IMAGING
+  PEDIATRIC_RADIOLOGY
+  THORACIC_RADIOLOGY
+  GENITOURINARY_RADIOLOGY
+  INTERVENTIONAL_RADIOLOGY
+  NUCLEAR_MEDICINE
+  EMERGENCY_RADIOLOGY
+  ONCOLOGIC_IMAGING
+  GASTROINTESTINAL_RADIOLOGY
+  HEAD_AND_NECK_RADIOLOGY
+  ORTHOPEDIC_RADIOLOGY
+  VASCULAR_AND_INTERVENTIONAL_RADIOLOGY
+  ENDOVASCULAR_SURGICAL_NEURORADIOLOGY
+  BODY_IMAGING
+}

@@ -1,4 +1,5 @@
 import authSlice from "@/modules/auth/controllers/slices/auth-slice";
+import radiologistSlice from "@/modules/admin/controllers/slices/radiologist-slice";
 import { configureStore } from "@reduxjs/toolkit";
 import {
   useDispatch,
@@ -8,6 +9,7 @@ import {
 const store = configureStore({
   reducer: {
     auth: authSlice,
+    radiologistSlice
   },
 });
 
