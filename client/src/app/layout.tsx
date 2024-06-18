@@ -4,11 +4,11 @@ import { SettingsProvider } from "@/core/components/settings";
 import "./globals.css";
 import { StoreProvider } from "@/core/state/provider";
 import { ServiceLocatorProvider } from "@/core/service-locator/provider";
+import { AppProvider } from ".";
 
 type Props = {
   children: React.ReactNode;
 };
-
 export default function RootLayout({ children }: Props) {
   return (
     <html className={primaryFont.className}>
@@ -25,7 +25,9 @@ export default function RootLayout({ children }: Props) {
                 themeStretch: false,
               }}
             >
-              <ThemeProvider>{children}</ThemeProvider>
+              <ThemeProvider>
+                <AppProvider>{children}</AppProvider>
+              </ThemeProvider>
             </SettingsProvider>
           </StoreProvider>
         </ServiceLocatorProvider>
