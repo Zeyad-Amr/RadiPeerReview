@@ -12,8 +12,8 @@ const PageTitle = ({
       variant={fontSize}
       sx={{
         fontWeight: "bold",
-        padding: "10px",
         marginBottom: "20px",
+        color: "primary.main",
       }}
     >
       {title}

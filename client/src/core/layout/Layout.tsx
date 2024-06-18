@@ -20,6 +20,8 @@ import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/navigation";
+import { usePathname } from 'next/navigation';
+import { Typography } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -45,7 +47,7 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
-
+  const pathname = usePathname().substring(1);
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
@@ -73,36 +75,50 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
               <Box
                 style={{
                   textDecoration: "none",
-                  color: '#333',
                   width: "100%",
                 }}
                 onClick={() => router.push(`/${text.toLowerCase().replace(/\s/g, "")}`)}
               >
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index === 0 ? (
-                      <DashboardRoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    ) : index === 1 ? (
-                      <PersonAddAlt1RoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    ) : index === 2 ? (
-                      <AccessibleRoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    ) : index === 3 ? (
-                      <EventIcon sx={{
-                        color: '#666',
-                      }} />
-                    ) : (
-                      <TuneRoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
+                <ListItemButton sx={{
+                  color: pathname === text.toLowerCase().replace(/\s/g, "") ? 'secondary.main' : 'primary.light',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                  <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+
+                  }}>
+                    <ListItemIcon sx={{
+                      color: 'inherit',
+                    }}>
+                      {index === 0 ? (
+                        <DashboardRoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      ) : index === 1 ? (
+                        <PersonAddAlt1RoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      ) : index === 2 ? (
+                        <AccessibleRoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      ) : index === 3 ? (
+                        <EventIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      ) : (
+                        <TuneRoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      )}
+                    </ListItemIcon>
+                    <Typography sx={{ color: 'inherit', fontSize: '0.8rem', fontWeight: '400' }}>{text}</Typography>
+                  </Box>
+                  {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
+                    <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
+                    null} */}
                 </ListItemButton>
               </Box>
             </ListItem>
@@ -116,27 +132,41 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => router.push(`/${text.toLowerCase().replace(/\s/g, "")}`)}
                 style={{
                   textDecoration: "none",
-                  color: '#333',
                   width: "100%",
                 }}
               >
-                <ListItemButton>
-                  <ListItemIcon>
-                    {index === 0 ? (
-                      <GavelRoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    ) : index === 1 ? (
-                      <HelpOutlineRoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    ) : (
-                      <LogoutRoundedIcon sx={{
-                        color: '#666',
-                      }} />
-                    )}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
+                <ListItemButton sx={{
+                  color: pathname === text.toLowerCase().replace(/\s/g, "") ? 'secondary.main' : 'primary.light',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}>
+                  <Box sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+
+                  }}>
+                    <ListItemIcon sx={{
+                      color: 'inherit',
+                    }}>
+                      {index === 0 ? (
+                        <GavelRoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      ) : index === 1 ? (
+                        <HelpOutlineRoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      ) : (
+                        <LogoutRoundedIcon sx={{
+                          color: 'inherit',
+                        }} />
+                      )}
+                    </ListItemIcon>
+                    <Typography sx={{ color: 'inherit', fontSize: '0.8rem', fontWeight: '400' }}>{text}</Typography>
+                  </Box>
+                  {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
+                    <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
+                    null} */}
                 </ListItemButton>
               </Box>
             </ListItem>
@@ -154,7 +184,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <AdminNavbar open={open} setOpen={setOpen} />
         <Box
-          sx={{ padding: "2rem", backgroundColor: "#41bbcb15", height: "100%" }}
+          sx={{ padding: "2rem", backgroundColor: "primary.lighter", height: "100%" }}
         >
           {children}
         </Box>

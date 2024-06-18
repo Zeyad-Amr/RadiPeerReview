@@ -1,12 +1,12 @@
 "use client";
 
 import Layout from "@/core/layout/Layout";
-import { Box } from "@mui/system";
+import DashboardPage from "@/modules/admin/view/pages/dashboard/DashboardPage";
 
 export default function Dashboard() {
   return (
       <Layout >
-        <Box>Dashboard</Box>
+        <DashboardPage/>
       </Layout>
   )
 }
