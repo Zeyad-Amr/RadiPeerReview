@@ -1,61 +1,59 @@
-import React from "react";
-import { Box, Typography, Avatar } from "@mui/material";
+import React, { useEffect } from "react";
+import { Box, Typography } from "@mui/material";
 
-interface Author {
-  name: string;
-  avatar: string;
+interface DisplayedRequestProps {
+  report: {
+    name: string;
+    time: string;
+  };
+  setReportData: (reportData: any) => void;
 }
 
-interface RequestProps {
-  author: Author;
-  content: string;
-  time: string;
-  likes: number;
-}
-
-const DisplayedRequest = ({ author, content, time, likes }: RequestProps) => {
-  function getInitials(name: string): string {
-    const words = name.split(" ");
-    const initials = words
-      .slice(0, 2)
-      .map((word: string) => word.charAt(0).toUpperCase());
-    return initials.join("");
-  }
-
-  function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    do {
-      color = "#";
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-    } while (color === "#FFFFFF" || color === "#EEEAFF");
-
-    return color;
-  }
+const DisplayedRequest: React.FC<DisplayedRequestProps> = ({ setReportData, report }) => {
+  useEffect(() => {
+    setReportData(report)
+  }, [report, setReportData])
+  
   return (
-    <Box sx={{ display: "flex", alignItems: "center", marginBottom: 3 }}>
-      <Avatar sx={{ bgcolor: getRandomColor()}} aria-label="recipe">
-        <Typography sx={{ fontSize : "13px" , marginBottom : "-0.2rem" }}>{getInitials(author.name)}</Typography>
-      </Avatar>
+    <Box
+      sx={{
+        display: "flex",
+        alignItems: "center",
+        marginBottom: 1,
+        position: "relative",
+      }}
+    >
       <Box
         sx={{
-          marginLeft: 2,
-          border: "1px solid #3e3e3e",
+          position: "absolute",
+          left: 0,
+          top: "50%",
+          width: "20px",
+          height: "2px",
+          backgroundColor: "gray",
+          transform: "translateY(-50%)",
+        }}
+      />
+      <Box
+        sx={{
+          marginLeft: 4,
           padding: "1rem",
           borderRadius: "10px",
+          width: "70%",
+          backgroundColor: "primary.main",
+          cursor: "pointer",
         }}
+        onClick={() => setReportData(report)}
       >
-        <Typography variant="body2" color="textSecondary">
-          {author.name}
+        <Typography variant="body1" color="#fff">
+          {report.name}
         </Typography>
-        <Typography variant="body1">{content}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {time}
-        </Typography>
-        <Typography variant="caption" color="textSecondary">
-          {likes} likes
+        <Typography
+          sx={{ display: "flex", justifyContent: "flex-end" }}
+          variant="caption"
+          color="#fff"
+        >
+          {report.time}
         </Typography>
       </Box>
     </Box>

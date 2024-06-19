@@ -1,80 +1,35 @@
 import React from "react";
-import { Avatar, Box, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
-interface Author {
-  name: string;
-  avatar: string;
-}
-
-interface ReviewProps {
-  author: Author;
+interface DisplayedReviewProps {
   content: string;
   time: string;
 }
 
-const DisplayedReview: React.FC<ReviewProps> = ({ author, content, time }) => {
-  function getInitials(name: string): string {
-    const words = name.split(" ");
-    const initials = words
-      .slice(0, 2)
-      .map((word: string) => word.charAt(0).toUpperCase());
-    return initials.join("");
-  }
-
-  function getRandomColor() {
-    const letters = "0123456789ABCDEF";
-    let color = "#";
-    do {
-      color = "#";
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-    } while (color === "#FFFFFF" || color === "#EEEAFF");
-
-    return color;
-  }
+const DisplayedReview: React.FC<DisplayedReviewProps> = ({ content, time }) => {
   return (
     <Box
       sx={{
         display: "flex",
         alignItems: "center",
-        marginBottom: 1,
-        marginLeft: 2.5,
+        marginBottom: 6,
         paddingLeft: 2,
       }}
     >
-      <span
-        style={{
-          height: "2px",
-          width: "7rem",
-          backgroundColor: "gray",
-          marginLeft: "-4.4rem",
-          marginTop: "-2rem",
-          transform: "rotate(90deg)",
+      <Box
+        sx={{
+          marginLeft: 2,
+          padding: "0.5rem",
+          borderRadius: "10px",
+          width: "72.2%",
+          backgroundColor: "primary.lighter",
+          cursor: "pointer",
         }}
-      ></span>
-      <span
-        style={{
-          height: "2px",
-          width: "1rem",
-          backgroundColor: "gray",
-          marginLeft: "-3.5rem",
-          marginRight: "0.8rem",
-        }}
-      ></span>
-      <Avatar sx={{ bgcolor: getRandomColor() }} aria-label="recipe">
-        <Typography sx={{ fontSize: "13px", marginBottom: "-0.2rem" }}>
-          {getInitials(author.name)}
+      >
+        <Typography variant="body1">
+          Review
         </Typography>
-      </Avatar>
-      <Box sx={{ marginLeft: 2 }}>
-        <Typography variant="body2" color="textSecondary">
-          {author.name}
-        </Typography>
-        <Typography variant="body1">{content}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {time}
-        </Typography>
+        <Typography variant="body2" color="textSecondary">{content}</Typography>
       </Box>
     </Box>
   );
