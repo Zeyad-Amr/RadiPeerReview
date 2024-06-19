@@ -1,26 +1,55 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateRadiologistDto } from './dto/create-radiologist.dto';
 import { UpdateRadiologistDto } from './dto/update-radiologist.dto';
+import { RadiologistRepo } from './radiologist.repo';
+import { hashPassword } from '@/shared/utlis/utils';
 
 @Injectable()
 export class RadiologistService {
-  create(createRadiologistDto: CreateRadiologistDto) {
-    return 'This action adds a new radiologist';
+  constructor(private radiologistRepo: RadiologistRepo) {}
+
+  async create(createRadiologistDto: CreateRadiologistDto): Promise<any> {
+    try {
+      // check username exists
+      const usernameExists = await this.radiologistRepo.usernameExists(
+        createRadiologistDto.username,
+      );
+      if (usernameExists) {
+        throw new HttpException('Username already exists', 400);
+      }
+
+      // hash password
+      const hash = await hashPassword(createRadiologistDto.password);
+
+      createRadiologistDto.password = hash;
+
+      return await this.radiologistRepo.create(createRadiologistDto);
+    } catch (error) {
+      throw error;
+    }
   }
 
   findAll() {
-    return `This action returns all radiologist`;
+    try {
+      return this.radiologistRepo.getAll();
+    } catch (error) {
+      throw error;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} radiologist`;
+  findOne(id: string) {
+    try {
+      return this.radiologistRepo.getByID(id);
+    } catch (error) {
+      throw error;
+    }
   }
 
-  update(id: number, updateRadiologistDto: UpdateRadiologistDto) {
-    return `This action updates a #${id} radiologist`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} radiologist`;
+  remove(id: string) {
+    try {
+      return this.radiologistRepo.delete(id);
+    } catch (error) {
+      throw error;
+    }
   }
 }

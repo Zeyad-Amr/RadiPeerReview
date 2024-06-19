@@ -24,6 +24,7 @@ model Auth {
 
   radiologist   Radiologist? @relation(fields: [radiologistId], references: [id])
   radiologistId String?      @unique
+
 }
 
 enum Role {
@@ -57,23 +58,23 @@ model Report {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ReviewRequest ReviewRequest @relation(fields: [reviewRequestId], references: [id])
-
-  Review          Review @relation(fields: [reviewId], references: [id])
-  reviewId        String
-  reviewRequestId String
+  ReviewRequest   ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
+  reviewRequestId String?
+  Review          Review?        @relation(fields: [reviewId], references: [id])
+  reviewId        String? @unique
 }
 
 model ReviewRequest {
   id         String      @id @default(cuid())
   status     Status
   approved   Boolean
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
   creator    Radiologist @relation("CreatorRadiologist", fields: [creatorId], references: [id])
   creatorId  String
   reviewer   Radiologist @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
   reviewerId String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
   report     Report[]
 }
 
@@ -100,7 +101,7 @@ model Review {
   overallAssessmentId            String?                       @unique
   complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
   complianceAndStandardizationId String?                       @unique
-  Report                         Report[]
+  Report                         Report?
 }
 
 model Feedback {

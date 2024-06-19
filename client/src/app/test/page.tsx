@@ -9,7 +9,7 @@ import PdfViewer from "@/modules/viewers/PdfViewer";
 
 export default function Test() {
   const fileUrl =
-    "https://www.nasa.gov/sites/default/files/atoms/files/nasa_2020_strategic_plan.pdf";
+    "file:///Users/zeyadamr/Downloads/Zeyad's-Resume.pdf";
   return (
     <Box>
       <PdfViewer pdfUrl={fileUrl} />
