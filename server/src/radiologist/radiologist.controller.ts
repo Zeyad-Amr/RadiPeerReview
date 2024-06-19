@@ -29,18 +29,18 @@ export class RadiologistController {
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     try {
-      return this.radiologistService.findAll();
+      return await this.radiologistService.findAll();
     } catch (error) {
       throw handleError(error);
     }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     try {
-      return this.radiologistService.findOne(id);
+      return await this.radiologistService.findOne(id);
     } catch (error) {
       throw handleError(error);
     }
@@ -55,9 +55,9 @@ export class RadiologistController {
   // }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string) {
     try {
-      return this.radiologistService.remove(id);
+      return await this.radiologistService.remove(id);
     } catch (error) {
       throw handleError(error);
     }

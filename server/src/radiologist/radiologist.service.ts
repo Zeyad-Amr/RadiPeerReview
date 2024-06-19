@@ -29,25 +29,25 @@ export class RadiologistService {
     }
   }
 
-  findAll() {
+  async findAll() {
     try {
-      return this.radiologistRepo.getAll();
+      return await this.radiologistRepo.getAll();
     } catch (error) {
       throw error;
     }
   }
 
-  findOne(id: string) {
+  async findOne(id: string) {
     try {
-      return this.radiologistRepo.getByID(id);
+      return  await this.radiologistRepo.getByID(id);
     } catch (error) {
       throw error;
     }
   }
 
-  remove(id: string) {
+  async remove(id: string) {
     try {
-      return this.radiologistRepo.delete(id);
+      return await this.radiologistRepo.delete(id);
     } catch (error) {
       throw error;
     }
