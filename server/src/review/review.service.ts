@@ -7,11 +7,10 @@ import { ReviewRepo } from './review.repo';
 export class ReviewService {
   constructor(private reviewRepo: ReviewRepo) {}
 
-  async create(createReviewDto: CreateReviewDto, reviewerId: string) {
+  async create(createReviewDto: CreateReviewDto) {
     try {
       const review = await this.reviewRepo.createReview(
         createReviewDto,
-        reviewerId,
       );
       return review;
     } catch (error) {
