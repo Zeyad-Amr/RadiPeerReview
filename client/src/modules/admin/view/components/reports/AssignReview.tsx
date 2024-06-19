@@ -11,9 +11,8 @@ import React from 'react'
 const AssignReview = () => {
     return (
         <Formik
-            initialValues={{ reviewer: { id: 0, name: '' } }}
+            initialValues={{ reviewer: 0 }}
             onSubmit={(values) => console.log(values)}
-            validationSchema={RadiologistModel.radiologistFormValidations()}
         >
             {({
                 values,
@@ -24,7 +23,7 @@ const AssignReview = () => {
                 handleSubmit,
             }) => (
                 <Box component="form" onSubmit={handleSubmit} noValidate>
-                    <Grid container spacing={1} sx={{ alignItems: 'center',justifyContent:'center' }}>
+                    <Grid container spacing={1} sx={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Grid item lg={6} md={6} sm={12} xs={12}>
                             <CustomSelectField
                                 options={[
@@ -51,7 +50,7 @@ const AssignReview = () => {
                                 error={errors.reviewer}
                                 touched={touched.reviewer}
                                 width="100%"
-                                sx={{mb:0}}
+                                sx={{ mb: 0 }}
 
                             />
                         </Grid>

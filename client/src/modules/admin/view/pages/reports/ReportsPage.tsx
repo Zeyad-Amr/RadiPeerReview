@@ -90,7 +90,7 @@ const ReportsPage = () => {
                 showToolbar={false}
                 showPagination={false}
                 stickyHeader={true}
-                boxShadow={5}
+                boxShadow={0}
                 height='71vh'
             />
         </>

@@ -123,9 +123,9 @@ const CustomDataTable = <T,>({
                       backgroundColor:
                         variantBackground && index % 2 === 0
                           ? "white"
-                          : "#f5f5f5",
+                          : "primary.lighter",
                       "&:hover": {
-                        backgroundColor: "#f0f0f0",
+                        backgroundColor: "primary.main",
                       },
                     }}
                     {...rowProps}

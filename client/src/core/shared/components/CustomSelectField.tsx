@@ -27,7 +27,7 @@ export interface SelectFieldProps<T> {
   sx?: any;
   isDisabled?: boolean;
   placeholder?: string,
-  height?:string
+  height?: string
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -66,11 +66,11 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <span
           key={index}
           style={{
-            backgroundColor: "#003768",
+            backgroundColor: "primary.main",
             borderRadius: "4rem",
             color: "#fff",
             padding: "0.5rem 1rem",
-            fontSize: "10px",
+            fontSize: "0.8rem",
             margin: "0rem 0.35rem",
           }}
         >
@@ -150,7 +150,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           component="div"
           sx={{
             flexGrow: 1,
-            fontSize: "0.9rem !important",
+            fontSize: "0.8rem !important",
             margin: "0rem 0.5rem",
           }}
         >
@@ -201,24 +201,25 @@ const CustomSelectField = <T extends { id: any; value: string }>({
               key={0}
               value={0}
               sx={{
-                color: "#232836",
+                color: "secondary.main",
                 opacity: 0.9,
                 transition: "0.5s ease",
                 margin: 1,
+
                 ...sx,
                 "&.Mui-selected": {
                   backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  color: !multiple ? "#fff" : "secondary.main",
                   opacity: 0.9,
                 },
                 "&:hover": {
                   opacity: !multiple ? 0.6 : 0.9,
-                  color: "#232836",
+                  color: "secondary.main",
                 },
                 "&.Mui-selected:hover": {
                   opacity: 0.9,
                   backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  color: !multiple ? "#fff" : "secondary.main",
                 },
               }}
             >
@@ -249,29 +250,34 @@ const CustomSelectField = <T extends { id: any; value: string }>({
               key={option.id}
               value={option.id}
               sx={{
-                color: "#232836",
+                color: "#000",
+                fontSize: "0.8rem",
+                fontWeight: "300",
                 opacity: 0.9,
                 transition: "0.5s ease",
                 margin: 1,
                 width: multiple ? "98.5%" : "none",
                 ...sx,
                 "&.Mui-selected": {
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  backgroundColor: !multiple ? "secondary.main" : "none",
+                  color: !multiple ? "#fff" : "primary.main",
                   opacity: 0.9,
                 },
                 "&:hover": {
                   opacity: !multiple ? 0.6 : 0.9,
-                  color: "#232836",
+                  color: "primary.main",
                 },
                 "&.Mui-selected:hover": {
                   opacity: 0.9,
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  backgroundColor: !multiple ? "primary.main" : "none",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
               }}
             >
-              <ListItemText primary={option.value} />
+              <Typography sx={{
+                fontWeight: "400",
+                fontSize: '0.8rem'
+              }}>{option.value}</Typography>
               {multiple && (
                 <Checkbox
                   checked={Array.isArray(value) && value.includes(option.id)}
