@@ -6,13 +6,8 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import PdfViewer from "@/modules/viewers/PdfViewer";
+import RequestPage from "@/modules/request/view/pages/RequestPage";
 
 export default function Test() {
-  const fileUrl =
-    "file:///Users/zeyadamr/Downloads/Zeyad's-Resume.pdf";
-  return (
-    <Box>
-      <PdfViewer pdfUrl={fileUrl} />
-    </Box>
-  );
+  return <RequestPage />;
 }
