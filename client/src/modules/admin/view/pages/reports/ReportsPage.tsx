@@ -1,6 +1,9 @@
 import { CustomDataTable, HeaderItem } from '@/core/shared/components/CustomDataTable'
+import PageTitle from '@/core/shared/components/PageTitle';
+import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React from 'react'
+import AssignReview from '../../components/reports/AssignReview';
 
 const ReportsPage = () => {
 
@@ -9,10 +12,32 @@ const ReportsPage = () => {
             reportName: 'report',
             reportAuther: 'Body',
             reportReviwer: 'Zeyad',
-            status: 'accepted',
+            status: 'Accepted',
             score: 85,
         },
+        {
+            reportName: 'report2',
+            reportAuther: 'Body',
+            reportReviwer: '',
+            status: '',
+            score: '',
+        },
     ]
+
+    let newTableData: any[] = [];
+    data.forEach((item) => {
+        newTableData.push({
+            reportName: item.reportName,
+            reportAuther: item.reportAuther,
+            reportReviwer: item.reportReviwer === '' ? <AssignReview /> : <Typography sx={{ fontSize: '0.8rem' }}>{item.reportReviwer}</Typography>,
+            status: <Typography sx={{
+                fontSize: '0.8rem',
+                color: item.status === 'Accepted' ? 'green' : 'black'
+            }}>{item.status}</Typography>,
+            score: item.score,
+        })
+    })
+
     const header: HeaderItem[] = [
         {
             filterKey: "reportName",
@@ -21,9 +46,6 @@ const ReportsPage = () => {
             minWidth: 50,
             tableCellProps: { align: "center" },
             showBorder: true,
-            searchable: true,
-            filterable: true,
-
         },
         {
             filterKey: "reportAuther",
@@ -31,8 +53,6 @@ const ReportsPage = () => {
             label: "Report Auther",
             minWidth: 50,
             tableCellProps: { align: "center" },
-            searchable: true,
-            filterable: true,
             onClick: () => console.log("ahhhh"),
         },
         {
@@ -41,41 +61,39 @@ const ReportsPage = () => {
             label: "Report Reviwer",
             minWidth: 100,
             tableCellProps: { align: "center" },
-            searchable: true,
-            filterable: true,
-
-
+            isComponent: true,
         },
         {
             filterKey: "status",
             id: "status",
             label: "Status",
             minWidth: 100,
-            tableCellProps: { align: "center" },
-            searchable: true,
-            filterable: true,
+            tableCellProps: { align: "center", },
+            isComponent: true,
         },
         {
             filterKey: "score",
             id: "score",
             label: "Score",
             minWidth: 100,
-            tableCellProps: { align: "center" },
-            searchable: true,
-            filterable: true,
+            tableCellProps: { align: "center", },
         },
     ];
     return (
-        <CustomDataTable
-            data={data}
-            totalItems={data.length}
-            headerItems={header}
-            fetchData={() => { }}
-            showToolbar={false}
-            showPagination={false}
-            stickyHeader={true}
-            boxShadow={5}
-        />
+        <>
+            <PageTitle title='Reports' />
+            <CustomDataTable
+                data={newTableData}
+                totalItems={newTableData.length}
+                headerItems={header}
+                fetchData={() => { }}
+                showToolbar={false}
+                showPagination={false}
+                stickyHeader={true}
+                boxShadow={5}
+                height='71vh'
+            />
+        </>
     )
 }
 
