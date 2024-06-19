@@ -19,12 +19,12 @@ const PrimaryButton = ({ id, type, title, onClick, display, sx }: PrimaryButtonT
       sx={{
         display: display,
         color: "#fff",
-        backgroundColor: "#0f70f2",
-        fontSize: "0.9rem",
+        backgroundColor: 'secondary.main',
+        fontSize: "0.8rem",
         height: "40px",
         padding: "0 3rem",
         '&:hover': {
-          backgroundColor: "#0f70f2",
+          backgroundColor: 'secondary.main',
 
         },
         ...sx,
