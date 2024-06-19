@@ -7,9 +7,12 @@ import { ReviewRepo } from './review.repo';
 export class ReviewService {
   constructor(private reviewRepo: ReviewRepo) {}
 
-  async create(createReviewDto: CreateReviewDto,reviewerId:string) {
+  async create(createReviewDto: CreateReviewDto, reviewerId: string) {
     try {
-      const review = await this.reviewRepo.createReview(createReviewDto,reviewerId);
+      const review = await this.reviewRepo.createReview(
+        createReviewDto,
+        reviewerId,
+      );
       return review;
     } catch (error) {
       throw error;
@@ -25,7 +28,7 @@ export class ReviewService {
     }
   }
 
- async findOne(id: string) {
+  async findOne(id: string) {
     try {
       const review = await this.reviewRepo.getByID(id);
       return review;
