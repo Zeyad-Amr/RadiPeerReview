@@ -26,7 +26,8 @@ export interface SelectFieldProps<T> {
   multiple?: boolean;
   sx?: any;
   isDisabled?: boolean;
-  placeholder?: string
+  placeholder?: string,
+  height?:string
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -44,7 +45,8 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   sx,
   multiple = false,
   hideLabel = true,
-  placeholder
+  placeholder,
+  height
 }: SelectFieldProps<T>) => {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -138,7 +140,6 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   return (
     <Box
       sx={{
-        mb: 2,
         width: width,
         maxWidth: "100%",
       }}
@@ -172,7 +173,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           placeholder={placeholder}
           sx={{
             backgroundColor: "#fff",
-            height: "3.5rem",
+            height: height ?? "3.5rem",
           }}
           value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}

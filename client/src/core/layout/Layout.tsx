@@ -184,7 +184,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <AdminNavbar open={open} setOpen={setOpen} />
         <Box
-          sx={{ padding: "0.5rem 2rem", backgroundColor: "primary.lighter", height: "100%" }}
+          sx={{ padding: "0.5rem 2rem", backgroundColor: "primary.lighter", height: "100%", boxSizing:'border-box'}}
         >
           {children}
         </Box>
