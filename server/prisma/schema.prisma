@@ -24,6 +24,7 @@ model Auth {
 
   radiologist   Radiologist? @relation(fields: [radiologistId], references: [id])
   radiologistId String?      @unique
+
 }
 
 enum Role {
