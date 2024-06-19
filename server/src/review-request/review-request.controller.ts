@@ -14,13 +14,15 @@ import { ReviewRequestService } from './review-request.service';
 import { CreateReviewRequestDto } from './dto/create-review-request.dto';
 import { UpdateReviewRequestDto } from './dto/update-review-request.dto';
 import { ReportService } from '@/report/report.service';
-import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { extname, resolve } from 'path';
 import { diskStorage } from 'multer';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { handleError } from '@/shared/http-error';
 
+@ApiBearerAuth()
+@ApiTags('review-request')
 @Controller('review-request')
 export class ReviewRequestController {
   constructor(
