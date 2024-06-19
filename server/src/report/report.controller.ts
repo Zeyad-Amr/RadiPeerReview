@@ -1,33 +1,37 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
-  Param,
-  Delete,
   UseInterceptors,
   UploadedFiles,
-  NotFoundException,
+  Get,
+  Param,
   Res,
-  Response,
+  Delete,
+  NotFoundException,
 } from '@nestjs/common';
-import { ReportService } from './report.service';
-import { CreateReportDto } from './dto/create-report.dto';
-import {
-  FileFieldsInterceptor,
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname, join } from 'path';
+import { extname, join, resolve } from 'path';
 import * as fs from 'fs';
-import { handleError } from '@/shared/http-error';
-import { ApiBearerAuth, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ReportService } from './report.service';
+
+import {
+  ApiConsumes,
+  ApiBody,
+  ApiTags,
+  ApiBearerAuth,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
+import { handleError } from '@/shared/http-error'; // Adjust the path as needed
+import { CreateReportDto } from './dto/create-report.dto';
 
 @ApiTags('report')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
 @ApiBearerAuth()
 @Controller('report')
 export class ReportController {
-  constructor(private readonly reportService: ReportService) {}
+  constructor(private readonly reportService: ReportService) { }
 
   @Post()
   @UseInterceptors(
@@ -39,13 +43,12 @@ export class ReportController {
       {
         storage: diskStorage({
           destination: (req, file, cb) => {
-            const uploadPath = join(__dirname, '..', 'uploads');
-            // Check if the directory exists
+            const uploadPath = resolve(__dirname, '..', 'uploads');
             if (!fs.existsSync(uploadPath)) {
-              // If not, create it
               fs.mkdirSync(uploadPath, { recursive: true });
             }
             cb(null, uploadPath);
+            console.log(uploadPath);
           },
           filename: (req, file, cb) => {
             const uniqueSuffix =
@@ -58,6 +61,11 @@ export class ReportController {
       },
     ),
   )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Create a report',
+    type: CreateReportDto,
+  })
   async uploadReport(
     @UploadedFiles()
     files: { report?: Express.Multer.File[]; result?: Express.Multer.File[] },
@@ -73,9 +81,6 @@ export class ReportController {
   @Get('files/:filename')
   getFile(@Param('filename') filename: string, @Res() res: any) {
     const filePath = join(__dirname, '..', 'uploads', filename);
-    console.log(filename);
-    console.log(filePath);
-
     if (fs.existsSync(filePath)) {
       return res.sendFile(filePath);
     } else {
