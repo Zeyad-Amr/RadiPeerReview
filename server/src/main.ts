@@ -12,7 +12,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Peer Review')
-    .setDescription('Documentatio for Report Peer Review task')
+    .setDescription('Documentation for Report Peer Review Platform')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

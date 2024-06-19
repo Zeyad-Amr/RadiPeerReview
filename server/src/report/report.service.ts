@@ -5,30 +5,32 @@ import { ReportRepo } from './report.repo';
 
 @Injectable()
 export class ReportService {
-  constructor(private reportRepo: ReportRepo){}
+  constructor(private reportRepo: ReportRepo) { }
 
-  async saveReport(files: { report?: Express.Multer.File[], result?: Express.Multer.File[] },data:CreateReportDto) {
+  async saveReport(
+    files: { report?: Express.Multer.File[]; result?: Express.Multer.File[] },
+    data: CreateReportDto,
+  ) {
     try {
-     return await this.reportRepo.create({
+      return await this.reportRepo.create({
         reportUrl: this.makeURL(files.report[0].filename),
         resultUrl: this.makeURL(files.result[0].filename),
-        additionalComments:data.additionalComments,
-        ReviewRequest:{
-          connect:{
-            id:data.reviewRequestId
-          }
-        }
-
-      }) 
+        additionalComments: data.additionalComments,
+        // ReviewRequest:{
+        //   connect:{
+        //     id:data.reviewRequestId
+        //   }
+        // }
+      });
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
-  makeURL(filename: string){
-    return process.env.BASE_URL + '/api/report/files/' + filename
+  makeURL(filename: string) {
+    return process.env.BASE_URL + '/api/report/files/' + filename;
   }
- 
+
   async findAll() {
     try {
       const review = await this.reportRepo.getAll();
@@ -38,7 +40,7 @@ export class ReportService {
     }
   }
 
- async findOne(id: string) {
+  async findOne(id: string) {
     try {
       const review = await this.reportRepo.getByID(id);
       return review;
