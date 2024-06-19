@@ -19,6 +19,8 @@ import { useAppDispatch } from "@/core/state/store";
 import { Box, Breakpoint } from "@mui/system";
 import ConfirmationDialog from "./ConfirmationDialog";
 import PrimaryButton from "./btns/PrimaryButton";
+import PageTitle from "./PageTitle";
+import IconBtn from "./btns/IconBtn";
 
 const Accordion = styled((props: AccordionProps) => (
     <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -138,24 +140,18 @@ export default function CreateUser({
         }
         return formattedItem;
     };
-
+    console.log(tableList)
     return (
         <>
 
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', width: '95%', margin: '0 auto' }}>
-                <Typography>{title}</Typography>
-                <AddCircleOutlineIcon
-                    sx={{
-                        zIndex: 999,
-                        cursor: 'pointer',
-                    }}
-                    onClick={(event) => {
-                        event.stopPropagation();
-                        setTableItemData(undefined);
-                        setIsViewMode(false);
-                        setIsDialogOpen(true);
-                    }}
-                />
+            <Box sx={{ display: 'flex', justifyContent: 'space-between',alignItems:'center', width: '95%', margin: '0 auto' }}>
+                <PageTitle title={title} sx={{mb:0}}/>
+                <IconBtn icon={<AddCircleOutlineIcon />} title="Add Radiologist" onClick={(event) => {
+                    event.stopPropagation();
+                    setTableItemData(undefined);
+                    setIsViewMode(false);
+                    setIsDialogOpen(true);
+                }} />
             </Box>
             <Box sx={{ mt: 2 }}>
                 <CustomDataTable

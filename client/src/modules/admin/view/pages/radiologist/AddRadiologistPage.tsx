@@ -15,9 +15,9 @@ const AddRadiologistPage = () => {
   const radiologistState: RadiologistState = useAppSelector(
     (state: any) => state.radiologist
   );
+
   return (
     <CreateUser
-
       getListThunk={getRadiologistList}
       deleteThunk={deleteRadiologist}
       tableList={radiologistState?.radiologists}

@@ -13,7 +13,7 @@ import AdminNavbar from "./AdminNavbar";
 
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
-import AccessibleRoundedIcon from "@mui/icons-material/AccessibleRounded";
+import FeedIcon from '@mui/icons-material/Feed';
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import EventIcon from "@mui/icons-material/Event";
 import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
@@ -67,7 +67,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           {[
             "Dashboard",
             "Add Radiologist",
-            "Add Patient",
+            "Reports",
             "Reminders",
             "Settings",
           ].map((text, index) => (
@@ -101,7 +101,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                           color: 'inherit',
                         }} />
                       ) : index === 2 ? (
-                        <AccessibleRoundedIcon sx={{
+                        <FeedIcon sx={{
                           color: 'inherit',
                         }} />
                       ) : index === 3 ? (
