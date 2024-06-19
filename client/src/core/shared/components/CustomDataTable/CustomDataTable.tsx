@@ -43,7 +43,7 @@ const CustomDataTable = <T,>({
   resetComponent = false,
   showPagination = true,
   showToolbar = true,
-  noDataMessage = "لا توجد بيانات",
+  noDataMessage = "No Data Available",
 }: CustomDataTableProps<T>) => {
   return (
     <TableProvider
@@ -80,7 +80,7 @@ const CustomDataTable = <T,>({
           }}
         >
           <Table stickyHeader={stickyHeader} aria-label="sticky table">
-            <TableHead>
+            <TableHead >
               <TableRow>
                 {headerItems
                   .filter(
@@ -91,13 +91,12 @@ const CustomDataTable = <T,>({
                     <TableCell
                       key={item.id}
                       {...item.tableCellProps}
-                      sx={{ minWidth: item.minWidth, zIndex: 1 }}
+                      sx={{ minWidth: item.minWidth, zIndex: 1, backgroundColor: 'primary.main', backgroundImage: 'none', color: 'primary.lighter' }}
                     >
-                      <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Box sx={{ display: "flex", justifyContent: "center", }}>
                         <Typography
                           sx={{
                             fontSize: "0.8rem",
-                            fontWeight: "bold",
                           }}
                         >
                           {item.component ? item.component : item.label}
@@ -172,6 +171,7 @@ const CustomDataTable = <T,>({
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                             }}
+
                           >
                             <Typography
                               sx={{
@@ -198,6 +198,8 @@ const CustomDataTable = <T,>({
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                             }}
+                            onClick={headerItem.onClick}
+
                           >
                             <Tooltip
                               enterDelay={1000}

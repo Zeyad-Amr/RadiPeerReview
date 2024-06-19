@@ -13,8 +13,8 @@ export const radiologistHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
-    filterKey: "fname",
-    id: "fname",
+    filterKey: "lname",
+    id: "lname",
     label: "Last Name",
     minWidth: 100,
     maxWidth: 150,
