@@ -16,11 +16,11 @@ export class ReportService {
         reportUrl: this.makeURL(files.report[0].filename),
         resultUrl: this.makeURL(files.result[0].filename),
         additionalComments: data.additionalComments,
-        // ReviewRequest:{
-        //   connect:{
-        //     id:data.reviewRequestId
-        //   }
-        // }
+        ReviewRequest:data?.reviewRequestId?{
+          connect:{
+            id:data.reviewRequestId
+          }
+        }:undefined
       });
     } catch (error) {
       throw error;
