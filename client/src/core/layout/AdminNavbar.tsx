@@ -175,7 +175,7 @@ export default function AdminNavbar({
               </Badge>
             </IconButton>
           </Box>
-          <Notifications scaleProp={scale}/>
+          <Notifications scaleProp={scale} />
           {/* ###################################################################### */}
           {/* ############################### MOBILE ############################### */}
           {/* ###################################################################### */}
@@ -219,9 +219,15 @@ export default function AdminNavbar({
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
+                onClick={() => setScale(!scale)}
               >
-                <Badge badgeContent={17} color="error">
-                  <NotificationsIcon />
+                <Badge badgeContent={17} sx={{
+                  "& .MuiBadge-badge": {
+                    backgroundColor: "secondary.main",
+                    color: 'white'
+                  }
+                }}>
+                  <NotificationsIcon sx={{ color: 'primary.main' }} />
                 </Badge>
               </IconButton>
 
