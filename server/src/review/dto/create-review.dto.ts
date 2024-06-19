@@ -46,7 +46,7 @@ class AccuracyOfFindingsDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => MissedFindingDto)
-  missedFindings?: MissedFindingDto[];
+  MissedFindings?: MissedFindingDto[];
 }
 
 
@@ -180,10 +180,10 @@ class OverallAssessmentDto {
 }
 
 export class CreateReviewDto {
-  @ApiProperty({ description: 'ID of the review request', example: '123' })
+  @ApiProperty({ description: 'ID of the report', example: '123' })
   @IsNotEmpty()
   @IsString()
-  reviewRequestId: string;
+  reportId: string;
 
   @ApiProperty({
     description: 'Feedback to the radiologist',
