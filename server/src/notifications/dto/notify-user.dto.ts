@@ -10,7 +10,7 @@ export class NotifyUserDto {
     example: Role.ADMIN,
   })
   @IsNotEmpty()
-  senderRole: Role;
+  receiverRole: Role;
 
   @ApiProperty({
     type: () => String,

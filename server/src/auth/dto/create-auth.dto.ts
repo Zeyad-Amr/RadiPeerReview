@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Matches, MinLength } from "class-validator";
+import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
 
 export class CreateAuthDto implements Prisma.AuthCreateInput {
   @ApiProperty({

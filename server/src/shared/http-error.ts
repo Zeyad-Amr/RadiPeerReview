@@ -18,7 +18,7 @@ export function handleError(error: any) {
     );
 
   if (error.statusCode) {
-    throw new BadRequestException(error.msg)
+    throw new BadRequestException(error.msg);
   }
 
   if (error.status && error.status != 500) throw error;

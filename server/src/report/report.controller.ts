@@ -31,7 +31,7 @@ import { CreateReportDto } from './dto/create-report.dto';
 @ApiBearerAuth()
 @Controller('report')
 export class ReportController {
-  constructor(private readonly reportService: ReportService) { }
+  constructor(private readonly reportService: ReportService) {}
 
   @Post()
   @UseInterceptors(

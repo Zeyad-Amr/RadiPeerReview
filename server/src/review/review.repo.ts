@@ -87,7 +87,7 @@ export class ReviewRepo extends PrismaGenericRepo<
             }
           : undefined,
       },
-      include:this.includesObj
+      include: this.includesObj,
     });
   }
 }

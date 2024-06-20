@@ -15,7 +15,7 @@ export class NotificationsService {
   ) {}
 
   async notifyUser(notifyUserDto: NotifyUserDto) {
-    const { receiverId, message, senderRole, entityId, type } = notifyUserDto;
+    const { receiverId, message, receiverRole, entityId, type } = notifyUserDto;
 
     // Save the notification to the database
     const createData = {
@@ -24,14 +24,14 @@ export class NotificationsService {
       type,
       entityId,
     };
-    if (senderRole !== Role.ADMIN) {
+    if (receiverRole !== Role.ADMIN) {
       createData['receiver'] = { connect: { id: receiverId } };
     }
 
     await this.notificationsRepo.create(createData);
 
     // Send the notification via WebSocket
-    if (senderRole === Role.ADMIN) {
+    if (receiverRole === Role.ADMIN) {
       this.notificationsGateway.sendNotificationToAllAdmins(message);
     } else {
       this.notificationsGateway.sendNotification(receiverId, message);
@@ -48,10 +48,14 @@ export class NotificationsService {
     // Check if user is admin
     if (user && user.role === Role.ADMIN) {
       // If user is admin, fetch notifications with null receiver
-      return this.notificationsRepo.getAll({ where: { receiverId: null } });
+      return this.notificationsRepo.getAll({
+        where: { receiverId: null, status: NotificationStatus.UNREAD },
+      });
     } else {
       // If user is not admin, fetch their notifications
-      return this.notificationsRepo.getAll({ where: { receiverId: userId } });
+      return this.notificationsRepo.getAll({
+        where: { receiverId: userId, status: NotificationStatus.UNREAD },
+      });
     }
   }
 

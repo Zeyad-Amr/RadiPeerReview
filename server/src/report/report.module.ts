@@ -6,7 +6,7 @@ import { PrismaService } from '@/shared/prisma-client/prisma.service';
 
 @Module({
   controllers: [ReportController],
-  providers: [ReportService,ReportRepo,PrismaService],
-  exports:[ReportService]
+  providers: [ReportService, ReportRepo, PrismaService],
+  exports: [ReportService],
 })
 export class ReportModule {}
