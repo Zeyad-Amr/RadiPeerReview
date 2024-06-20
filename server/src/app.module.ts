@@ -10,6 +10,7 @@ import { ReportModule } from './report/report.module';
 import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ReviewRequestModule } from './review-request/review-request.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ReviewRequestModule } from './review-request/review-request.module';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/files', // URL prefix to access files
     }),
-    AuthModule, RadiologistModule, ReviewModule, ReportModule, ReviewRequestModule],
+    AuthModule, RadiologistModule, ReviewModule, ReportModule, ReviewRequestModule, NotificationsModule],
   controllers: [AppController],
   providers: [AppService,
     {
