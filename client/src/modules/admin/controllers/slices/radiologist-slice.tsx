@@ -79,7 +79,7 @@ const radiologistSlice = createSlice({
             state.currentRadiologist = initialState.currentRadiologist;
             state.radiologists = PaginatedListModel.resetPaginatedList(state.radiologists);
             state.error = "";
-            AlertService.showAlert("تم اضافة حساسية بنجاح", "success");
+            AlertService.showAlert("Radiologist added Successfully", "success");
         });
         builder.addCase(createRadiologist.rejected, (state, action) => {
             state.loading = false;
@@ -97,7 +97,7 @@ const radiologistSlice = createSlice({
             state.currentRadiologist = initialState.currentRadiologist;
             state.radiologists = PaginatedListModel.resetPaginatedList(state.radiologists);
             state.error = "";
-            AlertService.showAlert("تم تحديث حساسية بنجاح", "success");
+            AlertService.showAlert("Data Updated Successfully", "success");
         });
         builder.addCase(updateRadiologist.rejected, (state, action) => {
             state.loading = false;
@@ -114,7 +114,7 @@ const radiologistSlice = createSlice({
             state.loading = false;
             state.error = "";
             state.radiologists = PaginatedListModel.resetPaginatedList(state.radiologists);
-            AlertService.showAlert("تم حذف حساسية بنجاح", "success");
+            AlertService.showAlert("Radiologist deleted Successfully", "success");
         });
         builder.addCase(deleteRadiologist.rejected, (state, action) => {
             state.loading = false;

@@ -3,6 +3,8 @@ export interface RadiologistInterface {
   fname: string;
   lname: string;
   email: string;
-  specialization: string;
+  specializations: string[];
   phone: string;
+  username: string;
+  password: string;
 }

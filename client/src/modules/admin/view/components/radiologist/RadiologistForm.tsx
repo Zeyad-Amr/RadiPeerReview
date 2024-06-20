@@ -33,6 +33,7 @@ const RadiologistForm = ({
                     : RadiologistModel.defaultValues()
             }
             onSubmit={async (values) => {
+                console.log(values)
                 const submitObject = {
                     ...values,
                     patientId: patientId,
@@ -109,16 +110,16 @@ const RadiologistForm = ({
                                         value: "MRI"
                                     },
                                 ]}
-                                name="specialization"
+                                name="specializations"
                                 label=""
-                                placeholder="specialization"
-                                value={values.specialization}
+                                placeholder="specializations"
+                                value={values.specializations}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={errors.specialization}
-                                touched={touched.specialization}
+                                // error={errors.specializations}
+                                touched={touched.specializations}
                                 width="100%"
-
+                                multiple
                             />
                         </Grid>
                         <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -146,6 +147,38 @@ const RadiologistForm = ({
                                 onBlur={handleBlur}
                                 error={errors.phone}
                                 touched={touched.phone}
+                                width="100%"
+                                props={{
+                                    type: "text",
+                                    disabled: isViewMode,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <CustomTextField
+                                name="username"
+                                label="Username"
+                                value={values.username}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors.username}
+                                touched={touched.username}
+                                width="100%"
+                                props={{
+                                    type: "text",
+                                    disabled: isViewMode,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item lg={6} md={6} sm={12} xs={12}>
+                            <CustomTextField
+                                name="password"
+                                label="Password"
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={errors.password}
+                                touched={touched.password}
                                 width="100%"
                                 props={{
                                     type: "text",

@@ -15,10 +15,9 @@ export const createRadiologist = createAsyncThunk(
   "Radiologist/add",
   async (data: RadiologistInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
-    const apiClient = new ApiClient();
     try {
-      await apiClient.post(
-        Endpoints.addRadiologist.add,
+      await ApiClient.post(
+        Endpoints.radiologist.add,
         Radiologist.toJson(data)
       );
       return true;
@@ -39,10 +38,9 @@ export const updateRadiologist = createAsyncThunk(
   "Radiologist/update",
   async (data: RadiologistInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
-    const apiClient = new ApiClient();
     try {
-      await apiClient.patch(
-        Endpoints.addRadiologist.update,
+      await ApiClient.patch(
+        Endpoints.radiologist.update,
         Radiologist.toJson(data),
         {
           pathVariables: { id: data.id },
@@ -66,9 +64,8 @@ export const getRadiologistList = createAsyncThunk(
   "Radiologist/getAll",
   async (filters: FilterQuery[], thunkApi) => {
     const { rejectWithValue } = thunkApi;
-    const apiClient = new ApiClient();
     try {
-      const response = await apiClient.get(Endpoints.addRadiologist.getAll, {
+      const response = await ApiClient.get(Endpoints.radiologist.list, {
         filters: filters,
       });
       console.log(response, "response");
@@ -94,9 +91,8 @@ export const getRadiologistDetails = createAsyncThunk(
   "Radiologist/get",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
-    const apiClient = new ApiClient();
     try {
-      const response = await apiClient.get(Endpoints.addRadiologist.get, {
+      const response = await ApiClient.get(Endpoints.radiologist.details, {
         pathVariables: { id: id },
       });
       return Radiologist.fromJson(response.data);
@@ -117,9 +113,8 @@ export const deleteRadiologist = createAsyncThunk(
   "Radiologist/delete",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
-    const apiClient = new ApiClient();
     try {
-      await apiClient.delete(Endpoints.addRadiologist.delete, {
+      await ApiClient.delete(Endpoints.radiologist.delete, {
         pathVariables: { id: id },
       });
       return true;
