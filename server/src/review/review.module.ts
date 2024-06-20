@@ -6,6 +6,6 @@ import { PrismaService } from '@/shared/prisma-client/prisma.service';
 
 @Module({
   controllers: [ReviewController],
-  providers: [ReviewService,ReviewRepo,PrismaService],
+  providers: [ReviewService, ReviewRepo, PrismaService],
 })
 export class ReviewModule {}

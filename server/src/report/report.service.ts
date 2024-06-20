@@ -1,9 +1,10 @@
-import {  Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportRepo } from './report.repo';
 
 @Injectable()
 export class ReportService {
+  constructor(private reportRepo: ReportRepo) {}
   constructor(private reportRepo: ReportRepo) {}
 
   async saveReport(
@@ -15,6 +16,13 @@ export class ReportService {
         reportUrl: this.makeURL(files.report[0].filename),
         resultUrl: this.makeURL(files.result[0].filename),
         additionalComments: data.additionalComments,
+        ReviewRequest: data?.reviewRequestId
+          ? {
+              connect: {
+                id: data.reviewRequestId,
+              },
+            }
+          : undefined,
         ReviewRequest: data?.reviewRequestId
           ? {
               connect: {

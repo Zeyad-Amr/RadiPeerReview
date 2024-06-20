@@ -4,7 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();

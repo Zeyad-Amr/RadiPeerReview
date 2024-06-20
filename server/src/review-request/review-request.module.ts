@@ -7,8 +7,13 @@ import { ReportModule } from '@/report/report.module';
 import { RadiologistRepo } from '@/radiologist/radiologist.repo';
 
 @Module({
-  imports:[ReportModule],
+  imports: [ReportModule],
   controllers: [ReviewRequestController],
-  providers: [ReviewRequestService,ReviewRequestRepo,RadiologistRepo,PrismaService],
+  providers: [
+    ReviewRequestService,
+    ReviewRequestRepo,
+    RadiologistRepo,
+    PrismaService,
+  ],
 })
 export class ReviewRequestModule {}

@@ -9,12 +9,28 @@ import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import authModel from "../../models/auth-model";
 import { AuthInterface } from "../../interfaces/auth-interface";
 import { login } from "../../controllers/thunks/auth-thunk";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { Role } from "@/core/shared/constants/enums";
 
 const LoginForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const formSubmit = useRef<any>();
+  const authState: AuthState = useAppSelector((state: RootState) => state.auth);
+  useEffect(() => {
+    if (authState.user) {
+      console.log(authState.user);
+      console.log(authState.user.role === Role.ADMIN);
+      console.log(authState.user.role);
+      console.log(Role.ADMIN);
+      if (authState.user.role === Role.ADMIN) {
+        router.push("/dashboard");
+      } else if (authState.user.role === Role.RADIOLOGIST) {
+        router.push("/radiologist");
+      }
+    }
+  }, [authState.user, router]);
+
   return (
     <Box>
       <Box
@@ -76,21 +92,7 @@ const LoginForm = () => {
               validationSchema={authModel.validationSchema}
               onSubmit={(values: AuthInterface) => {
                 console.log(values);
-                dispatch(login(values)).then(
-                  (res: any) => {
-                    // if fullfilled then redirect to dashboard
-                    if (res.meta.requestStatus === "fulfilled") {
-                      if (res.payload.auth.role === "ADMIN") {
-                        router.push("/dashboard");
-                      } else {
-                        router.push("/radiologist");
-                      }
-                    }
-                  },
-                  (err: any) => {
-                    alert(err.message);
-                  }
-                );
+                dispatch(login(values));
               }}
             >
               {({

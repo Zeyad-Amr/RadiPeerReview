@@ -1,6 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateRadiologistDto } from './dto/create-radiologist.dto';
-import { UpdateRadiologistDto } from './dto/update-radiologist.dto';
 import { RadiologistRepo } from './radiologist.repo';
 import { hashPassword } from '@/shared/utlis/utils';
 
@@ -39,7 +38,7 @@ export class RadiologistService {
 
   async findOne(id: string) {
     try {
-      return  await this.radiologistRepo.getByID(id);
+      return await this.radiologistRepo.getByID(id);
     } catch (error) {
       throw error;
     }

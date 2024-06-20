@@ -71,20 +71,24 @@ export class ReviewRequestController {
     @Req() req,
   ) {
     try {
-      console.log(createReviewRequestDto.autoAssign, typeof createReviewRequestDto.autoAssign);
-      
-      const creatorId = req.user.radioligistId;
-      if(!creatorId){
-        throw new UnauthorizedException("User not authorized to create review request")
-      }
-      const report = await this.reportService.saveReport(
-        files,
-        {additionalComments:createReviewRequestDto.additionalComments},
+      console.log(
+        createReviewRequestDto.autoAssign,
+        typeof createReviewRequestDto.autoAssign,
       );
+
+      const creatorId = req.user.radioligistId;
+      if (!creatorId) {
+        throw new UnauthorizedException(
+          'User not authorized to create review request',
+        );
+      }
+      const report = await this.reportService.saveReport(files, {
+        additionalComments: createReviewRequestDto.additionalComments,
+      });
       return this.reviewRequestService.createReviewRequest(
         report.id,
         creatorId,
-        createReviewRequestDto.autoAssign
+        createReviewRequestDto.autoAssign,
       );
     } catch (error) {
       handleError(error);
@@ -94,19 +98,19 @@ export class ReviewRequestController {
   @Get()
   async findAll() {
     try {
-      return await this.reviewRequestService.findAll();      
+      return await this.reviewRequestService.findAll();
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-try {
-  return await this.reviewRequestService.findOne(id);
-} catch (error) {
-  handleError(error)
-}
+    try {
+      return await this.reviewRequestService.findOne(id);
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   @Patch(':id')
@@ -122,7 +126,7 @@ try {
     try {
       return await this.reviewRequestService.remove(id);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   }
 }

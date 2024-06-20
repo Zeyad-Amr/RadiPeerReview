@@ -1,10 +1,9 @@
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { CreateReviewRequestDto } from './create-review-request.dto';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class UpdateReviewRequestDto {
-    @ApiProperty({ description: 'ID of the reviewer', example: '123' })
-    @IsNotEmpty()
-    @IsString()
-    reviewerId:string
+  @ApiProperty({ description: 'ID of the reviewer', example: '123' })
+  @IsNotEmpty()
+  @IsString()
+  reviewerId: string;
 }

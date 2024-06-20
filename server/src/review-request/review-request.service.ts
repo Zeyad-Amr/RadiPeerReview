@@ -1,6 +1,4 @@
-import { Body, Injectable } from '@nestjs/common';
-import { CreateReviewRequestDto } from './dto/create-review-request.dto';
-import { UpdateReviewRequestDto } from './dto/update-review-request.dto';
+import { Injectable } from '@nestjs/common';
 import { ReviewRequestRepo } from './review-request.repo';
 import { RadiologistRepo } from '@/radiologist/radiologist.repo';
 
@@ -80,7 +78,7 @@ export class ReviewRequestService {
             id: reviewerId,
           },
         },
-        status:"Assigned"
+        status: 'Assigned',
       });
       return review;
     } catch (error) {

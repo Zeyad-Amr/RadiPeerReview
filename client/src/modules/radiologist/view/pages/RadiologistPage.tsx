@@ -1,8 +1,9 @@
-import React from "react";
-import CreateReportForm from "../components/CreateReportForm";
+import React from 'react'
 
 const RadiologistPage = () => {
-  return <CreateReportForm />;
-};
+  return (
+    <div>RadiologistPage</div>
+  )
+}
 
-export default RadiologistPage;
+export default RadiologistPage
