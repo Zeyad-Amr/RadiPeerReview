@@ -29,7 +29,7 @@ export class ReviewRequestController {
   constructor(
     private readonly reviewRequestService: ReviewRequestService,
     private reportService: ReportService,
-  ) { }
+  ) {}
 
   @UseInterceptors(
     FileFieldsInterceptor(
@@ -71,20 +71,24 @@ export class ReviewRequestController {
     @Req() req,
   ) {
     try {
-      console.log(createReviewRequestDto.autoAssign, typeof createReviewRequestDto.autoAssign);
+      console.log(
+        createReviewRequestDto.autoAssign,
+        typeof createReviewRequestDto.autoAssign,
+      );
 
       const creatorId = req.user.radioligistId;
       if (!creatorId) {
-        throw new UnauthorizedException("User not authorized to create review request")
+        throw new UnauthorizedException(
+          'User not authorized to create review request',
+        );
       }
-      const report = await this.reportService.saveReport(
-        files,
-        { additionalComments: createReviewRequestDto.additionalComments },
-      );
+      const report = await this.reportService.saveReport(files, {
+        additionalComments: createReviewRequestDto.additionalComments,
+      });
       return this.reviewRequestService.createReviewRequest(
         report.id,
         creatorId,
-        createReviewRequestDto.autoAssign
+        createReviewRequestDto.autoAssign,
       );
     } catch (error) {
       handleError(error);
@@ -96,7 +100,7 @@ export class ReviewRequestController {
     try {
       return await this.reviewRequestService.findAll();
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   }
 
@@ -105,7 +109,7 @@ export class ReviewRequestController {
     try {
       return await this.reviewRequestService.findOne(id);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   }
 
@@ -122,7 +126,7 @@ export class ReviewRequestController {
     try {
       return await this.reviewRequestService.remove(id);
     } catch (error) {
-      handleError(error)
+      handleError(error);
     }
   }
 }

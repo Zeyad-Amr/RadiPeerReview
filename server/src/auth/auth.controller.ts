@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { handleError } from '@/shared/http-error';
@@ -11,7 +20,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @ApiTags('auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Public()
   @Post('login')
@@ -28,14 +37,15 @@ export class AuthController {
   @Post('signup')
   async create(@Body() signupDto: SignupDto) {
     try {
-      const { auth, radiologist } = signupDto
+      const { auth, radiologist } = signupDto;
       const newAuth = await this.authService.create({
-        ...auth, radiologist: {
+        ...auth,
+        radiologist: {
           create: {
-            ...radiologist
-          }
-        }
-      })
+            ...radiologist,
+          },
+        },
+      });
       return newAuth;
     } catch (error) {
       throw handleError(error);

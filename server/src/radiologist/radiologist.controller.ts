@@ -1,15 +1,7 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { RadiologistService } from './radiologist.service';
 import { CreateRadiologistDto } from './dto/create-radiologist.dto';
-import { UpdateRadiologistDto } from './dto/update-radiologist.dto';
+
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { handleError } from '@/shared/http-error';
 

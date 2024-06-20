@@ -1,21 +1,10 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  Req,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 import { handleError } from 'src/shared/http-error';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -46,7 +35,7 @@ export class ReviewController {
   @Get()
   @ApiOperation({ summary: 'get all reviews' })
   @ApiOkResponse({ description: 'get all reviews' })
-  async findAll( ) {
+  async findAll() {
     try {
       return await this.reviewService.findAll();
     } catch (error) {

@@ -1,4 +1,3 @@
-import { CreateReportDto } from '@/report/dto/create-report.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
@@ -22,16 +21,17 @@ export class CreateReviewRequestDto {
   })
   @IsOptional()
   @IsBoolean()
-  @Transform(({ value} ) => {
+  @Transform(({ value }) => {
     console.log(value, typeof value);
     if (typeof value === 'boolean') {
-        return value;
+      return value;
     }
     if (value?.toString()?.toLowerCase() === 'false') {
-        return false;
+      return false;
     }
     if (value?.toString()?.toLowerCase() === 'true') {
-        return true;
-    }})
+      return true;
+    }
+  })
   autoAssign: boolean;
 }

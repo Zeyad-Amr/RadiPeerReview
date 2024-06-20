@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsInt,
   IsString,
   IsOptional,
   IsObject,
@@ -13,16 +12,15 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-
 class MissedFindingDto {
-    @ApiProperty({
-      type: String,
-      example:"Small lesion in the lower left lobe was missed.",
-      description: 'Description of the missed finding',
-    })
-    @IsString()
-    description: string;
-  }
+  @ApiProperty({
+    type: String,
+    example: 'Small lesion in the lower left lobe was missed.',
+    description: 'Description of the missed finding',
+  })
+  @IsString()
+  description: string;
+}
 class AccuracyOfFindingsDto {
   @ApiProperty({ description: 'Correctness of findings', example: true })
   @IsNotEmpty()
@@ -38,7 +36,7 @@ class AccuracyOfFindingsDto {
   commentsOnAccuracy?: string;
 
   @ApiProperty({
-    type:[MissedFindingDto],
+    type: [MissedFindingDto],
     description: 'Missed findings',
     required: false,
   })
@@ -48,7 +46,6 @@ class AccuracyOfFindingsDto {
   @Type(() => MissedFindingDto)
   MissedFindings?: MissedFindingDto[];
 }
-
 
 class ClarityAndCompletenessDto {
   @ApiProperty({ description: 'Clarity of language', example: 4 })

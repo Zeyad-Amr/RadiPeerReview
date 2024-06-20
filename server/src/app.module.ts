@@ -18,13 +18,20 @@ import { NotificationsModule } from './notifications/notifications.module';
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/files', // URL prefix to access files
     }),
-    AuthModule, RadiologistModule, ReviewModule, ReportModule, ReviewRequestModule, NotificationsModule],
+    AuthModule,
+    RadiologistModule,
+    ReviewModule,
+    ReportModule,
+    ReviewRequestModule,
+    NotificationsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}
