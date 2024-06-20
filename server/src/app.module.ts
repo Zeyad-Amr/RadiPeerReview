@@ -11,6 +11,10 @@ import { join } from 'path';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ReviewRequestModule } from './review-request/review-request.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ConfigModule } from './config/config.module';
+import { ConfigService } from './config/config.service';
+import { ConfigRepo } from './config/config.repo';
+import { PrismaService } from './shared/prisma-client/prisma.service';
 
 @Module({
   imports: [
@@ -24,6 +28,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     ReportModule,
     ReviewRequestModule,
     NotificationsModule,
+    ConfigModule,
   ],
   controllers: [AppController],
   providers: [
@@ -32,6 +37,17 @@ import { NotificationsModule } from './notifications/notifications.module';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    ConfigService,
+    ConfigRepo,
+    PrismaService,
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private readonly configService: ConfigService) {
+    this.initConfig();
+  }
+
+  private async initConfig() {
+    await this.configService.setConfig();
+  }
+}
