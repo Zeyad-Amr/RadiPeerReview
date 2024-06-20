@@ -10,6 +10,7 @@ async function insertAdmin() {
       data: {
         password: password,
         username: 'Admin123',
+        role:"ADMIN"
       },
     })
     .then((res) => {
