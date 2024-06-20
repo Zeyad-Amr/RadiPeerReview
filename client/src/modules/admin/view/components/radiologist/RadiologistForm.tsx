@@ -15,28 +15,66 @@ import { Formik } from "formik";
 import React from "react";
 
 const RadiologistForm = ({
-    patientId,
+    id,
     initialValues,
     isViewMode,
     setShowFormDialog,
 }: ExaminationFormComponentPropsInterface) => {
+
+    const specializations = [
+        { id: 0, value: "NEURORADIOLOGY" },
+        { id: 1, value: "MUSCULOSKELETAL_RADIOLOGY" },
+        { id: 2, value: "ABDOMINAL_RADIOLOGY" },
+        { id: 3, value: "CARDIOVASCULAR_RADIOLOGY" },
+        { id: 4, value: "BREAST_IMAGING" },
+        { id: 5, value: "PEDIATRIC_RADIOLOGY" },
+        { id: 6, value: "THORACIC_RADIOLOGY" },
+        { id: 7, value: "GENITOURINARY_RADIOLOGY" },
+        { id: 8, value: "INTERVENTIONAL_RADIOLOGY" },
+        { id: 9, value: "NUCLEAR_MEDICINE" },
+        { id: 10, value: "EMERGENCY_RADIOLOGY" },
+        { id: 11, value: "ONCOLOGIC_IMAGING" },
+        { id: 12, value: "GASTROINTESTINAL_RADIOLOGY" },
+        { id: 13, value: "HEAD_AND_NECK_RADIOLOGY" },
+        { id: 14, value: "ORTHOPEDIC_RADIOLOGY" },
+        { id: 15, value: "VASCULAR_AND_INTERVENTIONAL_RADIOLOGY" },
+        { id: 16, value: "ENDOVASCULAR_SURGICAL_NEURORADIOLOGY" },
+        { id: 17, value: "BODY_IMAGING" }
+    ];
+
+    function formatSpecializations(specializations: { id: number, value: string }[]) {
+        return specializations.map(spec => {
+            // Convert the value to "Abc Xyz" format
+            const formattedValue = spec.value
+                .toLowerCase() // Convert to lowercase
+                .split('_') // Split by underscore
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letter of each word
+                .join(' '); // Join words with space
+
+            return {
+                id: spec.id,
+                value: formattedValue
+            };
+        });
+    }
+
+    function getSpecializationsByIds(ids: string[]): string[] {
+        return ids.map(id => {
+            const specialization = specializations.find(spec => Number(spec.id) === Number(id));
+            return specialization ? specialization.value : null;
+        }).filter((value): value is string => value !== null);
+    }
+
     const dispatch = useAppDispatch();
     return (
         <Formik
-            initialValues={
-                initialValues
-                    ? ({
-                        ...initialValues,
-                        endDate: initialValues?.endDate?.split("T")[0],
-                        beginDate: initialValues?.beginDate?.split("T")[0],
-                    } as RadiologistInterface)
-                    : RadiologistModel.defaultValues()
-            }
+            initialValues={RadiologistModel.defaultValues()}
             onSubmit={async (values) => {
-                console.log(values)
+                console.log(getSpecializationsByIds(values.specializations));
                 const submitObject = {
                     ...values,
-                    patientId: patientId,
+                    id: id,
+                    specializations: getSpecializationsByIds(values.specializations)
                 };
 
                 const action = initialValues
@@ -96,23 +134,9 @@ const RadiologistForm = ({
                         </Grid>
                         <Grid item lg={4} md={4} sm={12} xs={12}>
                             <CustomSelectField
-                                options={[
-                                    {
-                                        id: 0,
-                                        value: "X-ray"
-                                    },
-                                    {
-                                        id: 1,
-                                        value: "CT"
-                                    },
-                                    {
-                                        id: 2,
-                                        value: "MRI"
-                                    },
-                                ]}
+                                options={formatSpecializations(specializations)}
                                 name="specializations"
                                 label=""
-                                placeholder="specializations"
                                 value={values.specializations}
                                 onChange={handleChange}
                                 onBlur={handleBlur}

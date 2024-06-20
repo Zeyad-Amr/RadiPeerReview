@@ -71,13 +71,13 @@ interface AccordionComponentPropsInterface {
   formDialogMaxWidth?: false | Breakpoint;
   accordionWidth?: string;
   accordionSx?: any;
-  patientId?: string;
+  id?: string;
   visitCode?: string;
 }
 
 export interface ExaminationFormComponentPropsInterface {
   isViewMode: boolean;
-  patientId?: string;
+  id?: string;
   visitCode?: string;
   initialValues: any;
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
@@ -95,7 +95,7 @@ export default function ExaminationAccordion({
   accordionSx,
   isAccordionExpanded = false,
   visitCode,
-  patientId
+  id
 }: AccordionComponentPropsInterface) {
   const [expandedAccordion, setExpandedAccordion] =
     useState<boolean>(isAccordionExpanded);
@@ -251,7 +251,7 @@ export default function ExaminationAccordion({
           isViewMode={isViewMode}
           initialValues={tableItemData}
           setShowFormDialog={setIsDialogOpen}
-          patientId={patientId}
+          id={id}
           visitCode={visitCode}
         />
         {/* Convert from view mode to edit mode */}

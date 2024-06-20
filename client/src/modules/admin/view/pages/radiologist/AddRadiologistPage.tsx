@@ -15,7 +15,7 @@ const AddRadiologistPage = () => {
   const radiologistState: RadiologistState = useAppSelector(
     (state: any) => state.radiologist
   );
-
+  console.log(radiologistState?.radiologists)
   return (
     <CreateUser
       getListThunk={getRadiologistList}
