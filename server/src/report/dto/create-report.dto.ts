@@ -10,11 +10,11 @@ export class CreateReportDto {
     @IsOptional()
     @IsString()
     @ApiProperty({ type: String, example: '123456' })
-    reviewRequestId: string;
+    reviewRequestId?: string;
 
     @ApiProperty({ type: 'string', format: 'binary', description: 'Result file' })
-    result: any;
+    result?: any;
 
     @ApiProperty({ type: 'string', format: 'binary', description: 'Report file' })
-    report: any;
+    report?: any;
 }

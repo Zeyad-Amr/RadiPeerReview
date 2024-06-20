@@ -9,6 +9,7 @@ import {
   Req,
   UseInterceptors,
   UploadedFiles,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ReviewRequestService } from './review-request.service';
 import { CreateReviewRequestDto } from './dto/create-review-request.dto';
@@ -70,14 +71,20 @@ export class ReviewRequestController {
     @Req() req,
   ) {
     try {
+      console.log(createReviewRequestDto.autoAssign, typeof createReviewRequestDto.autoAssign);
+      
       const creatorId = req.user.radioligistId;
+      if(!creatorId){
+        throw new UnauthorizedException("User not authorized to create review request")
+      }
       const report = await this.reportService.saveReport(
         files,
-        createReviewRequestDto,
+        {additionalComments:createReviewRequestDto.additionalComments},
       );
       return this.reviewRequestService.createReviewRequest(
         report.id,
         creatorId,
+        createReviewRequestDto.autoAssign
       );
     } catch (error) {
       handleError(error);
@@ -102,13 +109,13 @@ try {
 }
   }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateReviewRequestDto: UpdateReviewRequestDto,
-  // ) {
-  //   return this.reviewRequestService.update(id, updateReviewRequestDto);
-  // }
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateReviewRequestDto: UpdateReviewRequestDto,
+  ) {
+    return this.reviewRequestService.assignReview(id, updateReviewRequestDto);
+  }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
