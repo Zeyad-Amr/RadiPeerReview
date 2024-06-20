@@ -5,7 +5,7 @@ const prisma = new PrismaClient.PrismaClient();
 async function insertAdmin() {
   const salt = await bcrypt.genSalt(10);
   password = await bcrypt.hash('Admin1234', salt);
-  prisma.user
+  prisma.auth
     .create({
       data: {
         password: password,
