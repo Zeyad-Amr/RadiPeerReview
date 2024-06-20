@@ -185,7 +185,7 @@ model Notification {
   updatedAt DateTime @updatedAt
 
   status     NotificationStatus @default(UNREAD)
-  type       NotificationType
+  type       NotificationType   @default(GENERAL)
   receiver   Auth               @relation(fields: [receiverId], references: [id])
   receiverId String
 
