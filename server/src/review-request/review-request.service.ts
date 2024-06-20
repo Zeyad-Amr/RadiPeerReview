@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewRequestRepo } from './review-request.repo';
-import { RadiologistRepo } from '@/radiologist/radiologist.repo';
 
 @Injectable()
 export class ReviewRequestService {
   constructor(
     private reviewRequestRepo: ReviewRequestRepo,
-    private radiologistRepo: RadiologistRepo,
   ) {}
 
   async createReviewRequest(
@@ -15,18 +13,6 @@ export class ReviewRequestService {
     autoAssign?: boolean,
   ) {
     try {
-      let reviewerId;
-      console.log('55', autoAssign);
-
-      if (autoAssign) {
-        const radiologists = await this.radiologistRepo.getAll();
-        if (radiologists.length > 0) {
-          const randomIndex = Math.floor(Math.random() * radiologists.length);
-          reviewerId = radiologists[randomIndex].id;
-        } else {
-          throw new Error('No available radiologists for assignment');
-        }
-      }
       return await this.reviewRequestRepo.create({
         report: {
           connect: {
@@ -38,23 +24,15 @@ export class ReviewRequestService {
             id: creatorId,
           },
         },
-        reviewer: reviewerId
-          ? {
-              connect: {
-                id: reviewerId,
-              },
-            }
-          : undefined,
-        status: reviewerId ? 'Assigned' : undefined,
       });
     } catch (error) {
       throw error;
     }
   }
 
-  async findAll() {
+  async findAll(query,radiologistId) {
     try {
-      const review = await this.reviewRequestRepo.getAll();
+      const review = await this.reviewRequestRepo.getAllRequests(query,radiologistId);
       return review;
     } catch (error) {
       throw error;
