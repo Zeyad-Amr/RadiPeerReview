@@ -27,7 +27,6 @@ export class AuthService {
       }
       const token = await this.jwtService.signAsync({
         sub: auth.id,
-        radioligistId: auth.radiologistId,
       });
       delete auth.password;
       return { token, auth };
