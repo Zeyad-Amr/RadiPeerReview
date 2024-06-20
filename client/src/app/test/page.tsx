@@ -1,6 +1,7 @@
 "use client";
-import RadiologistHomePage from "@/modules/radiologist/view/pages/home/RadiologistHomePage";
+import CreateReviewForm from "@/modules/radiologist/view/components/CreateReviewForm";
+import RequestPage from "@/modules/request/view/pages/RequestPage";
 
 export default function Test() {
-  return <RadiologistHomePage />;
+  return <RequestPage />;
 }
