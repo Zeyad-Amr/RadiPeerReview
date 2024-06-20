@@ -43,7 +43,6 @@ const AssignReview = () => {
                                 height='2rem'
                                 name="reviewer"
                                 label=""
-                                placeholder="reviewer"
                                 value={values.reviewer}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
