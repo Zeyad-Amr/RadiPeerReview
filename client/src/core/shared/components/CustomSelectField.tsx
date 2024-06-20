@@ -26,6 +26,7 @@ export interface SelectFieldProps<T> {
   multiple?: boolean;
   sx?: any;
   isDisabled?: boolean;
+  height?: string
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -43,6 +44,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   sx,
   multiple = false,
   hideLabel = true,
+  height
 }: SelectFieldProps<T>) => {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -136,7 +138,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   return (
     <Box
       sx={{
-        mb: 2,
+        mb: height ? 0 : 2,
         width: width,
         maxWidth: "100%",
       }}
@@ -169,7 +171,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           disabled={isDisabled}
           sx={{
             backgroundColor: "#fff",
-            height: "3.5rem",
+            height: height ?? "3.5rem",
           }}
           value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}
@@ -197,24 +199,24 @@ const CustomSelectField = <T extends { id: any; value: string }>({
               key={0}
               value={0}
               sx={{
-                color: "#232836",
+                color: "primary.main",
                 opacity: 0.9,
                 transition: "0.5s ease",
                 margin: 1,
                 ...sx,
                 "&.Mui-selected": {
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  backgroundColor: !multiple ? "primary.main" : "none",
+                  color: !multiple ? "#fff" : "primary.main",
                   opacity: 0.9,
                 },
                 "&:hover": {
                   opacity: !multiple ? 0.6 : 0.9,
-                  color: "#232836",
+                  color: "primary.main",
                 },
                 "&.Mui-selected:hover": {
                   opacity: 0.9,
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  backgroundColor: !multiple ? "primary.main" : "none",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
               }}
             >
@@ -226,13 +228,13 @@ const CustomSelectField = <T extends { id: any; value: string }>({
                   width: "100%",
                 }}
               >
-                <ListItemText primary="Select All" />
+                <Typography sx={{ fontSize: '0.8rem' }}>Select All</Typography>
                 <Checkbox
                   checked={selectAll}
                   sx={{
                     marginRight: 1,
                     "&.Mui-checked": {
-                      color: "primary.dark",
+                      color: "primary.main",
                     },
                   }}
                 />
@@ -245,36 +247,40 @@ const CustomSelectField = <T extends { id: any; value: string }>({
               key={option.id}
               value={option.id}
               sx={{
-                color: "#232836",
-                opacity: 0.9,
+                color: "primary.main",
+                opacity: 1,
                 transition: "0.5s ease",
                 margin: 1,
                 width: multiple ? "98.5%" : "none",
                 ...sx,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
                 "&.Mui-selected": {
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
-                  opacity: 0.9,
+                  backgroundColor: !multiple ? "primary.main" : "primary.lighter",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
                 "&:hover": {
-                  opacity: !multiple ? 0.6 : 0.9,
-                  color: "#232836",
+                  color: "primary.main",
+                  backgroundColor: !multiple ? "primary.lighter" : "none",
+
                 },
                 "&.Mui-selected:hover": {
-                  opacity: 0.9,
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  cursor: !multiple ? "default" : "pointer",
+                  backgroundColor: !multiple ? "primary.main" : "primary.lighter",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
               }}
             >
-              <ListItemText primary={option.value} />
+              <Typography sx={{ fontSize: '0.8rem' }}>{option.value}</Typography>
+
               {multiple && (
                 <Checkbox
                   checked={Array.isArray(value) && value.includes(option.id)}
                   sx={{
                     marginRight: 1,
                     "&.Mui-checked": {
-                      color: "primary.dark",
+                      color: "primary.main",
                     },
                   }}
                 />
