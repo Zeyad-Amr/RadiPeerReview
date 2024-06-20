@@ -6,15 +6,32 @@ import { RadiologistModule } from './radiologist/radiologist.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { ReviewModule } from './review/review.module';
+import { ReportModule } from './report/report.module';
+import { join } from 'path';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { ReviewRequestModule } from './review-request/review-request.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
-  imports: [AuthModule, RadiologistModule, ReviewModule],
+  imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'uploads'),
+      serveRoot: '/files', // URL prefix to access files
+    }),
+    AuthModule,
+    RadiologistModule,
+    ReviewModule,
+    ReportModule,
+    ReviewRequestModule,
+    NotificationsModule,
+  ],
   controllers: [AppController],
-  providers: [AppService,
+  providers: [
+    AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}

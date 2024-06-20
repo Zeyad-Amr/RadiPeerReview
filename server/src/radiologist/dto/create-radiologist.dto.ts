@@ -30,8 +30,8 @@ export class CreateRadiologistDto implements Prisma.RadiologistCreateInput {
   email: string;
 
   @ApiProperty({
-    type: () => [String], // Use lazy resolver
-    enum: Specialization, // Enum type
+    type: () => [String],
+    enum: Specialization,
     example: [Specialization.NEURORADIOLOGY],
   })
   @IsNotEmpty()
@@ -44,4 +44,21 @@ export class CreateRadiologistDto implements Prisma.RadiologistCreateInput {
   @IsNotEmpty()
   @IsString()
   phone: string;
+
+  @ApiProperty({
+    type: String,
+    example: 'ahmed123',
+  })
+  @IsNotEmpty()
+  @IsString()
+  username: string;
+
+  @ApiProperty({
+    type: String,
+    example: '123456',
+  })
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(6)
+  password: string;
 }

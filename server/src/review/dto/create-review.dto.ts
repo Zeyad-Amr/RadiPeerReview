@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
-  IsInt,
   IsString,
   IsOptional,
   IsObject,
@@ -13,16 +12,15 @@ import {
 } from 'class-validator';
 import { Type } from 'class-transformer';
 
-
 class MissedFindingDto {
-    @ApiProperty({
-      type: String,
-      example:"Small lesion in the lower left lobe was missed.",
-      description: 'Description of the missed finding',
-    })
-    @IsString()
-    description: string;
-  }
+  @ApiProperty({
+    type: String,
+    example: 'Small lesion in the lower left lobe was missed.',
+    description: 'Description of the missed finding',
+  })
+  @IsString()
+  description: string;
+}
 class AccuracyOfFindingsDto {
   @ApiProperty({ description: 'Correctness of findings', example: true })
   @IsNotEmpty()
@@ -38,7 +36,7 @@ class AccuracyOfFindingsDto {
   commentsOnAccuracy?: string;
 
   @ApiProperty({
-    type:[MissedFindingDto],
+    type: [MissedFindingDto],
     description: 'Missed findings',
     required: false,
   })
@@ -46,9 +44,8 @@ class AccuracyOfFindingsDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => MissedFindingDto)
-  missedFindings?: MissedFindingDto[];
+  MissedFindings?: MissedFindingDto[];
 }
-
 
 class ClarityAndCompletenessDto {
   @ApiProperty({ description: 'Clarity of language', example: 4 })
@@ -180,10 +177,10 @@ class OverallAssessmentDto {
 }
 
 export class CreateReviewDto {
-  @ApiProperty({ description: 'ID of the review request', example: '123' })
+  @ApiProperty({ description: 'ID of the report', example: '123' })
   @IsNotEmpty()
   @IsString()
-  reviewRequestId: string;
+  reportId: string;
 
   @ApiProperty({
     description: 'Feedback to the radiologist',

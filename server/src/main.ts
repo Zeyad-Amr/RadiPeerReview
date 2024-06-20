@@ -4,15 +4,17 @@ import { ValidationPipe } from '@nestjs/common';
 import { HttpExceptionFilter } from './shared/filters/http-exception.filter';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
-const port = process.env.PORT || 4000
+const port = process.env.PORT || 4000;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
   app.setGlobalPrefix('api');
+  app.useGlobalPipes(new ValidationPipe());
+
   const config = new DocumentBuilder()
     .addBearerAuth()
     .setTitle('Peer Review')
-    .setDescription('Documentatio for Report Peer Review task')
+    .setDescription('Documentation for Report Peer Review Platform')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);

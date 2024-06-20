@@ -22,8 +22,9 @@ model Auth {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  radiologist   Radiologist? @relation(fields: [radiologistId], references: [id])
-  radiologistId String?      @unique
+  radiologist   Radiologist?   @relation(fields: [radiologistId], references: [id])
+  radiologistId String?        @unique
+  Notification  Notification[]
 }
 
 enum Role {
@@ -57,23 +58,23 @@ model Report {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ReviewRequest ReviewRequest @relation(fields: [reviewRequestId], references: [id])
-
-  Review          Review @relation(fields: [reviewId], references: [id])
-  reviewId        String
-  reviewRequestId String
+  ReviewRequest   ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
+  reviewRequestId String?
+  Review          Review?        @relation(fields: [reviewId], references: [id])
+  reviewId        String?        @unique
 }
 
 model ReviewRequest {
-  id         String      @id @default(cuid())
-  status     Status
-  approved   Boolean
-  creator    Radiologist @relation("CreatorRadiologist", fields: [creatorId], references: [id])
+  id        String   @id @default(cuid())
+  status    Status   @default(Created)
+  approved  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  creator    Radiologist  @relation("CreatorRadiologist", fields: [creatorId], references: [id])
   creatorId  String
-  reviewer   Radiologist @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
-  reviewerId String
-  createdAt  DateTime    @default(now())
-  updatedAt  DateTime    @updatedAt
+  reviewer   Radiologist? @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
+  reviewerId String?
   report     Report[]
 }
 
@@ -100,7 +101,7 @@ model Review {
   overallAssessmentId            String?                       @unique
   complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
   complianceAndStandardizationId String?                       @unique
-  Report                         Report[]
+  Report                         Report?
 }
 
 model Feedback {
@@ -177,6 +178,20 @@ model ComplianceAndStandardization {
   Review Review?
 }
 
+model Notification {
+  id        String   @id @default(cuid())
+  message   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  status     NotificationStatus @default(UNREAD)
+  type       NotificationType   @default(GENERAL)
+  receiver   Auth?              @relation(fields: [receiverId], references: [id])
+  receiverId String?
+
+  entityId String?
+}
+
 enum Status {
   Created
   Assigned
@@ -202,4 +217,21 @@ enum Specialization {
   VASCULAR_AND_INTERVENTIONAL_RADIOLOGY
   ENDOVASCULAR_SURGICAL_NEURORADIOLOGY
   BODY_IMAGING
+}
+
+enum NotificationStatus {
+  READ
+  UNREAD
+}
+
+enum NotificationType {
+  GENERAL
+  UNASSIGNED_REVIEW_REQUEST
+  REQUEST_ASSIGNED
+  REQUEST_REJECTED
+  REQUEST_APPROVED
+  REQUEST_REVIEWED
+  REQUEST_REPORT_RESUBMITTED
+  REQUEST_REREVIEWED
+  REVIEW_FEEDBACK_RECEIVED
 }

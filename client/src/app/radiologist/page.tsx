@@ -1,14 +1,16 @@
-"use client";
+"use client"
 
-import RadiologistLayout from "@/core/layout/radiologist/RadiologistLayout";
-import RadiologistPage from "@/modules/radiologist/view/pages/RadiologistPage";
+import RadiologistLayout from '@/core/layout/radiologist/RadiologistLayout'
+import RadiologistHomePage from '@/modules/radiologist/view/pages/home/RadiologistHomePage'
+import React from 'react'
 
-export default function Radiologist() {
-  return (
-    <RadiologistLayout>
+const RadiologistHome = () => {
+    return (
+        <RadiologistLayout>
+            <RadiologistHomePage />
+        </RadiologistLayout>
 
-      <RadiologistPage />
-    </RadiologistLayout>
-  )
-    ;
+    )
 }
+
+export default RadiologistHome

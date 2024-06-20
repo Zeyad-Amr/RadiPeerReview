@@ -3,11 +3,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@mui/material": "^5.15.20",
-<<<<<<< Updated upstream
-    "@mui/x-charts": "^7.7.0"
-=======
     "@mui/x-charts": "^7.7.0",
     "socket.io-client": "^4.7.5"
->>>>>>> Stashed changes
   }
 }

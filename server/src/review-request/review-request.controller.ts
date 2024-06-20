@@ -1,0 +1,132 @@
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  UseInterceptors,
+  UploadedFiles,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { ReviewRequestService } from './review-request.service';
+import { CreateReviewRequestDto } from './dto/create-review-request.dto';
+import { UpdateReviewRequestDto } from './dto/update-review-request.dto';
+import { ReportService } from '@/report/report.service';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { extname, resolve } from 'path';
+import { diskStorage } from 'multer';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import * as fs from 'fs';
+import { handleError } from '@/shared/http-error';
+
+@ApiBearerAuth()
+@ApiTags('review-request')
+@Controller('review-request')
+export class ReviewRequestController {
+  constructor(
+    private readonly reviewRequestService: ReviewRequestService,
+    private reportService: ReportService,
+  ) {}
+
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'report', maxCount: 1 },
+        { name: 'result', maxCount: 1 },
+      ],
+      {
+        storage: diskStorage({
+          destination: (req, file, cb) => {
+            const uploadPath = resolve(__dirname, '..', 'uploads');
+            if (!fs.existsSync(uploadPath)) {
+              fs.mkdirSync(uploadPath, { recursive: true });
+            }
+            cb(null, uploadPath);
+            console.log(uploadPath);
+          },
+          filename: (req, file, cb) => {
+            const uniqueSuffix =
+              Date.now() + '-' + Math.round(Math.random() * 1e9);
+            const ext = extname(file.originalname);
+            const filename = `${file.fieldname}-${uniqueSuffix}${ext}`;
+            cb(null, filename);
+          },
+        }),
+      },
+    ),
+  )
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'Create a report',
+    type: CreateReviewRequestDto,
+  })
+  @Post()
+  async create(
+    @UploadedFiles()
+    files: { report?: Express.Multer.File[]; result?: Express.Multer.File[] },
+    @Body() createReviewRequestDto: CreateReviewRequestDto,
+    @Req() req,
+  ) {
+    try {
+      console.log(
+        createReviewRequestDto.autoAssign,
+        typeof createReviewRequestDto.autoAssign,
+      );
+
+      const creatorId = req.user.radioligistId;
+      if (!creatorId) {
+        throw new UnauthorizedException(
+          'User not authorized to create review request',
+        );
+      }
+      const report = await this.reportService.saveReport(files, {
+        additionalComments: createReviewRequestDto.additionalComments,
+      });
+      return this.reviewRequestService.createReviewRequest(
+        report.id,
+        creatorId,
+        createReviewRequestDto.autoAssign,
+      );
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @Get()
+  async findAll() {
+    try {
+      return await this.reviewRequestService.findAll();
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.reviewRequestService.findOne(id);
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateReviewRequestDto: UpdateReviewRequestDto,
+  ) {
+    return this.reviewRequestService.assignReview(id, updateReviewRequestDto);
+  }
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.reviewRequestService.remove(id);
+    } catch (error) {
+      handleError(error);
+    }
+  }
+}

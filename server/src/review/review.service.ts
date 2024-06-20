@@ -1,15 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewRepo } from './review.repo';
 
 @Injectable()
 export class ReviewService {
   constructor(private reviewRepo: ReviewRepo) {}
 
-  async create(createReviewDto: CreateReviewDto,reviewerId:string) {
+  async create(createReviewDto: CreateReviewDto) {
     try {
-      const review = await this.reviewRepo.createReview(createReviewDto,reviewerId);
+      const review = await this.reviewRepo.createReview(createReviewDto);
       return review;
     } catch (error) {
       throw error;
@@ -25,7 +24,7 @@ export class ReviewService {
     }
   }
 
- async findOne(id: string) {
+  async findOne(id: string) {
     try {
       const review = await this.reviewRepo.getByID(id);
       return review;

@@ -12,7 +12,7 @@ export class ReviewRepo extends PrismaGenericRepo<
 > {
   constructor(private prismaService: PrismaService) {
     super('review', prismaService, {
-      // reviewRequest: true,
+      Report: true,
       feedbacks: true,
       accuracyOfFindings: true,
       clarityAndCompleteness: true,
@@ -22,9 +22,8 @@ export class ReviewRepo extends PrismaGenericRepo<
       complianceAndStandardization: true,
     });
   }
-  async createReview(createReviewDto: CreateReviewDto, reviewerId: string) {
+  async createReview(createReviewDto: CreateReviewDto) {
     const {
-      // reviewRequestId,
       feedbackToRadiologist,
       additionalReviewerComments,
       accuracyOfFindings,
@@ -33,91 +32,62 @@ export class ReviewRepo extends PrismaGenericRepo<
       technicalQuality,
       overallAssessment,
       complianceAndStandardization,
+      reportId,
     } = createReviewDto;
+    const { correctnessOfFindings, commentsOnAccuracy, MissedFindings } =
+      accuracyOfFindings;
 
-    return await this.prismaService.$transaction(async (prisma) => {
-      const review = await prisma.review.create({
-        data: {
-          // reviewRequest: {
-          //   connect: {
-          //     id: reviewRequestId,
-          //   },
-          // },
-          feedbackToRadiologist,
-          additionalReviewerComments,
-          // reviwer:{
-          //   connect:{
-          //       id:reviewerId
-          //   }
-          // }
+    return await this.prismaService.review.create({
+      data: {
+        feedbackToRadiologist,
+        additionalReviewerComments,
+        Report: {
+          connect: {
+            id: reportId,
+          },
         },
-      });
-
-      if (accuracyOfFindings) {
-        const { correctnessOfFindings, commentsOnAccuracy, missedFindings } =
-          accuracyOfFindings;
-        await prisma.accuracyOfFindings.create({
-          data: {
-            correctnessOfFindings,
-            commentsOnAccuracy,
-            // missedFindings: missedFindings
-            //   ? {
-            //       create: {
-            //         ...missedFindings,
-            //       },
-            //     }
-            //   : undefined,
-            Review: { connect: { id: review.id } },
-          },
-        });
-      }
-
-      if (clarityAndCompleteness) {
-        await prisma.clarityAndCompleteness.create({
-          data: {
-            ...clarityAndCompleteness,
-            Review: { connect: { id: review.id } },
-          },
-        });
-      }
-
-      if (impressionAndRecommendations) {
-        await prisma.impressionAndRecommendations.create({
-          data: {
-            ...impressionAndRecommendations,
-            Review: { connect: { id: review.id } },
-          },
-        });
-      }
-
-      if (technicalQuality) {
-        await prisma.technicalQuality.create({
-          data: {
-            ...technicalQuality,
-            Review: { connect: { id: review.id } },
-          },
-        });
-      }
-
-      if (overallAssessment) {
-        await prisma.overallAssessment.create({
-          data: {
-            ...overallAssessment,
-            Review: { connect: { id: review.id } },
-          },
-        });
-      }
-
-      if (complianceAndStandardization) {
-        await prisma.complianceAndStandardization.create({
-          data: {
-            ...complianceAndStandardization,
-            Review: { connect: { id: review.id } },
-          },
-        });
-      }
-
-      return review;
+        accuracyOfFindings: accuracyOfFindings
+          ? {
+              create: {
+                correctnessOfFindings,
+                commentsOnAccuracy,
+                MissedFinding: MissedFindings
+                  ? {
+                      createMany: {
+                        data: MissedFindings,
+                      },
+                    }
+                  : undefined,
+              },
+            }
+          : undefined,
+        clarityAndCompleteness: clarityAndCompleteness
+          ? {
+              create: clarityAndCompleteness,
+            }
+          : undefined,
+        impressionAndRecommendations: impressionAndRecommendations
+          ? {
+              create: impressionAndRecommendations,
+            }
+          : undefined,
+        technicalQuality: technicalQuality
+          ? {
+              create: technicalQuality,
+            }
+          : undefined,
+        overallAssessment: overallAssessment
+          ? {
+              create: overallAssessment,
+            }
+          : undefined,
+        complianceAndStandardization: complianceAndStandardization
+          ? {
+              create: complianceAndStandardization,
+            }
+          : undefined,
+      },
+      include: this.includesObj,
     });
   }
 }
