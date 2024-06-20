@@ -13,25 +13,4 @@ export class CreateReviewRequestDto {
 
   @ApiProperty({ type: 'string', format: 'binary', description: 'Report file' })
   report: any;
-
-  @ApiProperty({
-    type: Boolean,
-    description: 'auto assignment to random radiologist',
-    example: true,
-  })
-  @IsOptional()
-  @IsBoolean()
-  @Transform(({ value }) => {
-    console.log(value, typeof value);
-    if (typeof value === 'boolean') {
-      return value;
-    }
-    if (value?.toString()?.toLowerCase() === 'false') {
-      return false;
-    }
-    if (value?.toString()?.toLowerCase() === 'true') {
-      return true;
-    }
-  })
-  autoAssign: boolean;
 }
