@@ -12,7 +12,6 @@ import { RadiologistRepo } from '@/radiologist/radiologist.repo';
   providers: [
     ReviewRequestService,
     ReviewRequestRepo,
-    RadiologistRepo,
     PrismaService,
   ],
 })
