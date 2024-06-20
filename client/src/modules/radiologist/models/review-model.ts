@@ -7,35 +7,35 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
   //*   Default form values
   defaultValues: ReviewDataInterface = {
     accuracyOfFindings: {
-      correctnessOfFindings: false,
+      correctnessOfFindings: true,
       commentsOnAccuracy: "",
       missedFindings: [],
     },
     clarityAndCompleteness: {
-      clarityOfLanguage: 0,
+      clarityOfLanguage: 1,
       commentsOnLanguage: "",
-      completenessOfReport: 0,
+      completenessOfReport: 1,
       commentsOnCompleteness: "",
     },
     impressionAndRecommendations: {
-      accuracyOfImpression: false,
+      accuracyOfImpression: true,
       commentsOnImpression: "",
-      appropriatenessOfRecommendations: 0,
+      appropriatenessOfRecommendations: 1,
       suggestionsForRecommendations: "",
     },
     technicalQuality: {
-      imagingTechnique: 0,
+      imagingTechnique: 1,
       commentsOnTechnique: "",
-      imageQuality: 0,
+      imageQuality: 1,
       commentsOnImageQuality: "",
     },
     overallAssessment: {
-      overallQuality: 0,
+      overallQuality: 1,
       generalComments: "",
     },
     feedbackToRadiologist: "",
     complianceAndStandardization: {
-      adherenceToGuidelines: false,
+      adherenceToGuidelines: true,
       commentsOnCompliance: "",
     },
     additionalReviewerComments: "",
@@ -48,7 +48,6 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
       commentsOnAccuracy: Yup.string().required('Comments on accuracy are required'),
       missedFindings: Yup.array().of(
         Yup.object({
-          id: Yup.number().required('Missed finding ID is required'),
           description: Yup.string().required('Missed finding description is required'),
         })
       ).required('Missed findings are required'),
