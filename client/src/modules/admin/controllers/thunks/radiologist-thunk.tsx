@@ -12,7 +12,7 @@ import Radiologist from "../../models/radiologist-model";
 
 //*  Create Radiologist
 export const createRadiologist = createAsyncThunk(
-  "Radiologist/add",
+  "radiologist/add",
   async (data: RadiologistInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
@@ -35,7 +35,7 @@ export const createRadiologist = createAsyncThunk(
 
 //*  Update Radiologist
 export const updateRadiologist = createAsyncThunk(
-  "Radiologist/update",
+  "radiologist/update",
   async (data: RadiologistInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
@@ -61,7 +61,7 @@ export const updateRadiologist = createAsyncThunk(
 
 //*  Get All AddRadiologist
 export const getRadiologistList = createAsyncThunk(
-  "Radiologist/getAll",
+  "radiologist/list",
   async (filters: FilterQuery[], thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
@@ -88,7 +88,7 @@ export const getRadiologistList = createAsyncThunk(
 
 //*  Get Radiologist Details
 export const getRadiologistDetails = createAsyncThunk(
-  "Radiologist/get",
+  "radiologist/details",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
@@ -110,7 +110,7 @@ export const getRadiologistDetails = createAsyncThunk(
 
 //*  Delete Radiologist
 export const deleteRadiologist = createAsyncThunk(
-  "Radiologist/delete",
+  "details/delete",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {

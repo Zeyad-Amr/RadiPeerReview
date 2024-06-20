@@ -21,6 +21,7 @@ const initialState: RadiologistState = {
     error: "",
 };
 
+
 const radiologistSlice = createSlice({
     name: "radiologists",
     initialState,
@@ -37,6 +38,7 @@ const radiologistSlice = createSlice({
         setCurrentRadiologist(
             state,
             action: { payload: RadiologistInterface; type: string }
+            
         ) {
             state.currentRadiologist = action.payload;
         },
@@ -69,7 +71,7 @@ const radiologistSlice = createSlice({
             state.radiologists = initialState.radiologists;
         });
 
-        //* create allergy
+        //* create radiologist
         builder.addCase(createRadiologist.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
@@ -87,7 +89,7 @@ const radiologistSlice = createSlice({
             AlertService.showAlert(`${state.error}`, "error");
         });
 
-        //* update allergy
+        //* update radiologist
         builder.addCase(updateRadiologist.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
@@ -105,7 +107,7 @@ const radiologistSlice = createSlice({
             AlertService.showAlert(`${state.error}`, "error");
         });
 
-        //* delete allergy
+        //* delete radiologist
         builder.addCase(deleteRadiologist.pending, (state, _action) => {
             state.loading = true;
             state.error = "";
@@ -122,7 +124,7 @@ const radiologistSlice = createSlice({
             AlertService.showAlert(`${state.error}`, "error");
         });
 
-        //* get single allergy details
+        //* get single radiologist details
         builder.addCase(getRadiologistDetails.pending, (state, _action) => {
             state.loading = true;
             state.error = "";

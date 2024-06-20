@@ -99,6 +99,9 @@ export default function CreateUser({
     visitCode,
     patientId
 }: AccordionComponentPropsInterface) {
+
+    console.log(tableList)
+
     const [expandedAccordion, setExpandedAccordion] =
         useState<boolean>(isAccordionExpanded);
     const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
