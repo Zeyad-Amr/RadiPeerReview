@@ -13,5 +13,12 @@ const Endpoints = {
     update: "/report/:id",
     delete: "/report/:id",
   },
+  radiologist: {
+    add: "/radiologist",
+    list: "/radiologist",
+    details: "/radiologist/:id",
+    update: "/radiologist/:id",
+    delete: "/radiologist/:id",
+  },
 };
 export default Endpoints;

@@ -8,38 +8,47 @@ export default class RadiologistModel {
       fname: "",
       lname: "",
       email: "",
-      specialization: "",
+      specializations: ['0'],
       phone: "",
+      username: "",
+      password: "",
     };
   }
 
   //* Define validation schema using Yup
-  validationSchema = Yup.object().shape(
-    {
+  static radiologistFormValidations(): Yup.ObjectSchema<any> {
+    return Yup.object({
+      fname: Yup.string().required(
+        "First name is required"
+      ),
+      lname: Yup.string().required(
+        "Last name is required"
+      ),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      specializations: Yup.array()
+        .of(
+          Yup.string().required(
+            "Specialization is required"
+          )
+        )
+        .required(
+          "Specializations are required"
+        ),
+      phone: Yup.string()
+        .matches(
+          /^01\d{9}$/,
+          "Phone number is not valid"
+        ) 
+        .required(
+          "Phone number is required"
+        ),
       username: Yup.string().required(
         "Username is required"
       ),
       password: Yup.string().required(
         "Password is required"
-      ),
-    }
-  );
-  static radiologistFormValidations(): Yup.ObjectSchema<any> {
-    return Yup.object({
-      fname: Yup.string().required(
-        "First Name is required"
-      ),
-      lname: Yup.string().required(
-        "Last Name is required"
-      ),
-      email: Yup.string().required(
-        "Email is required"
-      ),
-      specialization: Yup.string().required(
-        "Specialization is required"
-      ),
-      phone: Yup.string().required(
-        "Phone Number is required"
       ),
     });
   }
@@ -52,9 +61,11 @@ export default class RadiologistModel {
       fname: entity.fname,
       lname: entity.lname,
       email: entity.email,
-      specialization:
-        entity.specialization,
+      specializations:
+        entity.specializations,
       phone: entity.phone,
+      username: entity.username,
+      password: entity.password,
     };
   }
 
@@ -67,9 +78,11 @@ export default class RadiologistModel {
       fname: json.fname,
       lname: json.lname,
       email: json.email,
-      specialization:
-        json.specialization,
+      specializations:
+        json.specializations,
       phone: json.phone,
+      username: json.username,
+      password: json.password,
     };
   }
 }
