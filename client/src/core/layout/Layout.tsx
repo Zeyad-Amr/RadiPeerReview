@@ -13,15 +13,17 @@ import AdminNavbar from "./AdminNavbar";
 
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
-import FeedIcon from '@mui/icons-material/Feed';
+import FeedIcon from "@mui/icons-material/Feed";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
 import EventIcon from "@mui/icons-material/Event";
 import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
 import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/navigation";
-import { usePathname } from 'next/navigation';
+import { usePathname } from "next/navigation";
 import { Typography } from "@mui/material";
+import { useAppDispatch } from "../state/store";
+import { logout } from "@/modules/auth/controllers/thunks/auth-thunk";
 
 const drawerWidth = 240;
 
@@ -48,6 +50,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname().substring(1);
+  const dispatch = useAppDispatch();
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
@@ -77,44 +80,72 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   textDecoration: "none",
                   width: "100%",
                 }}
-                onClick={() => router.push(`/${text.toLowerCase().replace(/\s/g, "")}`)}
+                onClick={() =>
+                  router.push(`/${text.toLowerCase().replace(/\s/g, "")}`)
+                }
               >
-                <ListItemButton sx={{
-                  color: pathname === text.toLowerCase().replace(/\s/g, "") ? 'secondary.main' : 'primary.light',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-
-                  }}>
-                    <ListItemIcon sx={{
-                      color: 'inherit',
-                    }}>
+                <ListItemButton
+                  sx={{
+                    color:
+                      pathname === text.toLowerCase().replace(/\s/g, "")
+                        ? "secondary.main"
+                        : "primary.light",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        color: "inherit",
+                      }}
+                    >
                       {index === 0 ? (
-                        <DashboardRoundedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <DashboardRoundedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       ) : index === 1 ? (
-                        <PersonAddAlt1RoundedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <PersonAddAlt1RoundedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       ) : index === 2 ? (
-                        <FeedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <FeedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       ) : index === 3 ? (
-                        <EventIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <EventIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       ) : (
-                        <TuneRoundedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <TuneRoundedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       )}
                     </ListItemIcon>
-                    <Typography sx={{ color: 'inherit', fontSize: '0.8rem', fontWeight: '400' }}>{text}</Typography>
+                    <Typography
+                      sx={{
+                        color: "inherit",
+                        fontSize: "0.8rem",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {text}
+                    </Typography>
                   </Box>
                   {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
                     <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
@@ -126,43 +157,86 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </List>
         <Divider />
         <List>
-          {["Terms & Conditions", "Help", "Logout"].map((text, index) => (
-            <ListItem key={text} disablePadding>
+          {[
+            {
+              label: "Terms & Conditions",
+              route: "terms",
+            },
+            {
+              label: "Help",
+              route: "help",
+            },
+            {
+              label: "Logout",
+              route: "login",
+              action: () => {
+                dispatch(logout());
+              },
+            },
+          ].map((item, index) => (
+            <ListItem key={item.label} disablePadding>
               <Box
-                onClick={() => router.push(`/${text.toLowerCase().replace(/\s/g, "")}`)}
+                onClick={() => {
+                  if (item.action) {
+                    item.action();
+                  }
+                  router.push(`/${item.route}`);
+                }}
                 style={{
                   textDecoration: "none",
                   width: "100%",
                 }}
               >
-                <ListItemButton sx={{
-                  color: pathname === text.toLowerCase().replace(/\s/g, "") ? 'secondary.main' : 'primary.light',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                }}>
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-
-                  }}>
-                    <ListItemIcon sx={{
-                      color: 'inherit',
-                    }}>
+                <ListItemButton
+                  sx={{
+                    color:
+                      pathname === item.label.toLowerCase().replace(/\s/g, "")
+                        ? "secondary.main"
+                        : "primary.light",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        color: "inherit",
+                      }}
+                    >
                       {index === 0 ? (
-                        <GavelRoundedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <GavelRoundedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       ) : index === 1 ? (
-                        <HelpOutlineRoundedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <HelpOutlineRoundedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       ) : (
-                        <LogoutRoundedIcon sx={{
-                          color: 'inherit',
-                        }} />
+                        <LogoutRoundedIcon
+                          sx={{
+                            color: "inherit",
+                          }}
+                        />
                       )}
                     </ListItemIcon>
-                    <Typography sx={{ color: 'inherit', fontSize: '0.8rem', fontWeight: '400' }}>{text}</Typography>
+                    <Typography
+                      sx={{
+                        color: "inherit",
+                        fontSize: "0.8rem",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {item.label}
+                    </Typography>
                   </Box>
                   {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
                     <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
@@ -184,12 +258,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <AdminNavbar open={open} setOpen={setOpen} />
         <Box
-          sx={{ padding: "0.5rem 2rem", backgroundColor: "primary.lighter", height: "100%", boxSizing:'border-box'}}
+          sx={{
+            padding: "0.5rem 2rem",
+            backgroundColor: "primary.lighter",
+            height: "100%",
+            boxSizing: "border-box",
+          }}
         >
           {children}
         </Box>
       </Main>
-    </Box >
+    </Box>
   );
 };
 export default Layout;
