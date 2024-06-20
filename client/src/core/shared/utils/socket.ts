@@ -1,11 +1,26 @@
-// utils/socket.ts
-import { io } from 'socket.io-client';
+import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
+import { Endpoints } from "@/core/api";
 
-const socket = io('http://localhost:4000', {
-    query: {
-        userId: 'user123', // dynamically set the user ID here
-    },
-    transports: ['websocket', 'polling'], // specify transports
-});
+const useSocketConnection = (userId: string): Socket => {
+  const [socketInstance, setSocketInstance] = useState<Socket | null>(null);
 
-export default socket;
+  useEffect(() => {
+    const socket = io(Endpoints.hostDev, {
+      query: {
+        userId: userId,
+      },
+      transports: ["websocket", "polling"],
+    });
+
+    setSocketInstance(socket);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [userId]);
+
+  return socketInstance as Socket;
+};
+
+export default useSocketConnection;

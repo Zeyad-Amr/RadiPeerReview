@@ -1,30 +1,48 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-    ApiClient,
-    Endpoints,
-    ErrorMessage,
-    ErrorResponse
-} from "@/core/api";
+import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 import { AuthInterface } from "../../interfaces/auth-interface";
 import authModel from "../../models/auth-model";
-
+import {
+  SessionStorage,
+  SessionStorageKeys,
+} from "@/core/shared/utils/session-storage";
+import userModel from "../../models/user-model";
 
 //* Login thunk
 export const login = createAsyncThunk(
-    "auth/login",
-    async (data: AuthInterface, thunkApi) => {
-        const { rejectWithValue } = thunkApi;
+  "auth/login",
+  async (data: AuthInterface, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
 
-        try {
-            const response = await ApiClient.post(
-                Endpoints.auth.login,
-                authModel.toJson(data)
-            );
-            return response.data;
-        } catch (error: any) {
-            const errorResponse: ErrorResponse =
-                error instanceof Error ? ErrorMessage.get(error.message) : error;
-            return rejectWithValue(errorResponse);
-        }
+    try {
+      const response = await ApiClient.post(
+        Endpoints.auth.login,
+        authModel.toJson(data)
+      );
+      //   SessionStorage.saveData(SessionStorageKeys.userData, response.data.auth);
+      SessionStorage.saveData(SessionStorageKeys.token, response.data.token);
+      return userModel.fromJson(response.data.auth);
+    } catch (error: any) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      return rejectWithValue(errorResponse);
     }
+  }
+);
+
+//* Logout thunk
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_data, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+
+    try {
+      SessionStorage.clearAll();
+      return null;
+    } catch (error: any) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      return rejectWithValue(errorResponse);
+    }
+  }
 );
