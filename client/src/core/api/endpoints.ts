@@ -13,6 +13,12 @@ const Endpoints = {
     update: "/report/:id",
     delete: "/report/:id",
   },
+  review: {
+    list: "/review",
+    details: "/review/:id",
+    create: "/review",
+    delete: "/review/:id",
+  },
   radiologist: {
     add: "/radiologist",
     list: "/radiologist",
