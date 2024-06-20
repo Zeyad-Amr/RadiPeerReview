@@ -4,6 +4,7 @@ import DisplayedRequest from "../components/DisplayedRequest";
 import DisplayedReview from "../components/DisplayedReview";
 import { Grid } from "@mui/material";
 import ReportDetailsSection from "../components/ReportDetailsSection";
+import CreateReviewForm from "@/modules/radiologist/view/components/CreateReviewForm";
 
 interface Review {
   id: number;
@@ -37,7 +38,7 @@ const RequestPage = () => {
   const [reportData, setReportData] = useState<any>();
   return (
     <Grid container>
-      <Grid item lg={5} md={5} sm={12} xs={12}>
+      <Grid item lg={4} md={4} sm={12} xs={12}>
         <Box sx={{ margin: "1rem", position: "relative" }}>
           <Box
             sx={{
@@ -68,8 +69,8 @@ const RequestPage = () => {
       </Grid>
       <Grid
         item
-        lg={7}
-        md={7}
+        lg={8}
+        md={8}
         sm={12}
         xs={12}
         sx={{
@@ -79,9 +80,11 @@ const RequestPage = () => {
           borderLeftWidth: "3px",
           borderLeftColor: "primary.lighter",
           borderLeftStyle: "solid",
+          overflow : "scroll"
         }}
       >
-        <ReportDetailsSection reportData={reportData} />
+        {/* <ReportDetailsSection reportData={reportData} /> */}
+        <CreateReviewForm/>
       </Grid>
     </Grid>
   );

@@ -103,6 +103,12 @@ model Review {
   Report                         Report?
 }
 
+model Config {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
 model Feedback {
   id      String @id @default(cuid())
   comment String
@@ -233,4 +239,8 @@ enum NotificationType {
   REQUEST_REPORT_RESUBMITTED
   REQUEST_REREVIEWED
   REVIEW_FEEDBACK_RECEIVED
+}
+
+enum ConfigKeys {
+  ASSIGNMENT_MODE
 }
