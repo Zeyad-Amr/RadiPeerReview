@@ -29,7 +29,7 @@ export class ReviewRequestController {
   constructor(
     private readonly reviewRequestService: ReviewRequestService,
     private reportService: ReportService,
-  ) {}
+  ) { }
 
   @UseInterceptors(
     FileFieldsInterceptor(
@@ -72,14 +72,14 @@ export class ReviewRequestController {
   ) {
     try {
       console.log(createReviewRequestDto.autoAssign, typeof createReviewRequestDto.autoAssign);
-      
+
       const creatorId = req.user.radioligistId;
-      if(!creatorId){
+      if (!creatorId) {
         throw new UnauthorizedException("User not authorized to create review request")
       }
       const report = await this.reportService.saveReport(
         files,
-        {additionalComments:createReviewRequestDto.additionalComments},
+        { additionalComments: createReviewRequestDto.additionalComments },
       );
       return this.reviewRequestService.createReviewRequest(
         report.id,
@@ -94,7 +94,7 @@ export class ReviewRequestController {
   @Get()
   async findAll() {
     try {
-      return await this.reviewRequestService.findAll();      
+      return await this.reviewRequestService.findAll();
     } catch (error) {
       handleError(error)
     }
@@ -102,11 +102,11 @@ export class ReviewRequestController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-try {
-  return await this.reviewRequestService.findOne(id);
-} catch (error) {
-  handleError(error)
-}
+    try {
+      return await this.reviewRequestService.findOne(id);
+    } catch (error) {
+      handleError(error)
+    }
   }
 
   @Patch(':id')

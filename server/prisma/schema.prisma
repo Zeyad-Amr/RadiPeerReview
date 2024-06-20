@@ -186,8 +186,8 @@ model Notification {
 
   status     NotificationStatus @default(UNREAD)
   type       NotificationType   @default(GENERAL)
-  receiver   Auth               @relation(fields: [receiverId], references: [id])
-  receiverId String
+  receiver   Auth?              @relation(fields: [receiverId], references: [id])
+  receiverId String?
 
   entityId String?
 }
