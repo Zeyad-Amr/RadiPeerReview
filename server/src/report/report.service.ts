@@ -5,7 +5,6 @@ import { ReportRepo } from './report.repo';
 @Injectable()
 export class ReportService {
   constructor(private reportRepo: ReportRepo) {}
-  constructor(private reportRepo: ReportRepo) {}
 
   async saveReport(
     files: { report?: Express.Multer.File[]; result?: Express.Multer.File[] },
@@ -16,13 +15,6 @@ export class ReportService {
         reportUrl: this.makeURL(files.report[0].filename),
         resultUrl: this.makeURL(files.result[0].filename),
         additionalComments: data.additionalComments,
-        ReviewRequest: data?.reviewRequestId
-          ? {
-              connect: {
-                id: data.reviewRequestId,
-              },
-            }
-          : undefined,
         ReviewRequest: data?.reviewRequestId
           ? {
               connect: {
