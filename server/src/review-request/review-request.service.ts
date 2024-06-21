@@ -47,8 +47,8 @@ export class ReviewRequestService {
     }
   }
 
-  async assignReview(id: string, reviewerId) {
-    try {
+  async assignReview(id: string, reviewerId:string) {
+    try {      
       const review = await this.reviewRequestRepo.update(id, {
         reviewer: {
           connect: {
