@@ -4,18 +4,17 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useRouter } from "next/navigation";
-import NotificationsListComponent from "../../../modules/notifications/view/compnents/NotificationsListComponent";
-import { useAppDispatch } from "@/core/state/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
 import { logout } from "@/modules/auth/controllers/thunks/auth-thunk";
+import NotificationsIconComponent from "@/modules/notifications/view/compnents/NotificationsIconComponent";
+import { AuthState } from "@/modules/auth/controllers/types";
 
 export default function RadiologistNavbar() {
-  const [scale, setScale] = React.useState(false);
+  const authState: AuthState = useAppSelector((state: RootState) => state.auth);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currentDateTime, setCurrentDateTime] = React.useState<Date>(
     new Date()
@@ -74,7 +73,10 @@ export default function RadiologistNavbar() {
                 fontWeight: "bold",
               }}
             >
-              Dr. Body Yaser
+              {/* if user.radioloigist show DR. */}
+              {authState.user?.radiologist && "Dr."}
+              {authState.user?.radiologist?.fname}{" "}
+              {authState.user?.radiologist?.lname}
             </Typography>
           </Box>
           <Box
@@ -88,24 +90,7 @@ export default function RadiologistNavbar() {
             <Typography>{formattedTime}</Typography>
           </Box>
           <Box>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-              onClick={() => setScale(!scale)}
-            >
-              <Badge
-                badgeContent={17}
-                sx={{
-                  "& .MuiBadge-badge": {
-                    backgroundColor: "secondary.main",
-                    color: "white",
-                  },
-                }}
-              >
-                <NotificationsIcon sx={{ color: "primary.main" }} />
-              </Badge>
-            </IconButton>
+            <NotificationsIconComponent />
             <IconButton
               size="large"
               aria-label="show account menu"
@@ -129,7 +114,6 @@ export default function RadiologistNavbar() {
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Box>
-          <NotificationsListComponent scaleProp={scale} />
         </Toolbar>
       </AppBar>
     </Box>
