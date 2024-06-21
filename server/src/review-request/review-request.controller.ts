@@ -123,7 +123,7 @@ export class ReviewRequestController {
     @Param('id') id: string,
     @Body() updateReviewRequestDto: UpdateReviewRequestDto,
   ) {
-    return this.reviewRequestService.assignReview(id, updateReviewRequestDto);
+    return this.reviewRequestService.assignReview(id, updateReviewRequestDto.reviewerId);
   }
 
   @Delete(':id')
