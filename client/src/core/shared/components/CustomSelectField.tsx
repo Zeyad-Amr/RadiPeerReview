@@ -26,6 +26,7 @@ export interface SelectFieldProps<T> {
   multiple?: boolean;
   sx?: any;
   isDisabled?: boolean;
+  height?: string
 }
 
 const CustomSelectField = <T extends { id: any; value: string }>({
@@ -43,6 +44,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   sx,
   multiple = false,
   hideLabel = true,
+  height
 }: SelectFieldProps<T>) => {
   const [selectAll, setSelectAll] = useState(false);
 
@@ -62,12 +64,12 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <span
           key={index}
           style={{
-            backgroundColor: "#003768",
-            borderRadius: "4rem",
+            backgroundColor: "#343f7a",
+            borderRadius: "0.5rem",
             color: "#fff",
             padding: "0.5rem 1rem",
             fontSize: "10px",
-            margin: "0rem 0.35rem",
+            margin: "0rem 0.2rem",
           }}
         >
           {item}
@@ -80,6 +82,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   const handleSelectChange = (event: SelectChangeEvent<T>) => {
     const newValue = event.target.value as any;
     if (multiple && newValue && newValue.includes(0)) {
+      console.log(newValue);
       const allIds = options.map((option) => option.id);
       setSelectAll(!selectAll);
       onChange(
@@ -96,7 +99,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   //* Handling appearance of multiple items in input field
   const handleApearanceOfSelectedItems = (
     selectedItems: unknown[],
-    itemsNumber: number = 4
+    itemsNumber: number = 1
   ) => {
     if (selectedItems.length > itemsNumber) {
       let items = [];
@@ -107,17 +110,18 @@ const CustomSelectField = <T extends { id: any; value: string }>({
       }
       return (
         <span style={{ display: "flex", alignItems: "center" }}>
+          {handleSelectedElementStyle(items)}
           <span
             style={{
-              color: "#061540",
+              color: "#343f7a",
               fontSize: "15px",
               display: "flex",
               alignItems: "center",
+              marginLeft: 2
             }}
           >
-            {selectedItems.length - items.length}+
+            +{selectedItems.length - items.length}
           </span>
-          {handleSelectedElementStyle(items)}
         </span>
       );
     } else {
@@ -136,7 +140,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   return (
     <Box
       sx={{
-        mb: 2,
+        mb: height ? 0 : 2,
         width: width,
         maxWidth: "100%",
       }}
@@ -147,7 +151,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           component="div"
           sx={{
             flexGrow: 1,
-            fontSize: "0.9rem !important",
+            fontSize: "0.8rem !important",
             margin: "0rem 0.5rem",
           }}
         >
@@ -164,12 +168,13 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <Select
           multiple={multiple ?? false}
           label={label}
+          
           onChange={handleSelectChange}
           onBlur={onBlur}
           disabled={isDisabled}
           sx={{
             backgroundColor: "#fff",
-            height: "3.5rem",
+            height: height ?? "3.5rem",
           }}
           value={multiple ? (Array.isArray(value) ? value : []) : value}
           name={name}
@@ -177,7 +182,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           displayEmpty
           renderValue={(selected: unknown) => {
             if (Array.isArray(selected)) {
-              return handleApearanceOfSelectedItems(selected);
+              return handleApearanceOfSelectedItems(selected.includes('0')?selected.slice(1):selected);
             }
             const selectedOption = options.find(
               (option) => option.id === selected
@@ -197,24 +202,24 @@ const CustomSelectField = <T extends { id: any; value: string }>({
               key={0}
               value={0}
               sx={{
-                color: "#232836",
+                color: "primary.main",
                 opacity: 0.9,
                 transition: "0.5s ease",
                 margin: 1,
                 ...sx,
                 "&.Mui-selected": {
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  backgroundColor: !multiple ? "primary.main" : "none",
+                  color: !multiple ? "#fff" : "primary.main",
                   opacity: 0.9,
                 },
                 "&:hover": {
                   opacity: !multiple ? 0.6 : 0.9,
-                  color: "#232836",
+                  color: "primary.main",
                 },
                 "&.Mui-selected:hover": {
                   opacity: 0.9,
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  backgroundColor: !multiple ? "primary.main" : "none",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
               }}
             >
@@ -226,13 +231,13 @@ const CustomSelectField = <T extends { id: any; value: string }>({
                   width: "100%",
                 }}
               >
-                <ListItemText primary="Select All" />
+                <Typography sx={{ fontSize: '0.8rem' }}>Select All</Typography>
                 <Checkbox
                   checked={selectAll}
                   sx={{
                     marginRight: 1,
                     "&.Mui-checked": {
-                      color: "primary.dark",
+                      color: "primary.main",
                     },
                   }}
                 />
@@ -245,36 +250,40 @@ const CustomSelectField = <T extends { id: any; value: string }>({
               key={option.id}
               value={option.id}
               sx={{
-                color: "#232836",
-                opacity: 0.9,
+                color: "primary.main",
+                opacity: 1,
                 transition: "0.5s ease",
                 margin: 1,
                 width: multiple ? "98.5%" : "none",
                 ...sx,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
                 "&.Mui-selected": {
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
-                  opacity: 0.9,
+                  backgroundColor: !multiple ? "primary.main" : "primary.lighter",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
                 "&:hover": {
-                  opacity: !multiple ? 0.6 : 0.9,
-                  color: "#232836",
+                  color: "primary.main",
+                  backgroundColor: !multiple ? "primary.lighter" : "none",
+
                 },
                 "&.Mui-selected:hover": {
-                  opacity: 0.9,
-                  backgroundColor: !multiple ? "primary.dark" : "none",
-                  color: !multiple ? "#fff" : "#232836",
+                  cursor: !multiple ? "default" : "pointer",
+                  backgroundColor: !multiple ? "primary.main" : "primary.lighter",
+                  color: !multiple ? "#fff" : "primary.main",
                 },
               }}
             >
-              <ListItemText primary={option.value} />
+              <Typography sx={{ fontSize: '0.8rem' }}>{option.value}</Typography>
+
               {multiple && (
                 <Checkbox
                   checked={Array.isArray(value) && value.includes(option.id)}
                   sx={{
                     marginRight: 1,
                     "&.Mui-checked": {
-                      color: "primary.dark",
+                      color: "primary.main",
                     },
                   }}
                 />

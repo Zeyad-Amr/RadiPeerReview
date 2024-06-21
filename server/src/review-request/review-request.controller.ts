@@ -78,12 +78,7 @@ export class ReviewRequestController {
     @Req() req,
   ) {
     try {
-      console.log(
-        createReviewRequestDto.autoAssign,
-        typeof createReviewRequestDto.autoAssign,
-      );
-
-      const creatorId = req.user.radioligistId;
+      const creatorId = req.user.sub;
       if (!creatorId) {
         throw new UnauthorizedException(
           'User not authorized to create review request',
@@ -95,7 +90,6 @@ export class ReviewRequestController {
       return this.reviewRequestService.createReviewRequest(
         report.id,
         creatorId,
-        createReviewRequestDto.autoAssign,
       );
     } catch (error) {
       handleError(error);
@@ -108,7 +102,7 @@ export class ReviewRequestController {
   @ApiQuery({ name: 'approved', required: false })
   async findAll(@Query() query, @Req() req) {
     try {
-      const { radioligistId } = req.user;
+      const radioligistId  = req.user.sub;
       return await this.reviewRequestService.findAll(query, radioligistId);
     } catch (error) {
       handleError(error);
