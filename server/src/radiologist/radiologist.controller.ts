@@ -16,6 +16,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { handleError } from '@/shared/http-error';
 import { Roles } from '@/auth/roles.decorator';
 import { Role } from '@/auth/role.enum';
+import { UpdateRadiologistDto } from './dto/update-radiologist.dto';
 
 @ApiBearerAuth()
 @ApiTags('radiologist')
@@ -52,13 +53,13 @@ export class RadiologistController {
     }
   }
 
-  // @Patch(':id')
-  // update(
-  //   @Param('id') id: string,
-  //   @Body() updateRadiologistDto: UpdateRadiologistDto,
-  // ) {
-  //   return this.radiologistService.update(+id, updateRadiologistDto);
-  // }
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateRadiologistDto: UpdateRadiologistDto,
+  ) {
+    return this.radiologistService.update(id, updateRadiologistDto);
+  }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
