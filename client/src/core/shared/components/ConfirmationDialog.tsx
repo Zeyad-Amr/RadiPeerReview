@@ -55,30 +55,30 @@ export default function ConfirmationDialog(props: {
       >
         <Box
           sx={{
-            backgroundColor: "primary.dark",
+            backgroundColor: "secondary.main",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
           }}
         >
           <DialogTitle
-            sx={{ m: 0, p: 2, color: "white", fontWeight: "600" }}
+            sx={{ m: 0, p: 1.5, color: "white", fontWeight: "400", textAlign: "center", width: '100%', }}
             id="dialog-title"
           >
             {props.title}
           </DialogTitle>
         </Box>
         <DialogContent dividers>
-          <Box sx={{ fontSize: "1.2rem", fontWeight: "500" }}>
+          <Box sx={{ fontSize: "1rem", fontWeight: "400", textAlign: "center", pt: 1 }}>
             {props.contentMessage}
           </Box>
         </DialogContent>
-        <DialogActions sx={{ margin: "0.3rem 0.8rem" }}>
+        <DialogActions sx={{ margin: "0rem auto", }}>
           <PrimaryButton
-            title="تأكيد"
+            title="Confirm"
             onClick={() => props.confirmFunction()}
           />
-          <SecondaryButton title="الغاء" onClick={handleClose} />
+          <SecondaryButton title="Cancel" onClick={handleClose} />
         </DialogActions>
       </BootstrapDialog>
     </>

@@ -21,6 +21,7 @@ const PrimaryButton = ({ id, type, title, onClick, display, sx }: PrimaryButtonT
         color: "#fff",
         backgroundColor: 'secondary.main',
         fontSize: "0.8rem",
+        fontWeight:'400',
         height: "40px",
         padding: "0 3rem",
         '&:hover': {
