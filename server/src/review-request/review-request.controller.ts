@@ -78,11 +78,6 @@ export class ReviewRequestController {
     @Req() req,
   ) {
     try {
-      console.log(
-        createReviewRequestDto.autoAssign,
-        typeof createReviewRequestDto.autoAssign,
-      );
-
       const creatorId = req.user.sub;
       if (!creatorId) {
         throw new UnauthorizedException(
@@ -95,7 +90,6 @@ export class ReviewRequestController {
       return this.reviewRequestService.createReviewRequest(
         report.id,
         creatorId,
-        createReviewRequestDto.autoAssign,
       );
     } catch (error) {
       handleError(error);

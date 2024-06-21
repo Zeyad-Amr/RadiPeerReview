@@ -10,7 +10,6 @@ export class ReviewRequestService {
   async createReviewRequest(
     reportId: string,
     creatorId: string,
-    autoAssign?: boolean,
   ) {
     try {
       return await this.reviewRequestRepo.create({
