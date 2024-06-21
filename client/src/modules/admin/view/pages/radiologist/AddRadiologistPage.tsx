@@ -13,7 +13,6 @@ const AddRadiologistPage = () => {
   const radiologistState: RadiologistState = useAppSelector(
     (state: RootState) => state.radiologists
   );
-  console.log(radiologistState?.radiologists);
   return (
     <CreateUser
       getListThunk={getRadiologistList}
@@ -24,6 +23,8 @@ const AddRadiologistPage = () => {
       FormComponent={RadiologistForm}
       formDialogMaxWidth="md"
     />
+
+
   );
 };
 

@@ -1,12 +1,5 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
-import MuiAccordionSummary, {
-  AccordionSummaryProps,
-} from "@mui/material/AccordionSummary";
-import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import { ComponentType, Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CustomizedDialog from "./CustomizeDialog";
 import { CustomDataTable, HeaderItem } from "./CustomDataTable";
@@ -14,74 +7,11 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useAppDispatch } from "@/core/state/store";
-import { Box, Breakpoint } from "@mui/system";
+import { Box } from "@mui/system";
 import ConfirmationDialog from "./ConfirmationDialog";
 import PrimaryButton from "./btns/PrimaryButton";
 import PageTitle from "./PageTitle";
 import IconBtn from "./btns/IconBtn";
-
-const Accordion = styled((props: AccordionProps) => (
-  <MuiAccordion disableGutters elevation={0} square {...props} />
-))(({ theme }) => ({
-  border: `1px solid ${theme.palette.divider}`,
-  "&:not(:last-child)": {
-    borderBottom: 0,
-  },
-  "&::before": {
-    display: "none",
-  },
-}));
-
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
-  <MuiAccordionSummary
-    expandIcon={
-      <ArrowForwardIosSharpIcon
-        sx={{ fontSize: "0.9rem", transform: "rotate(180deg)" }}
-      />
-    }
-    {...props}
-  />
-))(({ theme }) => ({
-  backgroundColor:
-    theme.palette.mode === "dark"
-      ? "rgba(255, 255, 255, .05)"
-      : "rgba(0, 0, 0, .03)",
-  flexDirection: "row-reverse",
-  "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-    transform: "rotate(-90deg)",
-  },
-  "& .MuiAccordionSummary-content": {
-    marginLeft: theme.spacing(1),
-  },
-}));
-
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(2),
-  borderTop: "1px solid rgba(0, 0, 0, .125)",
-}));
-
-interface AccordionComponentPropsInterface {
-  title: string;
-  FormComponent: ComponentType<ExaminationFormComponentPropsInterface>;
-  tableHeader: HeaderItem[];
-  tableList: any;
-  getListThunk: () => any;
-  deleteThunk: (id: string) => any;
-  isAccordionExpanded?: boolean;
-  formDialogMaxWidth?: false | Breakpoint;
-  accordionWidth?: string;
-  accordionSx?: any;
-  patientId?: string;
-  visitCode?: string;
-}
-
-export interface ExaminationFormComponentPropsInterface {
-  isViewMode: boolean;
-  patientId?: string;
-  visitCode?: string;
-  initialValues: any;
-  setShowFormDialog: Dispatch<SetStateAction<boolean>>;
-}
 
 export default function CreateUser({
   title,
@@ -91,23 +21,14 @@ export default function CreateUser({
   getListThunk,
   deleteThunk,
   formDialogMaxWidth = "sm",
-  accordionWidth = "100%",
-  accordionSx,
-  isAccordionExpanded = false,
-  visitCode,
-  patientId,
-}: AccordionComponentPropsInterface) {
-  console.log(tableList);
-
-  const [expandedAccordion, setExpandedAccordion] =
-    useState<boolean>(isAccordionExpanded);
+}: any) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
   const [isViewMode, setIsViewMode] = useState<boolean>(false);
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
   const dispatch = useAppDispatch();
-
+  const [userId, setUserID] = useState<string>('')
   const updatedTableHeader: HeaderItem[] = [
     ...tableHeader,
     {
@@ -120,27 +41,11 @@ export default function CreateUser({
       sortable: false,
       filterable: false,
       searchable: false,
-      onClick: () => {},
+      onClick: () => { },
     },
   ];
 
-  // Function to check and format date properties
-  const formatDateProperties = (item: any) => {
-    const formattedItem: any = { ...item };
-    for (const key in formattedItem) {
-      if (formattedItem.hasOwnProperty(key)) {
-        const value = formattedItem[key];
-        if (value === null || value === undefined) {
-          formattedItem[key] = "";
-        }
-        if (typeof value === "string" && value.match(/^\d{4}-\d{2}-\d{2}T/)) {
-          formattedItem[key] = value.split("T")[0];
-        }
-      }
-    }
-    return formattedItem;
-  };
-  console.log(tableList);
+
   return (
     <>
       <Box
@@ -179,9 +84,8 @@ export default function CreateUser({
             "No data available, press the add button to add a new item."
           }
           data={tableList?.map((item: any) => {
-            const formattedItem = formatDateProperties(item);
             return {
-              ...formattedItem,
+              ...item,
               update: (
                 <Box
                   sx={{
@@ -192,26 +96,29 @@ export default function CreateUser({
                     color: "primary.dark",
                   }}
                 >
-                  <VisibilityIcon
-                    sx={{ cursor: "pointer" }}
+                  {/* <VisibilityIcon
+                    sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
                       setIsViewMode(true);
-                      setTableItemData(formattedItem);
+                      setTableItemData({ ...item, password: '' });
+                      setUserID(item.id);
                       setIsDialogOpen(true);
                     }}
                   />
                   <EditRoundedIcon
-                    sx={{ cursor: "pointer" }}
+                    sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
                       setIsViewMode(false);
-                      setTableItemData(formattedItem);
+                      setTableItemData({...item, password:''});
+                      setUserID(item.id);
+                      console.log({...item, password:''});
                       setIsDialogOpen(true);
                     }}
-                  />
+                  /> */}
                   <DeleteRoundedIcon
-                    sx={{ cursor: "pointer", color: "red" }}
+                    sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
-                      setTableItemData(formattedItem);
+                      setTableItemData(item);
                       setShowConfirmationDialog(true);
                     }}
                   />
@@ -226,8 +133,6 @@ export default function CreateUser({
       {/* Delete Item */}
       <ConfirmationDialog
         confirmFunction={async () => {
-          console.log(tableItemData?.id, "tableItemData?.id");
-
           dispatch(deleteThunk(String(tableItemData?.id))).then(() => {
             setShowConfirmationDialog(false);
           });
@@ -251,8 +156,7 @@ export default function CreateUser({
           isViewMode={isViewMode}
           initialValues={tableItemData}
           setShowFormDialog={setIsDialogOpen}
-          patientId={patientId}
-          visitCode={visitCode}
+          id={userId}
         />
         {/* Convert from view mode to edit mode */}
         {isViewMode && (

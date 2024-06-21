@@ -41,6 +41,7 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
   }
   toJson(model: RadiologistInterface): any {
     return {
+      id: model.id,
       fname: model.fname,
       lname: model.lname,
       email: model.email,

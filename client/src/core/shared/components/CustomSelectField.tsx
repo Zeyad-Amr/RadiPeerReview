@@ -151,7 +151,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           component="div"
           sx={{
             flexGrow: 1,
-            fontSize: "0.9rem !important",
+            fontSize: "0.8rem !important",
             margin: "0rem 0.5rem",
           }}
         >
@@ -168,6 +168,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <Select
           multiple={multiple ?? false}
           label={label}
+          
           onChange={handleSelectChange}
           onBlur={onBlur}
           disabled={isDisabled}
