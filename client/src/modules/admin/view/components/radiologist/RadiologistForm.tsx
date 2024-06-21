@@ -22,24 +22,24 @@ const RadiologistForm = ({
 }: ExaminationFormComponentPropsInterface) => {
 
     const specializations = [
-        { id: 0, value: "NEURORADIOLOGY" },
-        { id: 1, value: "MUSCULOSKELETAL_RADIOLOGY" },
-        { id: 2, value: "ABDOMINAL_RADIOLOGY" },
-        { id: 3, value: "CARDIOVASCULAR_RADIOLOGY" },
-        { id: 4, value: "BREAST_IMAGING" },
-        { id: 5, value: "PEDIATRIC_RADIOLOGY" },
-        { id: 6, value: "THORACIC_RADIOLOGY" },
-        { id: 7, value: "GENITOURINARY_RADIOLOGY" },
-        { id: 8, value: "INTERVENTIONAL_RADIOLOGY" },
-        { id: 9, value: "NUCLEAR_MEDICINE" },
-        { id: 10, value: "EMERGENCY_RADIOLOGY" },
-        { id: 11, value: "ONCOLOGIC_IMAGING" },
-        { id: 12, value: "GASTROINTESTINAL_RADIOLOGY" },
-        { id: 13, value: "HEAD_AND_NECK_RADIOLOGY" },
-        { id: 14, value: "ORTHOPEDIC_RADIOLOGY" },
-        { id: 15, value: "VASCULAR_AND_INTERVENTIONAL_RADIOLOGY" },
-        { id: 16, value: "ENDOVASCULAR_SURGICAL_NEURORADIOLOGY" },
-        { id: 17, value: "BODY_IMAGING" }
+        { id: 1, value: "NEURORADIOLOGY" },
+        { id: 2, value: "MUSCULOSKELETAL_RADIOLOGY" },
+        { id: 3, value: "ABDOMINAL_RADIOLOGY" },
+        { id: 4, value: "CARDIOVASCULAR_RADIOLOGY" },
+        { id: 5, value: "BREAST_IMAGING" },
+        { id: 6, value: "PEDIATRIC_RADIOLOGY" },
+        { id: 7, value: "THORACIC_RADIOLOGY" },
+        { id: 8, value: "GENITOURINARY_RADIOLOGY" },
+        { id: 9, value: "INTERVENTIONAL_RADIOLOGY" },
+        { id: 10, value: "NUCLEAR_MEDICINE" },
+        { id: 11, value: "EMERGENCY_RADIOLOGY" },
+        { id: 12, value: "ONCOLOGIC_IMAGING" },
+        { id: 13, value: "GASTROINTESTINAL_RADIOLOGY" },
+        { id: 14, value: "HEAD_AND_NECK_RADIOLOGY" },
+        { id: 15, value: "ORTHOPEDIC_RADIOLOGY" },
+        { id: 17, value: "VASCULAR_AND_INTERVENTIONAL_RADIOLOGY" },
+        { id: 18, value: "ENDOVASCULAR_SURGICAL_NEURORADIOLOGY" },
+        { id: 19, value: "BODY_IMAGING" }
     ];
 
     function formatSpecializations(specializations: { id: number, value: string }[]) {
@@ -136,7 +136,7 @@ const RadiologistForm = ({
                             <CustomSelectField
                                 options={formatSpecializations(specializations)}
                                 name="specializations"
-                                label=""
+                                label="specializations"
                                 value={values.specializations}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
