@@ -29,10 +29,10 @@ class NotificationModel extends BaseModel<NotificationInterface> {
       createdAt: json.createdAt,
       updatedAt: json.updatedAt,
       entityId: json.entityId,
-      receiver:
-        json.receiverId === null
-          ? undefined
-          : userModel.fromJson(json.receiver),
+      receiver: undefined,
+      // json.receiverId === null
+      //   ? undefined
+      //   : userModel.fromJson(json.receiver),
     };
   }
   toJson(model: NotificationInterface): any {
