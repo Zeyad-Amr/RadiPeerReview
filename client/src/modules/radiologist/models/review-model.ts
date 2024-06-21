@@ -1,5 +1,4 @@
 import * as Yup from "yup";
-import { ReportInterface } from "../interfaces/report-interface";
 import BaseModel from "@/core/base/base-model";
 import { AccuracyOfFindings, ClarityAndCompleteness, ComplianceAndStandardization, ImpressionAndRecommendations, MissedFinding, OverallAssessment, ReviewDataInterface, TechnicalQuality } from "../interfaces/review-interface";
 

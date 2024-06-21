@@ -19,6 +19,13 @@ const Endpoints = {
     create: "/review",
     delete: "/review/:id",
   },
+  reviewRequest: {
+    list: "/review-request",
+    details: "/review-request/:id",
+    create: "/review-request",
+    update: "/review-request/:id",
+    delete: "/review-request/:id",
+  },
   radiologist: {
     add: "/radiologist",
     list: "/radiologist",

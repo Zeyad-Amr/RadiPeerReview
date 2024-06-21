@@ -5,16 +5,16 @@ import {
   ErrorMessage,
   ErrorResponse,
 } from "@/core/api";
-import { ReportInterface } from "../../interfaces/report-interface";
+import { CreateRequestInterface, GetRequestInterface } from "../../interfaces/request-interface";
 import reportModel from "../../models/report-model";
 
-//*  Create Report
-export const createReport = createAsyncThunk(
-  "report/create",
-  async (data: ReportInterface, thunkApi) => {
+//*  Create Request
+export const createRequest = createAsyncThunk(
+  "request/create",
+  async (data: FormData, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      await ApiClient.post(Endpoints.report.create, reportModel.toJson(data));
+      await ApiClient.post(Endpoints.reviewRequest.create, data);
       return true;
     } catch (error: any) {
       const errorResponse: ErrorResponse =
@@ -24,14 +24,13 @@ export const createReport = createAsyncThunk(
   }
 );
 
-//*  Update Report
-export const updateReport = createAsyncThunk(
-  "report/update",
-  async (data: ReportInterface, thunkApi) => {
+//*  Update Request
+export const updateRequest = createAsyncThunk(
+  "request/update",
+  async (data: CreateRequestInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
-    const apiClient = new ApiClient();
     try {
-      await ApiClient.patch(Endpoints.report.update, reportModel.toJson(data), {
+      await ApiClient.patch(Endpoints.reviewRequest.update, reportModel.toJson(data), {
         pathVariables: { id: data.id },
       });
       return true;
@@ -43,15 +42,15 @@ export const updateReport = createAsyncThunk(
   }
 );
 
-//*  Get All Reports
-export const getReportsList = createAsyncThunk(
-  "report/list",
+//*  Get All Requests
+export const getRequestsList = createAsyncThunk(
+  "request/list",
   async (_data, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      const response = await ApiClient.get(Endpoints.report.list);
+      const response = await ApiClient.get(Endpoints.reviewRequest.list);
       console.log(response, "response");
-      return response?.data?.items?.map((item: ReportInterface) =>
+      return response?.data?.map((item: any) =>
         reportModel.fromJson(item)
       );
     } catch (error: any) {
@@ -62,13 +61,13 @@ export const getReportsList = createAsyncThunk(
   }
 );
 
-//*  Get Report Details
-export const getReportDetails = createAsyncThunk(
-  "report/details",
+//*  Get Request Details
+export const getRequestDetails = createAsyncThunk(
+  "request/details",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      const response = await ApiClient.get(Endpoints.report.details, {
+      const response = await ApiClient.get(Endpoints.reviewRequest.details, {
         pathVariables: { id: id },
       });
       return reportModel.fromJson(response.data);
@@ -80,13 +79,13 @@ export const getReportDetails = createAsyncThunk(
   }
 );
 
-//*  Delete Report
-export const deleteReport = createAsyncThunk(
-  "report/delete",
+//*  Delete Request
+export const deleteRequest = createAsyncThunk(
+  "request/delete",
   async (id: string | number, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      await ApiClient.delete(Endpoints.report.delete, {
+      await ApiClient.delete(Endpoints.reviewRequest.delete, {
         pathVariables: { id: id },
       });
       return true;

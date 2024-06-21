@@ -1,18 +1,18 @@
 import * as Yup from "yup";
-import { ReportInterface } from "../interfaces/report-interface";
+import { CreateRequestInterface, GetReportInterface, GetRequestInterface } from "../interfaces/request-interface";
 import BaseModel from "@/core/base/base-model";
 
-class ReportModel extends BaseModel<ReportInterface> {
+class ReportModel {
   //*   Default form values
-  defaultValues: ReportInterface = {
-    pdfFile: null,
-    dicomFile: null,
+  defaultValues: CreateRequestInterface = {
+    report: null,
+    result: null,
     additionalComments: "",
   };
 
   //* Define validation schema using Yup
   validationSchema = Yup.object().shape({
-    pdfFile: Yup.mixed()
+    report : Yup.mixed()
       .required("A PDF file is required")
       .test(
         "fileSize",
@@ -24,7 +24,7 @@ class ReportModel extends BaseModel<ReportInterface> {
         "Unsupported file format",
         (value) => value && /\.(pdf)$/i.test((value as File).name) // Check for .pdf extension
       ),
-    dicomFile: Yup.mixed()
+    result: Yup.mixed()
       .required("A DICOM file is required")
       .test(
         "fileSize",
@@ -40,21 +40,38 @@ class ReportModel extends BaseModel<ReportInterface> {
   });
 
   // //* --------------------- Serialization: Convert the model to JSON ---------------------
-  toJson(entity: ReportInterface): any {
+  toJson(entity: CreateRequestInterface): any {
     return {
       additionalComments: entity.additionalComments,
-      dicomFile: entity.dicomFile,
-      pdfFile: entity.pdfFile,
+      result: entity.result,
+      report: entity.report,
     };
   }
 
   // //* --------------------- Deserialization: Create a model from JSON data ---------------------
-  fromJson(json: any): ReportInterface {
+  fromJson(json: any): GetRequestInterface {
+    return {
+      id: json.id,
+      reviewerId: json.reviewerId,
+      status: json.status,
+      approved: json.approved,
+      createdAt: json.createdAt,
+      creatorId : json.creatorId,
+      creator : json.creator,
+      report: json?.report?.map((el : any ) => this.fromReportJson(el)),
+    };
+  }
+
+  fromReportJson(json: any): GetReportInterface {
     return {
       id: json.id,
       additionalComments: json.additionalComments,
-      dicomFile: json.dicomFile,
-      pdfFile: json.pdfFile,
+      createdAt: json.createdAt,
+      reportUrl: json.reportUrl,
+      resultUrl: json.resultUrl,
+      reviewId: json.reviewId,
+      reviewRequestId: json.reviewRequestId,
+      updatedAt: json.updatedAt,
     };
   }
 }
