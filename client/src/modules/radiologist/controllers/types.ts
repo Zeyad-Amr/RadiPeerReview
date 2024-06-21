@@ -6,6 +6,7 @@ import { ReviewDataInterface } from "../interfaces/review-interface";
 
 export interface RequestState {
   requests: GetRequestInterface[];
+  assignedRequests: GetRequestInterface[];
   currentRequest: GetRequestInterface;
   isFetched: boolean;
   loading: boolean;

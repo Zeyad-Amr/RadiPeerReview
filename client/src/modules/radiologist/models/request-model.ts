@@ -1,5 +1,9 @@
 import * as Yup from "yup";
-import { CreateRequestInterface, GetReportInterface, GetRequestInterface } from "../interfaces/request-interface";
+import {
+  CreateRequestInterface,
+  GetReportInterface,
+  GetRequestInterface,
+} from "../interfaces/request-interface";
 import BaseModel from "@/core/base/base-model";
 
 class ReportModel {
@@ -12,7 +16,7 @@ class ReportModel {
 
   //* Define validation schema using Yup
   validationSchema = Yup.object().shape({
-    report : Yup.mixed()
+    report: Yup.mixed()
       .required("A PDF file is required")
       .test(
         "fileSize",
@@ -39,6 +43,25 @@ class ReportModel {
     additionalComments: Yup.string().max(500, "Maximum 500 characters"),
   });
 
+  formatDateTime = (dateString: string): string | null => {
+    if (!dateString) return null;
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return null;
+
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      //   second: '2-digit',
+      hour12: true,
+    };
+
+    return date.toLocaleString(undefined, options);
+  };
+
   // //* --------------------- Serialization: Convert the model to JSON ---------------------
   toJson(entity: CreateRequestInterface): any {
     return {
@@ -55,10 +78,10 @@ class ReportModel {
       reviewerId: json.reviewerId,
       status: json.status,
       approved: json.approved,
-      createdAt: json.createdAt,
-      creatorId : json.creatorId,
-      creator : json.creator,
-      report: json?.report?.map((el : any ) => this.fromReportJson(el)),
+      createdAt: this.formatDateTime(json.createdAt),
+      creatorId: json.creatorId,
+      creator: json.creator,
+      report: json?.report?.map((el: any) => this.fromReportJson(el)),
     };
   }
 
@@ -66,12 +89,12 @@ class ReportModel {
     return {
       id: json.id,
       additionalComments: json.additionalComments,
-      createdAt: json.createdAt,
+      createdAt: this.formatDateTime(json.createdAt),
       reportUrl: json.reportUrl,
       resultUrl: json.resultUrl,
       reviewId: json.reviewId,
       reviewRequestId: json.reviewRequestId,
-      updatedAt: json.updatedAt,
+      updatedAt: this.formatDateTime(json.updatedAt),
     };
   }
 }

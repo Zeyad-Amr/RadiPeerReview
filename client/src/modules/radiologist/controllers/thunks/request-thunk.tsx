@@ -1,20 +1,23 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 import {
-  ApiClient,
-  Endpoints,
-  ErrorMessage,
-  ErrorResponse,
-} from "@/core/api";
-import { CreateRequestInterface, GetRequestInterface } from "../../interfaces/request-interface";
-import reportModel from "../../models/report-model";
+  CreateRequestInterface,
+  GetRequestInterface,
+} from "../../interfaces/request-interface";
+import reportModel from "../../models/request-model";
 
 //*  Create Request
 export const createRequest = createAsyncThunk(
   "request/create",
   async (data: FormData, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue , dispatch } = thunkApi;
     try {
-      await ApiClient.post(Endpoints.reviewRequest.create, data);
+      await ApiClient.post(Endpoints.reviewRequest.create, data).then((res) => {
+        if (res.status == 201) {
+          dispatch(getCreatorRequestsList())
+          dispatch(getAssignedRequestsList())
+        }
+      })
       return true;
     } catch (error: any) {
       const errorResponse: ErrorResponse =
@@ -30,9 +33,13 @@ export const updateRequest = createAsyncThunk(
   async (data: CreateRequestInterface, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      await ApiClient.patch(Endpoints.reviewRequest.update, reportModel.toJson(data), {
-        pathVariables: { id: data.id },
-      });
+      await ApiClient.patch(
+        Endpoints.reviewRequest.update,
+        reportModel.toJson(data),
+        {
+          pathVariables: { id: data.id },
+        }
+      );
       return true;
     } catch (error: any) {
       const errorResponse: ErrorResponse =
@@ -42,17 +49,35 @@ export const updateRequest = createAsyncThunk(
   }
 );
 
-//*  Get All Requests
-export const getRequestsList = createAsyncThunk(
-  "request/list",
+//*  Get All Creator Requests
+export const getCreatorRequestsList = createAsyncThunk(
+  "request/creator/list",
   async (_data, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      const response = await ApiClient.get(Endpoints.reviewRequest.list);
+      const response = await ApiClient.get(Endpoints.reviewRequest.list, {
+        queryParams: { user_is: "creator" },
+      });
       console.log(response, "response");
-      return response?.data?.map((item: any) =>
-        reportModel.fromJson(item)
-      );
+      return response?.data?.map((item: any) => reportModel.fromJson(item));
+    } catch (error: any) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      return rejectWithValue(errorResponse);
+    }
+  }
+);
+
+export const getAssignedRequestsList = createAsyncThunk(
+  "request/reviewer/list",
+  async (_data, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      const response = await ApiClient.get(Endpoints.reviewRequest.list, {
+        queryParams: { user_is: "reviewer" },
+      });
+      console.log(response, "response");
+      return response?.data?.map((item: any) => reportModel.fromJson(item));
     } catch (error: any) {
       const errorResponse: ErrorResponse =
         error instanceof Error ? ErrorMessage.get(error.message) : error;

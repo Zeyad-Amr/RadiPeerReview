@@ -7,19 +7,19 @@ export interface CreateRequestInterface {
 
 export interface GetRequestInterface {
   id?: string | number;
-  reviewerId: string | number;
-  creatorId: string | number;
-  creator : creatorInterface | null;
+  reviewerId?: string | number;
+  creatorId?: string | number;
+  creator?: creatorInterface | null;
   approved: boolean | null;
-  createdAt: Date | null;
+  createdAt: string | null;
   status: string;
   report: GetReportInterface[];
 }
 
 export interface GetReportInterface {
   id?: string | number;
-  createdAt: Date | null;
-  updatedAt: Date | null;
+  createdAt: string | null;
+  updatedAt: string | null;
   additionalComments: string;
   reportUrl: string;
   resultUrl: string;

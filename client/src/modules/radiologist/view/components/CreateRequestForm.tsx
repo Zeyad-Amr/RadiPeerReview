@@ -5,7 +5,7 @@ import { DoneRounded } from "@mui/icons-material";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { CreateRequestInterface } from "../../interfaces/request-interface";
-import reportModel from "../../models/report-model";
+import reportModel from "../../models/request-model";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import { createRequest } from "../../controllers/thunks/request-thunk";

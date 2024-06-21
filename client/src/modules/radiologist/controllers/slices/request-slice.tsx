@@ -7,13 +7,15 @@ import {
   createRequest,
   deleteRequest,
   getRequestDetails,
-  getRequestsList,
+  getCreatorRequestsList,
+  getAssignedRequestsList,
   updateRequest,
 } from "../thunks/request-thunk";
 
 //* Initial State
 const initialState: RequestState = {
   requests: [],
+  assignedRequests: [],
   currentRequest: {
     creator : null,
     creatorId : "",
@@ -42,6 +44,9 @@ const requestSlice = createSlice({
     clearRequestList(state) {
       state.requests = initialState.requests;
     },
+    clearAssignedRequestList(state) {
+      state.assignedRequests = initialState.assignedRequests;
+    },
     setCurrentRequest(
       state,
       action: { payload: GetRequestInterface; type: string }
@@ -54,23 +59,47 @@ const requestSlice = createSlice({
     ) {
       state.requests = action.payload;
     },
+    setAssignedRequestList(
+      state,
+      action: { payload: GetRequestInterface[]; type: string }
+    ) {
+      state.assignedRequests = action.payload;
+    },
     setLoading(state, action: { payload: boolean; type: string }) {
       state.loading = action.payload;
     },
   },
   extraReducers(builder) {
     //* get all requests from api
-    builder.addCase(getRequestsList?.pending, (state, _action) => {
+    builder.addCase(getCreatorRequestsList?.pending, (state, _action) => {
       state.loading = true;
       state.error = "";
     });
-    builder.addCase(getRequestsList?.fulfilled, (state, action) => {
+    builder.addCase(getCreatorRequestsList?.fulfilled, (state, action) => {
       state.loading = false;
       state.requests = action.payload;
       state.error = "";
-      console.log("getRequestsListtttttttttttttttttttttttttttttttttttt", action.payload);
+      console.log("getCreatorRequestsList", action.payload);
     });
-    builder.addCase(getRequestsList?.rejected, (state, action) => {
+    builder.addCase(getCreatorRequestsList?.rejected, (state, action) => {
+      state.loading = false;
+      state.error = (action.payload as ErrorResponse).message;
+      AlertService.showAlert(`${state.error}`, "error");
+      state.requests = initialState.requests;
+    });
+
+    //* get all assigned requests from api
+    builder.addCase(getAssignedRequestsList?.pending, (state, _action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(getAssignedRequestsList?.fulfilled, (state, action) => {
+      state.loading = false;
+      state.assignedRequests = action.payload;
+      state.error = "";
+      console.log("getAssignedRequestsList", action.payload);
+    });
+    builder.addCase(getAssignedRequestsList?.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
       AlertService.showAlert(`${state.error}`, "error");
