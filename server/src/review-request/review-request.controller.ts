@@ -10,12 +10,19 @@ import {
   UseInterceptors,
   UploadedFiles,
   UnauthorizedException,
+  Query,
 } from '@nestjs/common';
 import { ReviewRequestService } from './review-request.service';
 import { CreateReviewRequestDto } from './dto/create-review-request.dto';
 import { UpdateReviewRequestDto } from './dto/update-review-request.dto';
 import { ReportService } from '@/report/report.service';
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { extname, resolve } from 'path';
 import { diskStorage } from 'multer';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -71,12 +78,7 @@ export class ReviewRequestController {
     @Req() req,
   ) {
     try {
-      console.log(
-        createReviewRequestDto.autoAssign,
-        typeof createReviewRequestDto.autoAssign,
-      );
-
-      const creatorId = req.user.radioligistId;
+      const creatorId = req.user.sub;
       if (!creatorId) {
         throw new UnauthorizedException(
           'User not authorized to create review request',
@@ -88,7 +90,6 @@ export class ReviewRequestController {
       return this.reviewRequestService.createReviewRequest(
         report.id,
         creatorId,
-        createReviewRequestDto.autoAssign,
       );
     } catch (error) {
       handleError(error);
@@ -96,9 +97,13 @@ export class ReviewRequestController {
   }
 
   @Get()
-  async findAll() {
+  @ApiQuery({ name: 'user_is', required: false })
+  @ApiQuery({ name: 'status', required: false })
+  @ApiQuery({ name: 'approved', required: false })
+  async findAll(@Query() query, @Req() req) {
     try {
-      return await this.reviewRequestService.findAll();
+      const radioligistId  = req.user.sub;
+      return await this.reviewRequestService.findAll(query, radioligistId);
     } catch (error) {
       handleError(error);
     }

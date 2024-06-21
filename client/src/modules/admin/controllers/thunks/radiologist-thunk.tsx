@@ -1,25 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  ApiClient,
-  Endpoints,
-  ErrorMessage,
-  ErrorResponse,
-  FilterQuery,
-  PaginatedListModel,
-} from "@/core/api";
+import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 import { RadiologistInterface } from "../../interfaces/radiologist-interface";
-import Radiologist from "../../models/radiologist-model";
+import radiologistModel from "../../models/radiologist-model";
 
 //*  Create Radiologist
 export const createRadiologist = createAsyncThunk(
   "radiologist/add",
   async (data: RadiologistInterface, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue, dispatch } = thunkApi;
     try {
       await ApiClient.post(
         Endpoints.radiologist.add,
-        Radiologist.toJson(data)
-      );
+        radiologistModel.toJson(data)
+      ).then((response) => {
+        dispatch(getRadiologistList());
+      });
       return true;
     } catch (error) {
       let errorResponse: ErrorResponse;
@@ -37,15 +32,17 @@ export const createRadiologist = createAsyncThunk(
 export const updateRadiologist = createAsyncThunk(
   "radiologist/update",
   async (data: RadiologistInterface, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue, dispatch } = thunkApi;
     try {
       await ApiClient.patch(
         Endpoints.radiologist.update,
-        Radiologist.toJson(data),
+        radiologistModel.toJson(data),
         {
           pathVariables: { id: data.id },
         }
-      );
+      ).then((response) => {
+        dispatch(getRadiologistList());
+      });
       return true;
     } catch (error) {
       let errorResponse: ErrorResponse;
@@ -62,18 +59,12 @@ export const updateRadiologist = createAsyncThunk(
 //*  Get All AddRadiologist
 export const getRadiologistList = createAsyncThunk(
   "radiologist/list",
-  async (filters: FilterQuery[], thunkApi) => {
+  async (_, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      const response = await ApiClient.get(Endpoints.radiologist.list, {
-        filters: filters,
-      });
+      const response = await ApiClient.get(Endpoints.radiologist.list);
       console.log(response, "response");
-      return PaginatedListModel.fromJson<RadiologistInterface>(
-        response.data,
-        response.data.items.map((item: any) => Radiologist.fromJson(item)),
-        filters
-      );
+      return response.data.map((item: any) => radiologistModel.fromJson(item));
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -95,7 +86,7 @@ export const getRadiologistDetails = createAsyncThunk(
       const response = await ApiClient.get(Endpoints.radiologist.details, {
         pathVariables: { id: id },
       });
-      return Radiologist.fromJson(response.data);
+      return radiologistModel.fromJson(response.data);
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -112,10 +103,12 @@ export const getRadiologistDetails = createAsyncThunk(
 export const deleteRadiologist = createAsyncThunk(
   "details/delete",
   async (id: string | number, thunkApi) => {
-    const { rejectWithValue } = thunkApi;
+    const { rejectWithValue, dispatch } = thunkApi;
     try {
       await ApiClient.delete(Endpoints.radiologist.delete, {
         pathVariables: { id: id },
+      }).then((response) => {
+        dispatch(getRadiologistList());
       });
       return true;
     } catch (error) {

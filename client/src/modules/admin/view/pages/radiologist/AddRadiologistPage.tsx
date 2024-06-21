@@ -1,5 +1,4 @@
-
-import { useAppSelector } from "@/core/state/store";
+import { RootState, useAppSelector } from "@/core/state/store";
 import {
   deleteRadiologist,
   getRadiologistList,
@@ -10,12 +9,11 @@ import { radiologistHeaderTable } from "./data";
 import RadiologistForm from "../../components/radiologist/RadiologistForm";
 import CreateUser from "@/core/shared/components/CreateUser";
 
-
 const AddRadiologistPage = () => {
   const radiologistState: RadiologistState = useAppSelector(
-    (state: any) => state.radiologist
+    (state: RootState) => state.radiologists
   );
-  console.log(radiologistState?.radiologists)
+  console.log(radiologistState?.radiologists);
   return (
     <CreateUser
       getListThunk={getRadiologistList}

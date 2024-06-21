@@ -13,7 +13,6 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { handleError } from '@/shared/http-error';
 import { LoginDTO } from './dto/login.dto';
 import { Public } from '@/shared/decorators/public.decorator';
-import { SignupDto } from './dto/signup.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiBearerAuth()
@@ -28,25 +27,6 @@ export class AuthController {
   async login(@Body() loginDto: LoginDTO) {
     try {
       return await this.authService.login(loginDto);
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
-
-  @Public()
-  @Post('signup')
-  async create(@Body() signupDto: SignupDto) {
-    try {
-      const { auth, radiologist } = signupDto;
-      const newAuth = await this.authService.create({
-        ...auth,
-        radiologist: {
-          create: {
-            ...radiologist,
-          },
-        },
-      });
-      return newAuth;
     } catch (error) {
       throw handleError(error);
     }

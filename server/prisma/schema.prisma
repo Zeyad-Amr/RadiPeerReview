@@ -22,9 +22,11 @@ model Auth {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  radiologist   Radiologist?   @relation(fields: [radiologistId], references: [id])
-  radiologistId String?        @unique
+  radiologist   Radiologist?    @relation(fields: [radiologistId], references: [id])
+  radiologistId String?         @unique
   Notification  Notification[]
+  ReviewRequestAsCreator ReviewRequest[] @relation("CreatorRadiologist")
+  ReviewRequestAsReviewer ReviewRequest[] @relation("ReviewerRadiologist")
 }
 
 enum Role {
@@ -44,9 +46,6 @@ model Radiologist {
   updatedAt DateTime @updatedAt
 
   auth Auth?
-
-  ReviewRequestAsCreator  ReviewRequest[] @relation("CreatorRadiologist")
-  ReviewRequestAsReviewer ReviewRequest[] @relation("ReviewerRadiologist")
 }
 
 model Report {
@@ -71,9 +70,9 @@ model ReviewRequest {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  creator    Radiologist  @relation("CreatorRadiologist", fields: [creatorId], references: [id])
+  creator    Auth     @relation("CreatorRadiologist", fields: [creatorId], references: [id])
   creatorId  String
-  reviewer   Radiologist? @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
+  reviewer   Auth?    @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
   reviewerId String?
   report     Report[]
 }
@@ -102,6 +101,12 @@ model Review {
   complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
   complianceAndStandardizationId String?                       @unique
   Report                         Report?
+}
+
+model Config {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
 }
 
 model Feedback {
@@ -234,4 +239,8 @@ enum NotificationType {
   REQUEST_REPORT_RESUBMITTED
   REQUEST_REREVIEWED
   REVIEW_FEEDBACK_RECEIVED
+}
+
+enum ConfigKeys {
+  ASSIGNMENT_MODE
 }
