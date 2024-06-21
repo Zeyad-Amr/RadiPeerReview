@@ -11,7 +11,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 // import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useRouter } from "next/navigation";
-import Notifications from "./Notifications";
+import NotificationsListComponent from "../../modules/notifications/view/compnents/NotificationsListComponent";
 
 // const Search = styled("div")(({ theme }) => ({
 //   position: "relative",
@@ -61,7 +61,7 @@ export default function AdminNavbar({
   setOpen: any;
 }) {
   React.useState<null | HTMLElement>(null);
-  const [scale, setScale] = React.useState(false)
+  const [scale, setScale] = React.useState(false);
 
   const router = useRouter();
   const menuId = "primary-search-account-menu";
@@ -112,13 +112,12 @@ export default function AdminNavbar({
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              sx={{ mr: 1, color: 'primary.main' }}
+              sx={{ mr: 1, color: "primary.main" }}
               onClick={() => setOpen(!open)}
-
             >
               <MenuIcon />
             </IconButton>
-            <Box onClick={() => router.push('/')}>
+            <Box onClick={() => router.push("/")}>
               <Box
                 component="img"
                 src=".././assets/hlogo.png "
@@ -151,12 +150,8 @@ export default function AdminNavbar({
               transform: "translateX(-50%)",
             }}
           >
-            <Typography sx={{ fontWeight: "600" }}>
-              {formattedDate}
-            </Typography>
-            <Typography >
-              {formattedTime}
-            </Typography>
+            <Typography sx={{ fontWeight: "600" }}>{formattedDate}</Typography>
+            <Typography>{formattedTime}</Typography>
           </Box>
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton
@@ -165,17 +160,20 @@ export default function AdminNavbar({
               color="inherit"
               onClick={() => setScale(!scale)}
             >
-              <Badge badgeContent={17} sx={{
-                "& .MuiBadge-badge": {
-                  backgroundColor: "secondary.main",
-                  color: 'white'
-                }
-              }}>
-                <NotificationsIcon sx={{ color: 'primary.main' }} />
+              <Badge
+                badgeContent={17}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    backgroundColor: "secondary.main",
+                    color: "white",
+                  },
+                }}
+              >
+                <NotificationsIcon sx={{ color: "primary.main" }} />
               </Badge>
             </IconButton>
           </Box>
-          <Notifications scaleProp={scale} />
+          <NotificationsListComponent scaleProp={scale} />
           {/* ###################################################################### */}
           {/* ############################### MOBILE ############################### */}
           {/* ###################################################################### */}
@@ -196,11 +194,10 @@ export default function AdminNavbar({
                 color="inherit"
                 sx={{ padding: 0 }}
                 onClick={() => setOpen(!open)}
-
               >
                 <MenuIcon />
               </IconButton>
-              <Box onClick={() => router.push('/')}>
+              <Box onClick={() => router.push("/")}>
                 <Box
                   component="img"
                   src=".././assets/hlogo.png "
@@ -214,23 +211,24 @@ export default function AdminNavbar({
               </Box>
             </Box>
             <Box sx={{ display: { xs: "flex", md: "none" } }}>
-
               <IconButton
                 size="large"
                 aria-label="show 17 new notifications"
                 color="inherit"
                 onClick={() => setScale(!scale)}
               >
-                <Badge badgeContent={17} sx={{
-                  "& .MuiBadge-badge": {
-                    backgroundColor: "secondary.main",
-                    color: 'white'
-                  }
-                }}>
-                  <NotificationsIcon sx={{ color: 'primary.main' }} />
+                <Badge
+                  badgeContent={17}
+                  sx={{
+                    "& .MuiBadge-badge": {
+                      backgroundColor: "secondary.main",
+                      color: "white",
+                    },
+                  }}
+                >
+                  <NotificationsIcon sx={{ color: "primary.main" }} />
                 </Badge>
               </IconButton>
-
             </Box>
           </Box>
         </Toolbar>

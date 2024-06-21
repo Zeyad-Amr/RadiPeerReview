@@ -2,11 +2,13 @@ import authSlice from "@/modules/auth/controllers/slices/auth-slice";
 import radiologistsSlice from "@/modules/admin/controllers/slices/radiologist-slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
+import notificationsSlice from "@/modules/notifications/controllers/slices/notifications-slice";
 
 const store = configureStore({
   reducer: {
     auth: authSlice,
     radiologists: radiologistsSlice,
+    notifications: notificationsSlice,
   },
 });
 

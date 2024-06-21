@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useRouter } from "next/navigation";
-import Notifications from "../Notifications";
+import NotificationsListComponent from "../../../modules/notifications/view/compnents/NotificationsListComponent";
 import { useAppDispatch } from "@/core/state/store";
 import { logout } from "@/modules/auth/controllers/thunks/auth-thunk";
 
@@ -129,7 +129,7 @@ export default function RadiologistNavbar() {
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </Box>
-          <Notifications scaleProp={scale} />
+          <NotificationsListComponent scaleProp={scale} />
         </Toolbar>
       </AppBar>
     </Box>

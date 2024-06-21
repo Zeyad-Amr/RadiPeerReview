@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ErrorResponse, PaginatedListModel } from "@/core/api";
-import { login, logout } from "../thunks/auth-thunk";
+import { getMe, login, logout } from "../thunks/auth-thunk";
 import { AuthState } from "../types";
 import AlertService from "@/core/shared/utils/alert-service";
+import userModel from "../../models/user-model";
 
 //* Initial State
 const initialState: AuthState = {
@@ -54,6 +55,21 @@ const authSlice = createSlice({
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
       AlertService.showAlert(`${state.error}`, "error");
+    });
+
+    //* Get Me
+    builder.addCase(getMe.pending, (state, _action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(getMe.fulfilled, (state, action) => {
+      state.loading = false;
+      state.error = "";
+      state.user = action.payload;
+    });
+    builder.addCase(getMe.rejected, (state, action) => {
+      state.loading = false;
+      state.error = (action.payload as ErrorResponse).message;
     });
   },
 });
