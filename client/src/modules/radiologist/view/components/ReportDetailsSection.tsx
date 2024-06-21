@@ -58,7 +58,11 @@ const ReportDetailsSection = ({
           {reportData?.reportUrl}
           </Typography>
           <Box>
-            <VisibilityIcon sx={{ color: "primary.light" }} />
+            <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} 
+            onClick={() => {
+              router.push(`/pdf-viewer?file=${reportData?.reportUrl}`)
+            }}
+            />
           </Box>
         </Box>
       </Box>

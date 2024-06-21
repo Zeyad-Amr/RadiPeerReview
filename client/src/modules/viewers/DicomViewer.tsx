@@ -108,7 +108,7 @@ const DicomViewer = () => {
   return (
     <>
       {isImageIDs &&
-        config.imageIds.map((imageId, viewportIndex) => (
+        config.imageIds.slice(0,1).map((imageId, viewportIndex) => (
           <div
             key={viewportIndex}
             style={{ flex: "1", display: "flex", flexDirection: "row" }}
