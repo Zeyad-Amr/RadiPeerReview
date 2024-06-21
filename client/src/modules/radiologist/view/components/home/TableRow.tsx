@@ -27,8 +27,8 @@ const TableRow = ({ isCreatorTable, data, light }: TableRowProps) => {
           key={index}
           onClick={() => {
             isCreatorTable
-              ? router.push(`/radiologist/request/?role=creator`)
-              : router.push(`/radiologist/request/?role=reviewer`);
+              ? router.push(`/radiologist/request/${requestEl?.id}?role=creator`)
+              : router.push(`/radiologist/request/${requestEl?.id}?role=reviewer`);
           }}
         >
           <Box

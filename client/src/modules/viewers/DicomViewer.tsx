@@ -1,6 +1,7 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import CornerstoneViewport from "react-cornerstone-viewport";
 import * as cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
+import axios from "axios";
 
 type ToolConfig = {
   name: string;
@@ -57,32 +58,32 @@ const DicomViewer = () => {
     const fileUrl = params.get("file");
     console.log("fileUrl", fileUrl);
 
-    // getDicomImage(fileUrl ?? "");
+    getDicomImage(fileUrl ?? "");
   }, []);
 
-  // const getDicomImage = (fileUrl: string) => {
-  //   axios
-  //     .get(fileUrl, {
-  //       responseType: "blob",
-  //     })
-  //     .then((res: any) => {
-  //       console.log(res, "res");
-  //       if (res) {
-  //         const file = new File([res.data], "dicom.dcm", {
-  //           type: "application/dicom",
-  //         });
+  const getDicomImage = (fileUrl: string) => {
+    axios
+      .get(fileUrl, {
+        responseType: "blob",
+      })
+      .then((res: any) => {
+        console.log(res, "res");
+        if (res) {
+          const file = new File([res.data], "dicom.dcm", {
+            type: "application/dicom",
+          });
 
-  //         const imageId =
-  //           cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-  //         console.log(imageId, "imageId");
+          const imageId =
+            cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+          console.log(imageId, "imageId");
 
-  //         setConfig((prevConfig) => ({
-  //           ...prevConfig,
-  //           imageIds: [...prevConfig.imageIds, imageId],
-  //         }));
-  //       }
-  //     });
-  // };
+          setConfig((prevConfig) => ({
+            ...prevConfig,
+            imageIds: [...prevConfig.imageIds, imageId],
+          }));
+        }
+      });
+  };
 
   useEffect(() => {
     if (config.imageIds.length > 0) {

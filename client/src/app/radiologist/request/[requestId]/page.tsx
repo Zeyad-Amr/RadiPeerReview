@@ -1,6 +1,6 @@
 "use client";
 
-import RequestPage from "@/modules/request/view/pages/RequestPage";
+import RequestPage from "@/modules/radiologist/view/pages/RequestPage";
 import React from "react";
 
 const RadiologistRequestEl = () => {
