@@ -1,3 +1,5 @@
+import { ReviewDataInterface } from "./review-interface";
+
 export interface CreateRequestInterface {
   id?: string | number;
   report: File | null;
@@ -23,6 +25,7 @@ export interface GetReportInterface {
   additionalComments: string;
   reportUrl: string;
   resultUrl: string;
+  review: ReviewDataInterface | null;
   reviewId: string | number;
   reviewRequestId: string | number;
 }

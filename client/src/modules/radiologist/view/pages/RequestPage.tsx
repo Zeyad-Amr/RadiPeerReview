@@ -90,13 +90,9 @@ const RequestPage = () => {
                 setReportData={setReportDetails}
                 reportEl={reportEl}
               />
-              {/* {report.reviews.map((review) => (
-                <DisplayedReview
-                  key={review.id}
-                  content={review.content}
-                  time={review.time}
-                />
-              ))} */}
+              <DisplayedReview
+                reviewData={reportEl?.review}
+              />
             </Box>
           ))}
         </Box>

@@ -187,9 +187,10 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
 
   private fromAccuracyOfFindingsDataJson(json: any): AccuracyOfFindings {
     return {
+      id: json.id,
       commentsOnAccuracy: json.commentsOnAccuracy,
       correctnessOfFindings: json.correctnessOfFindings,
-      missedFindings: json.missedFindings.map((el : MissedFinding ) => this.fromMissedFindingDataJson(el)),
+      missedFindings: json.missedFindings ? json?.missedFindings?.map((el : MissedFinding ) => this.fromMissedFindingDataJson(el)) : [],
    }
   }
 
