@@ -11,6 +11,7 @@ declare module "dicom-parser" {
 
 declare module "cornerstone-wado-image-loader" {
   export const wadouri: {
+    dataSetCacheManager: any;
     fileManager: {
       add: (file: File) => string;
     };

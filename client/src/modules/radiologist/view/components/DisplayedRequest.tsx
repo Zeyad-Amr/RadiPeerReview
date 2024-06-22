@@ -1,18 +1,16 @@
 import React, { useEffect } from "react";
 import { Box, Typography } from "@mui/material";
+import { GetReportInterface } from "../../interfaces/request-interface";
 
 interface DisplayedRequestProps {
-  report: {
-    name: string;
-    time: string;
-  };
+  reportEl : GetReportInterface
   setReportData: (reportData: any) => void;
 }
 
-const DisplayedRequest: React.FC<DisplayedRequestProps> = ({ setReportData, report }) => {
+const DisplayedRequest = ({ setReportData, reportEl } : DisplayedRequestProps) => {
   useEffect(() => {
-    setReportData(report)
-  }, [report, setReportData])
+    setReportData(reportEl)
+  }, [reportEl, setReportData])
   
   return (
     <Box
@@ -43,17 +41,17 @@ const DisplayedRequest: React.FC<DisplayedRequestProps> = ({ setReportData, repo
           backgroundColor: "primary.main",
           cursor: "pointer",
         }}
-        onClick={() => setReportData(report)}
+        onClick={() => setReportData(reportEl)}
       >
         <Typography variant="body1" color="#fff">
-          {report.name}
+          {reportEl.additionalComments}
         </Typography>
         <Typography
           sx={{ display: "flex", justifyContent: "flex-end" }}
           variant="caption"
           color="#fff"
         >
-          {report.time}
+          {reportEl.createdAt}
         </Typography>
       </Box>
     </Box>

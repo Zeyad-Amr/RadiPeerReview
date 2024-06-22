@@ -1,17 +1,20 @@
 import React from 'react'
 import TableHeader from './TableHeader'
 import TableRow from './TableRow'
+import { GetRequestInterface } from '@/modules/radiologist/interfaces/request-interface'
 
 interface RadiologistTable {
-    data: string[][]
+    tableHeader : string[]
+    requestsArray : GetRequestInterface[]
     light: boolean
+    isCreatorTable : boolean
 }
 
-const RadiologistTable = ({ data, light }: RadiologistTable) => {
+const RadiologistTable = ({ isCreatorTable, tableHeader, requestsArray, light }: RadiologistTable) => {
     return (
         <>
-            <TableHeader header={data[0]} light={light} />
-            <TableRow data={data.slice(1)} light={light}/>
+            { tableHeader && (<TableHeader header={tableHeader} light={light} />)}
+            { requestsArray && ( <TableRow isCreatorTable={isCreatorTable} data={requestsArray} light={light}/> )  }
         </>
     )
 }

@@ -1,13 +1,14 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box , Grid, Typography } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction , useRef } from "react";
 import { DoneRounded } from "@mui/icons-material";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
-import * as Yup from "yup";
 import CustomTextField from "@/core/shared/components/CustomTextField";
-import { ReportInterface } from "../../interfaces/report-interface";
-import reportModel from "../../models/report-model";
+import { CreateRequestInterface } from "../../interfaces/request-interface";
+import reportModel from "../../models/request-model";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
+import { useAppDispatch } from "@/core/state/store";
+import { createRequest } from "../../controllers/thunks/request-thunk";
 
 interface CreateRequestFormPropsInterface {
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
@@ -16,17 +17,33 @@ interface CreateRequestFormPropsInterface {
 const CreateRequestForm = ({
   setShowFormDialog,
 }: CreateRequestFormPropsInterface) => {
+  // useRef
   const pdfFileInputRef = useRef<HTMLInputElement>(null);
   const dicomFileInputRef = useRef<HTMLInputElement>(null);
 
+  // dispatch
+  const dispatch = useAppDispatch();
+
+  // handle form submission
   const handleSubmit = (
-    values: ReportInterface,
-    { resetForm }: FormikHelpers<ReportInterface>
+    values: CreateRequestInterface,
+    { resetForm }: FormikHelpers<CreateRequestInterface>
   ) => {
-    console.log(values);
-    // dispatch create report
-    resetForm();
-    setShowFormDialog(false);
+    // dispatch create review request
+    const formData = new FormData();
+    if (values.report) {
+      formData.append("report", values.report);
+    }
+    if (values.result) {
+      formData.append("result", values.result);
+    }
+    formData.append("additionalComments", values.additionalComments);
+    dispatch(createRequest(formData)).then((res) => {
+      if (res.meta.requestStatus === "fulfilled") {
+        setShowFormDialog(false);
+        resetForm();
+      }
+    });
   };
 
   return (
@@ -66,11 +83,11 @@ const CreateRequestForm = ({
                 onClick={() => pdfFileInputRef.current?.click()}
               >
                 <Typography sx={{ color: "white" }}>
-                  {values.pdfFile
-                    ? (values.pdfFile as File).name
+                  {values.report
+                    ? (values.report as File).name
                     : "Upload PDF File"}
                 </Typography>
-                {values.pdfFile ? (
+                {values.report ? (
                   <DoneRounded sx={{ color: "#29f19c" }} />
                 ) : (
                   <FileUploadRoundedIcon sx={{ color: "white" }} />
@@ -81,7 +98,7 @@ const CreateRequestForm = ({
               <input
                 type="file"
                 onChange={(event) => {
-                  setFieldValue("pdfFile", event.currentTarget.files?.[0]);
+                  setFieldValue("report", event.currentTarget.files?.[0]);
                 }}
                 ref={pdfFileInputRef}
                 style={{ display: "none" }}
@@ -89,7 +106,7 @@ const CreateRequestForm = ({
               />
 
               {/* PDF file validation error message */}
-              {errors.pdfFile && (
+              {errors.report && (
                 <Typography
                   sx={{
                     color: "#FF5630",
@@ -97,7 +114,7 @@ const CreateRequestForm = ({
                     margin: "0.4rem 0rem 0rem 0.3rem",
                   }}
                 >
-                  {errors.pdfFile}
+                  {errors.report}
                 </Typography>
               )}
             </Grid>
@@ -121,11 +138,11 @@ const CreateRequestForm = ({
                 onClick={() => dicomFileInputRef.current?.click()}
               >
                 <Typography sx={{ color: "white" }}>
-                  {values.dicomFile
-                    ? (values.dicomFile as File).name
+                  {values.result
+                    ? (values.result as File).name
                     : "Upload DICOM File"}
                 </Typography>
-                {values.dicomFile ? (
+                {values.result ? (
                   <DoneRounded sx={{ color: "#29f19c" }} />
                 ) : (
                   <FileUploadRoundedIcon sx={{ color: "white" }} />
@@ -136,7 +153,7 @@ const CreateRequestForm = ({
               <input
                 type="file"
                 onChange={(event) => {
-                  setFieldValue("dicomFile", event.currentTarget.files?.[0]);
+                  setFieldValue("result", event.currentTarget.files?.[0]);
                 }}
                 ref={dicomFileInputRef}
                 style={{ display: "none" }}
@@ -144,7 +161,7 @@ const CreateRequestForm = ({
               />
 
               {/* DICOM file validation error message */}
-              {errors.dicomFile && (
+              {errors.result && (
                 <Typography
                   sx={{
                     color: "#FF5630",
@@ -152,7 +169,7 @@ const CreateRequestForm = ({
                     margin: "0.4rem 0rem 0rem 0.3rem",
                   }}
                 >
-                  {errors.dicomFile}
+                  {errors.result}
                 </Typography>
               )}
             </Grid>
@@ -182,7 +199,7 @@ const CreateRequestForm = ({
           </Grid>
 
           {/* Submit Button */}
-          <Box sx={{ display : "flex" , justifyContent : "flex-end" }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
             <PrimaryButton title="Add" type="submit" />
           </Box>
         </form>

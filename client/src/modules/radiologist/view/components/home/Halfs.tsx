@@ -1,5 +1,5 @@
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import RateReviewRoundedIcon from "@mui/icons-material/RateReviewRounded";
 import { Typography } from "@mui/material";
@@ -8,23 +8,32 @@ import IconBtn from "@/core/shared/components/btns/IconBtn";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateRequestForm from "../CreateRequestForm";
+import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
+import {
+  getAssignedRequestsList,
+  getCreatorRequestsList,
+} from "@/modules/radiologist/controllers/thunks/request-thunk";
+import { RequestState } from "@/modules/radiologist/controllers/types";
 
 const Halfs = () => {
+  // useState
   const [showFormDialog, setShowFormDialog] = useState<boolean>(false);
 
-  const myReports = [
-    ["Name", "Status"],
-    ["Report 1", "Accepted"],
-    ["Report 2", "Rejected"],
-    ["Report 3", "Reviewed"],
-  ];
-  const myReviews = [
-    ["Name", "Created At"],
-    ["Report 1", "12:25 am"],
-    ["Report 2", "11:25 am"],
-    ["Report 3", "10:55 pm"],
-    ["Report 4", "10:55 pm"],
-  ];
+  // dispatch
+  const dispatch = useAppDispatch();
+
+  // get requests data
+  useEffect(() => {
+    dispatch(getCreatorRequestsList());
+    dispatch(getAssignedRequestsList());
+  }, [dispatch]);
+
+  const requestState: RequestState = useAppSelector(
+    (state: RootState) => state.request
+  );
+
+  const requestsTableHeader = ["CreatedAt", "Status"];
+  const assignedRequestsTableHeader = ["CreatedAt", "Approved"];
 
   return (
     <>
@@ -51,7 +60,13 @@ const Halfs = () => {
             backgroundColor: "white",
           }}
         >
-          <Box sx={{ display: "flex", justifyContent: "space-between" , alignItems : "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
             <Box
               sx={{
                 padding: "2rem",
@@ -66,7 +81,7 @@ const Halfs = () => {
               <Typography
                 sx={{ color: "primary.main", ml: 2, fontSize: "1rem", mt: 0.5 }}
               >
-                My Reports
+                My Requests
               </Typography>
             </Box>
             <Box
@@ -75,18 +90,18 @@ const Halfs = () => {
                 backgroundColor: "secondary.main",
                 borderRadius: "10px",
                 color: "#fff",
-                display : "flex",
+                display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
                 padding: "1rem",
-                height : "2.7rem",
-                margin: "0rem 1rem 0rem 0rem"
+                height: "2.7rem",
+                margin: "0rem 1rem 0rem 0rem",
               }}
               onClick={() => {
-                setShowFormDialog(true)
+                setShowFormDialog(true);
               }}
             >
-              <AddCircleOutlineIcon sx={{ margin : "0rem 0.3rem 0rem 0rem"}} />
+              <AddCircleOutlineIcon sx={{ margin: "0rem 0.3rem 0rem 0rem" }} />
               <Typography>Create Request</Typography>
             </Box>
           </Box>
@@ -96,7 +111,12 @@ const Halfs = () => {
               boxSizing: "border-box",
             }}
           >
-            <RadiologistTable data={myReports} light={false} />
+            <RadiologistTable
+              isCreatorTable={true}
+              tableHeader={requestsTableHeader}
+              requestsArray={requestState?.requests}
+              light={false}
+            />
           </Box>
         </Box>
         <Box
@@ -122,7 +142,7 @@ const Halfs = () => {
               sx={{ color: "primary.light", fontSize: "2rem" }}
             />
             <Typography sx={{ color: "primary.main", ml: 2, fontSize: "1rem" }}>
-              My Reviews
+              My Assigned Requests
             </Typography>
           </Box>
           <Box
@@ -131,7 +151,12 @@ const Halfs = () => {
               boxSizing: "border-box",
             }}
           >
-            <RadiologistTable data={myReviews} light={false} />
+            <RadiologistTable
+              isCreatorTable={false}
+              tableHeader={assignedRequestsTableHeader}
+              requestsArray={requestState?.assignedRequests}
+              light={false}
+            />
           </Box>
         </Box>
       </Box>

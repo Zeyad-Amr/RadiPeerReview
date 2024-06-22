@@ -1,14 +1,17 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import { GetReportInterface } from "../../interfaces/request-interface";
+import { useRouter } from "next/navigation";
 
 interface ReportDetailsPropsInterface {
-  reportData: any;
+  reportData: GetReportInterface;
 }
 
 const ReportDetailsSection = ({
   reportData,
 }: ReportDetailsPropsInterface) => {
+  const router = useRouter()
   return (
     <Box>
       <Typography
@@ -19,7 +22,7 @@ const ReportDetailsSection = ({
           fontSize: "1.5rem",
         }}
       >
-        {reportData?.name}
+        {reportData?.createdAt}
       </Typography>
       {/* Start Dicom file name & view */}
       <Box sx={{ marginBottom: "1.5rem" }}>
@@ -32,10 +35,12 @@ const ReportDetailsSection = ({
           }}
         >
           <Typography sx={{ fontSize: "13px", color: "primary.light" }}>
-            File Name
+            {reportData?.resultUrl}
           </Typography>
           <Box>
-            <VisibilityIcon sx={{ color: "primary.light" }} />
+            <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} onClick={() => {
+              router.push(`/dicom-viewer?file=${reportData?.resultUrl}`)
+            }} />
           </Box>
         </Box>
       </Box>
@@ -50,10 +55,14 @@ const ReportDetailsSection = ({
           }}
         >
           <Typography sx={{ fontSize: "13px", color: "primary.light" }}>
-            File Name
+          {reportData?.reportUrl}
           </Typography>
           <Box>
-            <VisibilityIcon sx={{ color: "primary.light" }} />
+            <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} 
+            onClick={() => {
+              router.push(`/pdf-viewer?file=${reportData?.reportUrl}`)
+            }}
+            />
           </Box>
         </Box>
       </Box>
@@ -73,10 +82,7 @@ const ReportDetailsSection = ({
             color: "primary.light",
           }}
         >
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore qui
-          fuga voluptatum optio unde, impedit deserunt temporibus sunt quidem
-          porro, aspernatur nesciunt beatae cumque accusamus maiores tempore?
-          Alias, facere consequuntur?
+         {reportData?.additionalComments}
         </Box>
       </Box>
     </Box>

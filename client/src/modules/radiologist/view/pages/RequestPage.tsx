@@ -1,10 +1,15 @@
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DisplayedRequest from "../components/DisplayedRequest";
 import DisplayedReview from "../components/DisplayedReview";
 import { Grid } from "@mui/material";
 import ReportDetailsSection from "../components/ReportDetailsSection";
 import CreateReviewForm from "@/modules/radiologist/view/components/CreateReviewForm";
+import { useAppSelector, RootState, useAppDispatch } from "@/core/state/store";
+import { RequestState } from "../../controllers/types";
+import { GetReportInterface, GetRequestInterface } from "../../interfaces/request-interface";
+import { useParams } from "next/navigation";
+import { getCreatorRequestsList, getAssignedRequestsList } from "../../controllers/thunks/request-thunk";
 
 interface Review {
   id: number;
@@ -36,6 +41,32 @@ const reports: Report[] = [
 
 const RequestPage = () => {
   const [reportData, setReportData] = useState<any>();
+  const [targetRequest, setTargetRequest] = useState<GetRequestInterface>();
+
+  const params = new URLSearchParams(window.location.search);
+  const roleParam = params.get('role');
+  const { requestId } = useParams();
+  console.log(requestId,'requestId');
+  console.log(roleParam,'role');
+
+  const dispatch = useAppDispatch()
+
+  const requestState: RequestState = useAppSelector(
+    (state: RootState) => state.request
+  );
+
+  useEffect(() => {
+    dispatch(getCreatorRequestsList());
+    dispatch(getAssignedRequestsList());
+  }, [dispatch])
+
+  useEffect(() => {
+  const targetRequest = requestState?.requests?.find((request : GetRequestInterface) => request.id == requestId )
+  console.log(targetRequest,'targetRequest');
+  setTargetRequest(targetRequest)
+  }, [requestState?.requests, requestState?.assignedRequests, requestId])
+  
+  
   return (
     <Grid container>
       <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -50,19 +81,19 @@ const RequestPage = () => {
               backgroundColor: "gray",
             }}
           />
-          {reports.map((report, index) => (
+          {targetRequest?.report?.map((reportEl, index) => (
             <Box
-              key={report.id}
+              key={reportEl.id}
               sx={{ position: "relative", marginLeft: "2rem" }}
             >
-              <DisplayedRequest setReportData={setReportData} report={report} />
-              {report.reviews.map((review) => (
+              <DisplayedRequest setReportData={setReportData} reportEl={reportEl} />
+              {/* {report.reviews.map((review) => (
                 <DisplayedReview
                   key={review.id}
                   content={review.content}
                   time={review.time}
                 />
-              ))}
+              ))} */}
             </Box>
           ))}
         </Box>
@@ -83,8 +114,8 @@ const RequestPage = () => {
           overflow : "scroll"
         }}
       >
-        {/* <ReportDetailsSection reportData={reportData} /> */}
-        <CreateReviewForm/>
+        <ReportDetailsSection reportData={reportData} />
+        {/* <CreateReviewForm/> */}
       </Grid>
     </Grid>
   );

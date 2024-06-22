@@ -1,6 +1,10 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+"use-client";
+
+import React, { useState, useEffect } from "react";
 import CornerstoneViewport from "react-cornerstone-viewport";
 import * as cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
+import axios from "axios";
+import { SessionStorage, SessionStorageKeys } from "@/core/shared/utils/session-storage";
 
 type ToolConfig = {
   name: string;
@@ -49,40 +53,51 @@ const DicomViewer = () => {
   const [config, setConfig] = useState<Config>(initialConfig);
   const [isImageIDs, setIsImageIDs] = useState<boolean>(false);
 
-  // get url params
-  const params = new URLSearchParams(window.location.search);
-
   useEffect(() => {
-    // get file url from url params
+    const params = new URLSearchParams(window.location.search);
     const fileUrl = params.get("file");
     console.log("fileUrl", fileUrl);
 
-    // getDicomImage(fileUrl ?? "");
+    if (fileUrl) {
+      getDicomImage(fileUrl);
+    }
   }, []);
 
-  // const getDicomImage = (fileUrl: string) => {
-  //   axios
-  //     .get(fileUrl, {
-  //       responseType: "blob",
-  //     })
-  //     .then((res: any) => {
-  //       console.log(res, "res");
-  //       if (res) {
-  //         const file = new File([res.data], "dicom.dcm", {
-  //           type: "application/dicom",
-  //         });
+  const getDicomImage = async (fileUrl: string) => {
+    try {
+      // Get the token from session storage
+      const token: string =
+        SessionStorage.getDataByKey(SessionStorageKeys.token) ?? "";
 
-  //         const imageId =
-  //           cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
-  //         console.log(imageId, "imageId");
+      // Configure headers
+      const headers: any = {};
+      if (token.length > 0) {
+        headers["Authorization"] = "Bearer " + token;
+      }
 
-  //         setConfig((prevConfig) => ({
-  //           ...prevConfig,
-  //           imageIds: [...prevConfig.imageIds, imageId],
-  //         }));
-  //       }
-  //     });
-  // };
+      const res = await axios.get(fileUrl, {
+        responseType: "blob",
+        headers: headers,
+      });
+
+      if (res.data) {
+        const file = new File([res.data], "dicom.dcm", {
+          type: "application/dicom",
+        });
+
+        const imageId =
+          cornerstoneWADOImageLoader.wadouri.fileManager.add(file);
+        console.log(imageId, "imageId");
+
+        setConfig((prevConfig) => ({
+          ...prevConfig,
+          imageIds: [...prevConfig.imageIds, imageId],
+        }));
+      }
+    } catch (error) {
+      console.error("Error fetching DICOM file:", error);
+    }
+  };
 
   useEffect(() => {
     if (config.imageIds.length > 0) {
@@ -93,8 +108,7 @@ const DicomViewer = () => {
   return (
     <>
       {isImageIDs &&
-        config.imageIds &&
-        config.viewports.map((viewportIndex) => (
+        config.imageIds.slice(0,1).map((imageId, viewportIndex) => (
           <div
             key={viewportIndex}
             style={{ flex: "1", display: "flex", flexDirection: "row" }}
