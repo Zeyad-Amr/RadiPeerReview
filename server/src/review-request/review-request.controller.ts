@@ -47,7 +47,7 @@ export class ReviewRequestController {
       {
         storage: diskStorage({
           destination: (req, file, cb) => {
-            const uploadPath = resolve(__dirname, '..', 'uploads');
+            const uploadPath = resolve('src', 'shared', 'uploads');
             if (!fs.existsSync(uploadPath)) {
               fs.mkdirSync(uploadPath, { recursive: true });
             }
@@ -102,7 +102,7 @@ export class ReviewRequestController {
   @ApiQuery({ name: 'approved', required: false })
   async findAll(@Query() query, @Req() req) {
     try {
-      const radioligistId  = req.user.sub;
+      const radioligistId = req.user.sub;
       return await this.reviewRequestService.findAll(query, radioligistId);
     } catch (error) {
       handleError(error);
@@ -123,7 +123,10 @@ export class ReviewRequestController {
     @Param('id') id: string,
     @Body() updateReviewRequestDto: UpdateReviewRequestDto,
   ) {
-    return this.reviewRequestService.assignReview(id, updateReviewRequestDto.reviewerId);
+    return this.reviewRequestService.assignReview(
+      id,
+      updateReviewRequestDto.reviewerId,
+    );
   }
 
   @Delete(':id')
