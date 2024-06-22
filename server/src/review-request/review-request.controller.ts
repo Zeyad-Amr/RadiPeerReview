@@ -89,6 +89,7 @@ export class ReviewRequestController {
         additionalComments: createReviewRequestDto.additionalComments,
       });
       return this.reviewRequestService.createReviewRequest(
+        createReviewRequestDto.name,
         report.id,
         creatorId,
       );

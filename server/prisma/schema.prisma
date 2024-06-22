@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,16 +8,15 @@ datasource db {
 }
 
 model Auth {
-  id       String @id @default(cuid())
-  username String @unique
-  password String
-  role     Role   @default(RADIOLOGIST)
+  id                      String          @id @default(cuid())
+  username                String          @unique
+  password                String
+  role                    Role            @default(RADIOLOGIST)
+  isdeactivated           Boolean         @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  isdeactivated Boolean @default(false)
-
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  
   radiologist             Radiologist?    @relation(fields: [radiologistId], references: [id])
   radiologistId           String?         @unique
   Notification            Notification[]
@@ -31,47 +24,44 @@ model Auth {
   ReviewRequestAsReviewer ReviewRequest[] @relation("ReviewerRadiologist")
 }
 
-enum Role {
-  ADMIN
-  RADIOLOGIST
-}
-
 model Radiologist {
   id              String           @id @default(cuid())
   fname           String
   lname           String
   email           String           @unique
-  specializations Specialization[]
   phone           String           @unique
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  auth Auth?
+  
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  auth            Auth?
+  specializations Specialization[]
 }
 
 model Report {
-  id                 String  @id @default(cuid())
+  id                 String         @id @default(cuid())
   reportUrl          String
   resultUrl          String
   additionalComments String?
+ 
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  ReviewRequest   ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
-  reviewRequestId String?
-  Review          Review?        @relation(fields: [reviewId], references: [id])
-  reviewId        String?        @unique
+  Review             Review?        @relation(fields: [reviewId], references: [id])
+  reviewId           String?        @unique
+  ReviewRequest      ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
+  reviewRequestId    String?
 }
 
 model ReviewRequest {
-  id        String   @id @default(cuid())
-  status    Status   @default(Created)
-  approved  Boolean?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id         String   @id @default(cuid())
+  name       String
+  status     Status   @default(Created)
+  approved   Boolean?
+ 
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+ 
   creator    Auth     @relation("CreatorRadiologist", fields: [creatorId], references: [id])
   creatorId  String
   reviewer   Auth?    @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
@@ -80,29 +70,27 @@ model ReviewRequest {
 }
 
 model Review {
-  id String @id @default(cuid())
-
-  feedbackToRadiologist      String?
-  additionalReviewerComments String?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  feedbacks Feedback[]
-
+  id                             String                        @id @default(cuid())
+  feedbackToRadiologist          String?
+  additionalReviewerComments     String?
+ 
+  createdAt                      DateTime                      @default(now())
+  updatedAt                      DateTime                      @updatedAt
+ 
+  feedbacks                      Feedback[]
+  Report                         Report?
   accuracyOfFindings             AccuracyOfFindings?           @relation(fields: [accuracyOfFindingsId], references: [id])
   accuracyOfFindingsId           String?                       @unique
   clarityAndCompleteness         ClarityAndCompleteness?       @relation(fields: [clarityAndCompletenessId], references: [id])
   clarityAndCompletenessId       String?                       @unique
-  impressionAndRecommendations   ImpressionAndRecommendations? @relation(fields: [impressionAndRecommendationsId], references: [id])
-  impressionAndRecommendationsId String?                       @unique
-  technicalQuality               TechnicalQuality?             @relation(fields: [technicalQualityId], references: [id])
-  technicalQualityId             String?                       @unique
-  overallAssessment              OverallAssessment?            @relation(fields: [overallAssessmentId], references: [id])
-  overallAssessmentId            String?                       @unique
   complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
   complianceAndStandardizationId String?                       @unique
-  Report                         Report?
+  impressionAndRecommendations   ImpressionAndRecommendations? @relation(fields: [impressionAndRecommendationsId], references: [id])
+  impressionAndRecommendationsId String?                       @unique
+  overallAssessment              OverallAssessment?            @relation(fields: [overallAssessmentId], references: [id])
+  overallAssessmentId            String?                       @unique
+  technicalQuality               TechnicalQuality?             @relation(fields: [technicalQualityId], references: [id])
+  technicalQualityId             String?                       @unique
 }
 
 model Config {
@@ -112,29 +100,25 @@ model Config {
 }
 
 model Feedback {
-  id      String @id @default(cuid())
-  comment String
-
+  id        String   @id @default(cuid())
+  reviewId  String
+  comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  review   Review @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
-  reviewId String
+  review    Review   @relation(fields: [reviewId], references: [id], map: "feedback_review_id_fkey")
 }
 
 model AccuracyOfFindings {
-  id                    String  @id @default(cuid())
+  id                    String          @id @default(cuid())
   correctnessOfFindings Boolean
   commentsOnAccuracy    String?
-
-  Review        Review?
-  MissedFinding MissedFinding[]
+  MissedFinding         MissedFinding[]
+  Review                Review?
 }
 
 model MissedFinding {
-  id          Int    @id @default(autoincrement())
-  description String
-
+  id                   Int                @id @default(autoincrement())
+  description          String
   accuracyOfFindingsId String
   AccuracyOfFindings   AccuracyOfFindings @relation(fields: [accuracyOfFindingsId], references: [id])
 }
@@ -145,8 +129,7 @@ model ClarityAndCompleteness {
   commentsOnLanguage     String?
   completenessOfReport   Int
   commentsOnCompleteness String?
-
-  Review Review?
+  Review                 Review?
 }
 
 model ImpressionAndRecommendations {
@@ -155,8 +138,7 @@ model ImpressionAndRecommendations {
   commentsOnImpression             String?
   appropriatenessOfRecommendations Int
   suggestionsForRecommendations    String?
-
-  Review Review?
+  Review                           Review?
 }
 
 model TechnicalQuality {
@@ -165,38 +147,38 @@ model TechnicalQuality {
   commentsOnTechnique    String?
   imageQuality           Int
   commentsOnImageQuality String?
-
-  Review Review?
+  Review                 Review?
 }
 
 model OverallAssessment {
   id              String  @id @default(cuid())
   overallQuality  Int
   generalComments String?
-
-  Review Review?
+  Review          Review?
 }
 
 model ComplianceAndStandardization {
   id                    String  @id @default(cuid())
   adherenceToGuidelines Boolean
   commentsOnCompliance  String?
-
-  Review Review?
+  Review                Review?
 }
 
 model Notification {
-  id        String   @id @default(cuid())
-  message   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id         String             @id @default(cuid())
+  message    String
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
   status     NotificationStatus @default(UNREAD)
   type       NotificationType   @default(GENERAL)
-  receiver   Auth?              @relation(fields: [receiverId], references: [id])
   receiverId String?
+  entityId   String?
+  receiver   Auth?              @relation(fields: [receiverId], references: [id])
+}
 
-  entityId String?
+enum Role {
+  ADMIN
+  RADIOLOGIST
 }
 
 enum Status {
