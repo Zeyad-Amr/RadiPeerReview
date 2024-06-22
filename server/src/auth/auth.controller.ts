@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UpdateAuthDto } from './dto/update-auth.dto';
@@ -14,6 +15,7 @@ import { handleError } from '@/shared/http-error';
 import { LoginDTO } from './dto/login.dto';
 import { Public } from '@/shared/decorators/public.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ChangePasswordDto } from './dto/create-auth.dto';
 
 @ApiBearerAuth()
 @ApiTags('auth')
@@ -36,6 +38,14 @@ export class AuthController {
   async findAll() {
     try {
       return await this.authService.findAll();
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+  @Patch('changepassword')
+  async changePassword(@Body() dto: ChangePasswordDto, @Req() req) {
+    try {
+      return await this.authService.changePassword(req.user.sub, dto);
     } catch (error) {
       throw handleError(error);
     }

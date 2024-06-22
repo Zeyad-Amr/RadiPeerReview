@@ -12,7 +12,9 @@ export class RadiologistRepo extends PrismaGenericRepo<
   Prisma.RadiologistInclude
 > {
   constructor(private readonly prismaService: PrismaService) {
-    super('radiologist', prismaService);
+    super('radiologist', prismaService, {
+      auth: true,
+    });
   }
 
   async create(data: CreateRadiologistDto): Promise<any> {
