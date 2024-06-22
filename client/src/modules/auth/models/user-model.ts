@@ -18,6 +18,7 @@ class UserModel extends BaseModel<UserInterface> {
 
   validationSchema = Yup.object().shape({});
   fromJson(json: any): UserInterface {
+    console.log(json);
     return {
       id: json.id,
       username: json.username,
