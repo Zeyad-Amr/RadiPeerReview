@@ -131,6 +131,11 @@ export class ReviewRequestController {
     );
   }
 
+  @Patch('approve/:id')
+  update(@Param('id') id: string) {
+    return this.reviewRequestService.approveReviewRequest(id);
+  }
+
   @Delete(':id')
   async remove(@Param('id') id: string) {
     try {

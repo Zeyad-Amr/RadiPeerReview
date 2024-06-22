@@ -109,4 +109,24 @@ export class ReviewRequestService {
       throw error;
     }
   }
+
+  async approveReviewRequest(id: string) {
+    try {
+      const reviewRequest = await this.reviewRequestRepo.update(id, {
+        approved: true,
+      });
+
+      // Notify the Radiologist that the request has been approved
+      this.notificationsService.notifyUser({
+        receiverRole: Role.RADIOLOGIST,
+        receiverId: reviewRequest.creatorId,
+        type: NotificationType.REQUEST_APPROVED,
+        entityId: reviewRequest.id,
+      });
+
+      return reviewRequest;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

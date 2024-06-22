@@ -21,7 +21,8 @@ export class NotifyUserDto {
 
   @ApiProperty({
     type: () => String,
-    example: 'New notification message',
+    example:
+      'You have a new notification. Please check your dashboard for more details.',
   })
   @IsString()
   @IsOptional()
