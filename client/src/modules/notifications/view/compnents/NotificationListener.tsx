@@ -1,35 +1,41 @@
+import { useEffect, useCallback } from "react";
+import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
 import NotificationService from "@/core/shared/utils/notification-service";
 import useSocketConnection from "@/core/shared/utils/socket";
-import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
-import { useEffect } from "react";
 import { getUserNotifications } from "../../controllers/thunks/notifications-thunk";
 
 const NotificationListener = () => {
-  const authState = useAppSelector((state: RootState) => state.auth);
-  const socket = useSocketConnection(authState.user?.id ?? "");
   const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state: RootState) => state.auth);
+  const socket = useSocketConnection(user?.id ?? "");
+
+  const fetchUserNotifications = useCallback(
+    (userId?: string) => {
+      if (userId) {
+        dispatch(getUserNotifications(userId));
+      }
+    },
+    [dispatch]
+  );
 
   useEffect(() => {
-    if (
-      authState.user?.id !== undefined &&
-      authState.user?.id !== "" &&
-      authState.user?.id !== null
-    ) {
-      dispatch(getUserNotifications(authState.user?.id));
-    }
-  }, [authState.user?.id, dispatch]);
+    fetchUserNotifications(user?.id);
+  }, [user?.id, fetchUserNotifications]);
 
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("notification", (message: string) => {
+    const handleNotification = (message: string) => {
       NotificationService.showNotification(message);
-    });
+      fetchUserNotifications(user?.id);
+    };
+
+    socket.on("notification", handleNotification);
 
     return () => {
-      socket.off("notification");
+      socket.off("notification", handleNotification);
     };
-  }, [socket]);
+  }, [socket, user?.id, fetchUserNotifications]);
 
   return null;
 };
