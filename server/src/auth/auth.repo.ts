@@ -26,4 +26,15 @@ export class AuthRepo extends PrismaGenericRepo<
       throw error;
     }
   }
+
+  async changePassword(id: string, hash: string) {
+    try {
+      return await this.prismaService.auth.update({
+        where: { id },
+        data: { password: hash },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

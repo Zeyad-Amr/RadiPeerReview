@@ -102,7 +102,7 @@ export class ReviewRequestController {
   @ApiQuery({ name: 'approved', required: false })
   async findAll(@Query() query, @Req() req) {
     try {
-      const radioligistId  = req.user.sub;
+      const radioligistId = req.user.sub;
       return await this.reviewRequestService.findAll(query, radioligistId);
     } catch (error) {
       handleError(error);

@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
+import { ChangePasswordDto, CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { AuthRepo } from './auth.repo';
 import * as bcrypt from 'bcrypt';
@@ -27,7 +27,7 @@ export class AuthService {
       }
       const token = await this.jwtService.signAsync({
         sub: auth.id,
-        role:auth.role
+        role: auth.role,
       });
       delete auth.password;
       return { token, auth };
@@ -92,4 +92,25 @@ export class AuthService {
     password = await bcrypt.hash(password, salt);
     return password;
   };
+
+  async changePassword(userID: string, dto: ChangePasswordDto) {
+    try {
+      const auth = await this.authRepo.getByID(userID);
+      if (!auth) {
+        throw new UnauthorizedException('Invalid user');
+      }
+
+      console.log('auth', auth);
+      const validPass = await bcrypt.compare(dto.oldPassword, auth.password);
+      if (!validPass) {
+        throw new UnauthorizedException('Old password is incorrect');
+      }
+
+      auth.password = await this.hashPassword(dto.newPassword);
+      await this.authRepo.changePassword(userID, auth.password);
+      return { message: 'Password changed successfully' };
+    } catch (error) {
+      throw error;
+    }
+  }
 }

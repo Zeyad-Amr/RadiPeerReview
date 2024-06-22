@@ -17,81 +17,74 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
     });
   }
 
- async getAllRequests(query: { [key: string]: any },radiologistId:string) {
+  async getAllRequests(query: { [key: string]: any }, radiologistId: string) {
     try {
-        let filters = Object.keys(query)
-        const filterErrorMsg = (cause:string) => `Invalid filter value: ${cause}`
+      let filters = Object.keys(query);
+      const filterErrorMsg = (cause: string) =>
+        `Invalid filter value: ${cause}`;
 
-        // where object initialization
-        let whereObj: Prisma.ReviewRequestWhereInput= {}
+      // where object initialization
+      let whereObj: Prisma.ReviewRequestWhereInput = {};
 
-        // filter the query object and insert where clause in where object
-        let q;
-        filters.map((filter: any) => {
-            if (this.accepted_filters.includes(filter)) {
-                q = query[filter]
-                switch (filter) {
-                  case 'user_is':
-                    if(q === "creator"){
-                      whereObj["creatorId"]= radiologistId
-                    }
-                    else if(q === "reviewer"){
-                      whereObj["reviewerId"]= radiologistId
-                    }else{
-                      throw new BadRequestException(filterErrorMsg("user_is"))
-                    }
-                    break;
-                  case 'status':
-                    if (!Object.keys(Status).includes(q)) {
-                      throw new BadRequestException(filterErrorMsg("status"))
-                    }
-                    whereObj["status"]= q
-                    break;
-                  case 'approved':
-                    if (q ==="true" ) {                      
-                      whereObj["approved"]= true
-                    }
-                    else if (q ==="false" ) {
-                      whereObj["approved"]= false
-                    }else{
-                      throw new BadRequestException(filterErrorMsg("approved"))
-                    }
-                    break;
-                
-                  default:
-                    break;
-                }
-            }
-        })
+      // filter the query object and insert where clause in where object
+      let q;
+      filters.map((filter: any) => {
+        if (this.accepted_filters.includes(filter)) {
+          q = query[filter];
+          switch (filter) {
+            case 'user_is':
+              if (q === 'creator') {
+                whereObj['creatorId'] = radiologistId;
+              } else if (q === 'reviewer') {
+                whereObj['reviewerId'] = radiologistId;
+              } else {
+                throw new BadRequestException(filterErrorMsg('user_is'));
+              }
+              break;
+            case 'status':
+              if (!Object.keys(Status).includes(q)) {
+                throw new BadRequestException(filterErrorMsg('status'));
+              }
+              whereObj['status'] = q;
+              break;
+            case 'approved':
+              if (q === 'true') {
+                whereObj['approved'] = true;
+              } else if (q === 'false') {
+                whereObj['approved'] = false;
+              } else {
+                throw new BadRequestException(filterErrorMsg('approved'));
+              }
+              break;
 
+            default:
+              break;
+          }
+        }
+      });
 
-        // The QUERY 
-        const data = await this.prismaService.reviewRequest.findMany({
-            where: whereObj,
-            include: this.includesObj
-        })
+      // The QUERY
+      const data = await this.prismaService.reviewRequest.findMany({
+        where: whereObj,
+        include: this.includesObj,
+      });
 
-        return data
-
+      return data;
     } catch (error: any) {
-        throw error;
+      throw error;
     }
-}
-
-checkBool(s:string){
-  if (s ==="true" ) {
-    return true
   }
-  if (s ==="false" ) {
-    return false
-  }else{
-    return s
-  }
-}
 
-private accepted_filters = [
-  'status',
-  'approved',
-  'user_is',
-]
+  checkBool(s: string) {
+    if (s === 'true') {
+      return true;
+    }
+    if (s === 'false') {
+      return false;
+    } else {
+      return s;
+    }
+  }
+
+  private accepted_filters = ['status', 'approved', 'user_is'];
 }
