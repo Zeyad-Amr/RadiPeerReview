@@ -24,6 +24,17 @@ export const radiologistHeaderTable: HeaderItem[] = [
     filterable: false,
   },
   {
+    filterKey: "username",
+    id: "username",
+    label: "Username",
+    minWidth: 100,
+    maxWidth: 150,
+    tableCellProps: { align: "center" },
+    sortable: false,
+    searchable: false,
+    filterable: false,
+  },
+  {
     filterKey: "specialization",
     id: "specialization",
     label: "Specialization",

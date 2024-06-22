@@ -32,6 +32,8 @@ const Endpoints = {
     details: "/radiologist/:id",
     update: "/radiologist/:id",
     delete: "/radiologist/:id",
+    activate:"/radiologist/activate/:id",
+    deactivate:"/radiologist/deactivate/:id"
   },
   notification: {
     list: "/notifications/user/:id",

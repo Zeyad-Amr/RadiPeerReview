@@ -12,6 +12,10 @@ import ConfirmationDialog from "./ConfirmationDialog";
 import PrimaryButton from "./btns/PrimaryButton";
 import PageTitle from "./PageTitle";
 import IconBtn from "./btns/IconBtn";
+import { Switch } from "@mui/material";
+import { updateRadiologist } from "@/modules/admin/controllers/thunks/radiologist-thunk";
+import { activateRadiologist, deactivateRadiologist } from "@/modules/admin/controllers/thunks/deactivate-thunk";
+import { RadiologistInterface } from "@/modules/admin/interfaces/radiologist-interface";
 
 export default function CreateUser({
   title,
@@ -29,6 +33,24 @@ export default function CreateUser({
     useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [userId, setUserID] = useState<string>('')
+  const [checked, setChecked] = useState<boolean>(false)
+
+  const handleToggle = async (item: RadiologistInterface) => {
+    setTableItemData(item);
+    console.log(item.id);
+
+    if (!item.isdeactivated) {
+      await dispatch(deactivateRadiologist(item.id ?? ''));
+    } else {
+      // Handle the activation logic here if needed
+      await dispatch(activateRadiologist(item.id ?? ''));
+      console.log(`Radiologist ${item.id} is already deactivated`);
+    }
+
+    // // Optionally, refresh the list after toggling
+    // dispatch(getRadiologistList());
+  };
+
   const updatedTableHeader: HeaderItem[] = [
     ...tableHeader,
     {
@@ -104,24 +126,26 @@ export default function CreateUser({
                       setUserID(item.id);
                       setIsDialogOpen(true);
                     }}
-                  />
+                  /> */}
                   <EditRoundedIcon
                     sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
                       setIsViewMode(false);
-                      setTableItemData({...item, password:''});
+                      setTableItemData({ ...item, password: '' });
                       setUserID(item.id);
-                      console.log({...item, password:''});
                       setIsDialogOpen(true);
                     }}
-                  /> */}
-                  <DeleteRoundedIcon
+                  />
+                  {/* <DeleteRoundedIcon
                     sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
                       setTableItemData(item);
                       setShowConfirmationDialog(true);
                     }}
-                  />
+                  /> */}
+                  <Switch checked={!item.isdeactivated} onClick={() => handleToggle(item)} />
+
+
                 </Box>
               ),
             };
@@ -130,20 +154,7 @@ export default function CreateUser({
         />
       </Box>
 
-      {/* Delete Item */}
-      <ConfirmationDialog
-        confirmFunction={async () => {
-          dispatch(deleteThunk(String(tableItemData?.id))).then(() => {
-            setShowConfirmationDialog(false);
-          });
-        }}
-        contentMessage="If you delete the item, you will not be able to retrieve it again. Are you sure you want to delete this item?"
-        open={showConfirmationDialog}
-        setOpen={setShowConfirmationDialog}
-        title="Delete Item"
-      />
-
-      {/* Create, Edit, or View Item */}
+      {/* Create or Edit Item */}
       <CustomizedDialog
         title={
           isViewMode ? "Show Item" : tableItemData ? "Edit Item" : "Add Item"
