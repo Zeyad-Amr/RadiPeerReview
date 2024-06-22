@@ -26,8 +26,22 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
           },
         },
       },
-      reviewer: true,
-      creator: true,
+      reviewer: {
+        select:{
+          id:true,
+          username:true,
+          role:true,
+        radiologist:true
+      }
+    },
+      creator: {
+        select:{
+          id:true,
+          username:true,
+          role:true,
+          radiologist:true
+        }
+      },
     });
   }
 
