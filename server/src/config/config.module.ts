@@ -7,5 +7,6 @@ import { ConfigRepo } from './config.repo';
 @Module({
   controllers: [ConfigController],
   providers: [ConfigService, PrismaService, ConfigRepo],
+  exports: [ConfigService],
 })
 export class ConfigModule {}

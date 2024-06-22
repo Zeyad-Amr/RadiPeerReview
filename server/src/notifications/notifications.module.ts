@@ -15,5 +15,6 @@ import { AuthRepo } from '@/auth/auth.repo';
     PrismaService,
     AuthRepo,
   ],
+  exports: [NotificationsService],
 })
 export class NotificationsModule {}

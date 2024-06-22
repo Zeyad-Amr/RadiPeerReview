@@ -120,12 +120,12 @@ export class ReviewRequestController {
     }
   }
 
-  @Patch(':id')
-  update(
+  @Patch('assign/:id')
+  assignReview(
     @Param('id') id: string,
     @Body() updateReviewRequestDto: UpdateReviewRequestDto,
   ) {
-    return this.reviewRequestService.assignReview(
+    return this.reviewRequestService.assignReviewRequest(
       id,
       updateReviewRequestDto.reviewerId,
     );

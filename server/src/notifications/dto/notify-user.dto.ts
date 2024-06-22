@@ -17,7 +17,7 @@ export class NotifyUserDto {
   })
   @IsOptional()
   @IsString()
-  receiverId: string;
+  receiverId?: string;
 
   @ApiProperty({
     type: () => String,
@@ -25,7 +25,7 @@ export class NotifyUserDto {
   })
   @IsString()
   @IsOptional()
-  message: string;
+  message?: string;
 
   @ApiProperty({
     type: () => String,
