@@ -29,7 +29,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { handleError } from '@/shared/http-error';
 
-const UPLOAD_PATH = resolve('src', 'shared', 'uploads');
+const UPLOAD_PATH = process.env.UPLOAD_DIR
 @ApiBearerAuth()
 @ApiTags('review-request')
 @Controller('review-request')
@@ -121,14 +121,18 @@ export class ReviewRequestController {
   }
 
   @Patch(':id')
-  update(
+  async update(
     @Param('id') id: string,
     @Body() updateReviewRequestDto: UpdateReviewRequestDto,
   ) {
-    return this.reviewRequestService.assignReview(
-      id,
-      updateReviewRequestDto.reviewerId,
-    );
+    try {
+      return await this.reviewRequestService.assignReview(
+        id,
+        updateReviewRequestDto.reviewerId,
+      );
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   @Delete(':id')

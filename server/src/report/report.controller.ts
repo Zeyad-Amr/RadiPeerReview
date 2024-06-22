@@ -26,7 +26,7 @@ import {
 import { handleError } from '@/shared/http-error'; // Adjust the path as needed
 import { CreateReportDto } from './dto/create-report.dto';
 
-const UPLOAD_PATH = resolve('src', 'shared', 'uploads');
+const UPLOAD_PATH = process.env.UPLOAD_DIR
 
 @ApiTags('report')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
