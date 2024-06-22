@@ -9,8 +9,6 @@ import { ReviewRequestService } from '@/review-request/review-request.service';
 export class ReportService {
   constructor(
     private reportRepo: ReportRepo,
-    private notificationsService: NotificationsService,
-    private reviewRequestService: ReviewRequestService,
   ) {}
 
   async saveReport(
@@ -29,19 +27,6 @@ export class ReportService {
               },
             }
           : undefined,
-      });
-
-      // Get Review Request
-      const reviewRequest = await this.reviewRequestService.findOne(
-        data.reviewRequestId,
-      );
-
-      // Notify the Radiologist that the report has been re-submitted
-      this.notificationsService.notifyUser({
-        receiverRole: Role.RADIOLOGIST,
-        receiverId: reviewRequest.reviewerId,
-        type: NotificationType.REQUEST_REPORT_RESUBMITTED,
-        entityId: reviewRequest.id,
       });
       return report;
     } catch (error) {
