@@ -17,15 +17,16 @@ export class NotifyUserDto {
   })
   @IsOptional()
   @IsString()
-  receiverId: string;
+  receiverId?: string;
 
   @ApiProperty({
     type: () => String,
-    example: 'New notification message',
+    example:
+      'You have a new notification. Please check your dashboard for more details.',
   })
   @IsString()
   @IsOptional()
-  message: string;
+  message?: string;
 
   @ApiProperty({
     type: () => String,
