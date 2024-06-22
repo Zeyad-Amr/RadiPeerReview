@@ -7,11 +7,14 @@ import CampaignRoundedIcon from "@mui/icons-material/CampaignRounded";
 import { NotificationInterface } from "../../interfaces/notification-interface";
 import { NotificationType } from "@/core/shared/constants/enums";
 import { fFullDateTime } from "@/core/shared/utils/format-time";
+import { useAppDispatch } from "@/core/state/store";
+import { markNotificationAsRead } from "../../controllers/thunks/notifications-thunk";
 interface NotificationCardProps {
   notification: NotificationInterface;
 }
 
 const NotificationCard = (props: NotificationCardProps) => {
+  const disptach = useAppDispatch();
   const { notification } = props;
   return (
     <Box
@@ -19,6 +22,11 @@ const NotificationCard = (props: NotificationCardProps) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
+        cursor: "pointer",
+      }}
+      onClick={() => {
+        console.log("Notification Clicked", notification);
+        disptach(markNotificationAsRead(notification.id));
       }}
     >
       <Box sx={{ color: "secondary.main", mr: 2 }}>

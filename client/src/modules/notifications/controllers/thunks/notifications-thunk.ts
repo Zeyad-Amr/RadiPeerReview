@@ -32,3 +32,31 @@ export const getUserNotifications = createAsyncThunk(
     }
   }
 );
+
+//* Mark Notification as Read
+export const markNotificationAsRead = createAsyncThunk(
+  "notifications/markAsRead",
+  async (notificationId: string, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      await ApiClient.post(
+        Endpoints.notification.markAsRead,
+        {},
+        {
+          pathVariables: {
+            id: notificationId,
+          },
+        }
+      );
+      return notificationId;
+    } catch (error) {
+      let errorResponse: ErrorResponse;
+      if (error instanceof Error) {
+        errorResponse = ErrorMessage.get(error.message) as ErrorResponse;
+      } else {
+        errorResponse = error as ErrorResponse;
+      }
+      return rejectWithValue(errorResponse);
+    }
+  }
+);

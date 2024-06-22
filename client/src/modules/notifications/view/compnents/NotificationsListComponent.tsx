@@ -41,7 +41,7 @@ const NotificationsListComponent = ({ scaleProp }: { scaleProp: boolean }) => {
       />
       <Box
         sx={{
-          width: "20rem",
+          width: "30rem",
           height: "30rem",
           backgroundColor: "white",
           position: "absolute",
@@ -51,7 +51,6 @@ const NotificationsListComponent = ({ scaleProp }: { scaleProp: boolean }) => {
           borderRadius: "1rem",
           padding: "1rem",
           boxSizing: "border-box",
-          overflowY: "auto",
           transition: "0.2s",
           scale: scale,
           transformOrigin: "top right",
@@ -61,8 +60,11 @@ const NotificationsListComponent = ({ scaleProp }: { scaleProp: boolean }) => {
         <Typography sx={{ color: "primary.light" }}>Notifications</Typography>
         <Box
           sx={{
-            padding: "1rem 0",
+            padding: "1rem",
+            margin: "1rem 0",
             boxSizing: "border-box",
+            overflowY: "auto",
+            height: "calc(100% - 2rem)",
           }}
         >
           {notificationsState.notifications.map(
