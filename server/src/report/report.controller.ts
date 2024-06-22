@@ -9,6 +9,7 @@ import {
   Res,
   Delete,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -25,15 +26,20 @@ import {
 } from '@nestjs/swagger';
 import { handleError } from '@/shared/http-error'; // Adjust the path as needed
 import { CreateReportDto } from './dto/create-report.dto';
+import { NotificationsService } from '@/notifications/notifications.service';
+import { NotificationType, Role } from '@prisma/client';
 
-const UPLOAD_PATH = process.env.UPLOAD_DIR
+const UPLOAD_PATH = process.env.UPLOAD_DIR;
 
 @ApiTags('report')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
 @ApiBearerAuth()
 @Controller('report')
 export class ReportController {
-  constructor(private readonly reportService: ReportService) {}
+  constructor(
+    private readonly reportService: ReportService,
+    private notificationsService: NotificationsService,
+  ) {}
 
   @Post()
   @UseInterceptors(
@@ -74,7 +80,18 @@ export class ReportController {
     @Body() body: CreateReportDto,
   ) {
     try {
-      return await this.reportService.saveReport(files, body);
+      const report = await this.reportService.saveReport(files, body);
+
+      if(!report.ReviewRequest.reviewerId) throw new BadRequestException("Review request isn't assigned yet")
+
+      // Notify the Radiologist that the report has been re-submitted
+      await this.notificationsService.notifyUser({
+        receiverRole: Role.RADIOLOGIST,
+        receiverId: report.ReviewRequest.reviewerId,
+        type: NotificationType.REQUEST_REPORT_RESUBMITTED,
+        entityId: report.reviewRequestId,
+      });
+      return report;
     } catch (error) {
       handleError(error);
     }

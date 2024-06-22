@@ -12,13 +12,18 @@ import {
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
+import { NotificationsService } from '@/notifications/notifications.service';
+import { NotificationType, Role } from '@prisma/client';
+
 
 @ApiTags('review')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
 @ApiBearerAuth()
 @Controller('review')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {}
+  constructor(private readonly reviewService: ReviewService,
+        private notificationsService: NotificationsService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create review' })
@@ -26,7 +31,18 @@ export class ReviewController {
   @ApiBadRequestResponse({ description: 'Bad Request' })
   async create(@Body() createReviewDto: CreateReviewDto) {
     try {
-      return await this.reviewService.create(createReviewDto);
+      const review: any =  await this.reviewService.create(createReviewDto);
+      
+      // Notify the Radiologist that the review has been completed
+      const reviewRequest = review.Report.ReviewRequest
+      await  this.notificationsService.notifyUser({
+        receiverRole: Role.RADIOLOGIST,
+        receiverId: reviewRequest.creatorId,
+        type: NotificationType.REQUEST_REVIEWED,
+        entityId: reviewRequest.id,
+      });
+
+      return review
     } catch (error) {
       throw handleError(error);
     }

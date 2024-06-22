@@ -12,9 +12,11 @@ export class ReviewRepo extends PrismaGenericRepo<
 > {
   constructor(private prismaService: PrismaService) {
     super('review', prismaService, {
-      Report: true,
+      Report: {
+        include: { ReviewRequest: { select: { id: true, creatorId: true } } },
+      },
       feedbacks: true,
-      accuracyOfFindings: true,
+      accuracyOfFindings: {include:{MissedFinding:true}},
       clarityAndCompleteness: true,
       impressionAndRecommendations: true,
       technicalQuality: true,
@@ -22,6 +24,7 @@ export class ReviewRepo extends PrismaGenericRepo<
       complianceAndStandardization: true,
     });
   }
+
   async createReview(createReviewDto: CreateReviewDto) {
     const {
       feedbackToRadiologist,
@@ -37,7 +40,7 @@ export class ReviewRepo extends PrismaGenericRepo<
     const { correctnessOfFindings, commentsOnAccuracy, MissedFindings } =
       accuracyOfFindings;
 
-    return await this.prismaService.review.create({
+    const review = await this.prismaService.review.create({
       data: {
         feedbackToRadiologist,
         additionalReviewerComments,
@@ -89,5 +92,6 @@ export class ReviewRepo extends PrismaGenericRepo<
       },
       include: this.includesObj,
     });
+    return review
   }
 }
