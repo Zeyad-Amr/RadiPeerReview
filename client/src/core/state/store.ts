@@ -11,7 +11,7 @@ const store = configureStore({
     auth: authSlice,
     radiologists: radiologistsSlice,
     request,
-    review
+    review,
     notifications: notificationsSlice,
   },
 });
