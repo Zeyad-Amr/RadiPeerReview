@@ -1,8 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateReviewRequestDto {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty({ type: String, example: 'Mamogram Exam' })
+  name: string;
+  
   @IsOptional()
   @IsString()
   @ApiProperty({ type: String, example: 'This is a test report' })

@@ -5,9 +5,10 @@ import { ReviewRequestRepo } from './review-request.repo';
 export class ReviewRequestService {
   constructor(private reviewRequestRepo: ReviewRequestRepo) {}
 
-  async createReviewRequest(reportId: string, creatorId: string) {
+  async createReviewRequest(name:string,reportId: string, creatorId: string) {
     try {
       return await this.reviewRequestRepo.create({
+        name,
         report: {
           connect: {
             id: reportId,
