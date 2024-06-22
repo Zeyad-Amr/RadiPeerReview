@@ -24,8 +24,8 @@ const Halfs = () => {
 
   // get requests data
   useEffect(() => {
-    dispatch(getCreatorRequestsList());
-    dispatch(getAssignedRequestsList());
+    dispatch(getCreatorRequestsList(false));
+    dispatch(getAssignedRequestsList(false));
   }, [dispatch]);
 
   const requestState: RequestState = useAppSelector(

@@ -1,7 +1,7 @@
 const Endpoints = {
-  host: "https://radipeerreview.onrender.com",
+  host: "https://radipeerreview-1.onrender.com",
   hostDev: "http://localhost:4000",
-  base: "https://radipeerreview.onrender.com/api",
+  base: "https://radipeerreview-1.onrender.com/api",
   baseDev: "http://localhost:4000/api",
   auth: {
     login: "/auth/login",

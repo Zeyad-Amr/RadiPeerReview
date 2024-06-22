@@ -3,6 +3,10 @@ import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
 import NotificationService from "@/core/shared/utils/notification-service";
 import useSocketConnection from "@/core/shared/utils/socket";
 import { getUserNotifications } from "../../controllers/thunks/notifications-thunk";
+import {
+  getAssignedRequestsList,
+  getCreatorRequestsList,
+} from "@/modules/radiologist/controllers/thunks/request-thunk";
 
 const NotificationListener = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +22,11 @@ const NotificationListener = () => {
     [dispatch]
   );
 
+  const handleRefetching = useCallback(() => {
+    dispatch(getCreatorRequestsList(true));
+    dispatch(getAssignedRequestsList(true));
+  }, [dispatch]);
+
   useEffect(() => {
     fetchUserNotifications(user?.id);
   }, [user?.id, fetchUserNotifications]);
@@ -28,6 +37,7 @@ const NotificationListener = () => {
     const handleNotification = (message: string) => {
       NotificationService.showNotification(message);
       fetchUserNotifications(user?.id);
+      handleRefetching();
     };
 
     socket.on("notification", handleNotification);
@@ -35,7 +45,7 @@ const NotificationListener = () => {
     return () => {
       socket.off("notification", handleNotification);
     };
-  }, [socket, user?.id, fetchUserNotifications]);
+  }, [socket, user?.id, fetchUserNotifications, handleRefetching]);
 
   return null;
 };

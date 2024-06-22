@@ -9,6 +9,18 @@ import { NotificationType } from "@/core/shared/constants/enums";
 import { fFullDateTime } from "@/core/shared/utils/format-time";
 import { useAppDispatch } from "@/core/state/store";
 import { markNotificationAsRead } from "../../controllers/thunks/notifications-thunk";
+import {
+  AssignmentTurnedIn,
+  AssignmentInd,
+  AssignmentLate,
+  RateReview,
+  AssignmentReturn,
+  Feedback,
+  CheckCircle,
+  Notifications,
+  Cancel,
+  Replay,
+} from "@mui/icons-material";
 interface NotificationCardProps {
   notification: NotificationInterface;
 }
@@ -16,6 +28,29 @@ interface NotificationCardProps {
 const NotificationCard = (props: NotificationCardProps) => {
   const disptach = useAppDispatch();
   const { notification } = props;
+  const iconMapping = {
+    [NotificationType.REQUEST_ASSIGNED]: AssignmentInd,
+    [NotificationType.UNASSIGNED_REVIEW_REQUEST]: AssignmentLate,
+    [NotificationType.REQUEST_REVIEWED]: RateReview,
+    [NotificationType.REQUEST_REPORT_RESUBMITTED]: AssignmentReturn,
+    [NotificationType.REVIEW_FEEDBACK_RECEIVED]: Feedback,
+    [NotificationType.REQUEST_APPROVED]: CheckCircle,
+    [NotificationType.GENERAL]: Notifications,
+    [NotificationType.REQUEST_REJECTED]: Cancel,
+    [NotificationType.REQUEST_REREVIEWED]: Replay,
+  };
+  const notificationTitles = {
+    [NotificationType.REQUEST_ASSIGNED]: "Assigned Review",
+    [NotificationType.UNASSIGNED_REVIEW_REQUEST]: "New Review Request",
+    [NotificationType.REQUEST_REVIEWED]: "Review Completed",
+    [NotificationType.REQUEST_REPORT_RESUBMITTED]: "Report Resubmitted",
+    [NotificationType.REVIEW_FEEDBACK_RECEIVED]: "Review Feedback",
+    [NotificationType.REQUEST_APPROVED]: "Request Approved",
+    [NotificationType.GENERAL]: "General Notification",
+    [NotificationType.REQUEST_REJECTED]: "Request Rejected",
+    [NotificationType.REQUEST_REREVIEWED]: "Re-reviewed Request",
+  };
+
   return (
     <Box
       sx={{
@@ -30,18 +65,16 @@ const NotificationCard = (props: NotificationCardProps) => {
       }}
     >
       <Box sx={{ color: "secondary.main", mr: 2 }}>
-        {notification.type === NotificationType.REQUEST_ASSIGNED ? (
-          <AddRoundedIcon />
-        ) : notification.type === NotificationType.REQUEST_APPROVED ? (
-          <CheckRoundedIcon />
+        {iconMapping[notification.type] ? (
+          React.createElement(iconMapping[notification.type])
         ) : (
-          <CampaignRoundedIcon />
+          <AddRoundedIcon />
         )}
       </Box>
       <Box sx={{ width: "100%" }}>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography sx={{ fontSize: "0.8rem", color: "primary.light" }}>
-            {notification.type}
+            {notificationTitles[notification.type]}
           </Typography>
           <Typography sx={{ fontSize: "0.8rem", color: "primary.light" }}>
             {/* format Date and Time */}
