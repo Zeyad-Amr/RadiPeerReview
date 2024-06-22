@@ -16,14 +16,12 @@ import { handleError } from '@/shared/http-error';
 import { Roles } from '@/auth/roles.decorator';
 import { Role } from '@/auth/role.enum';
 import { UpdateRadiologistDto } from './dto/update-radiologist.dto';
-import { Public } from '@/shared/decorators/public.decorator';
 
 @ApiBearerAuth()
 @ApiTags('radiologist')
-@Public()
 @Controller('radiologist')
-// @UseGuards(RolesGuard)
-// @Roles(Role.Admin)
+@UseGuards(RolesGuard)
+@Roles(Role.Admin)
 export class RadiologistController {
   constructor(private readonly radiologistService: RadiologistService) {}
 
