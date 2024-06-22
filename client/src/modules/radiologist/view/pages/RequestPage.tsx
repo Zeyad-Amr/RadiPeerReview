@@ -7,66 +7,64 @@ import ReportDetailsSection from "../components/ReportDetailsSection";
 import CreateReviewForm from "@/modules/radiologist/view/components/CreateReviewForm";
 import { useAppSelector, RootState, useAppDispatch } from "@/core/state/store";
 import { RequestState } from "../../controllers/types";
-import { GetReportInterface, GetRequestInterface } from "../../interfaces/request-interface";
+import {
+  GetReportInterface,
+  GetRequestInterface,
+} from "../../interfaces/request-interface";
 import { useParams } from "next/navigation";
-import { getCreatorRequestsList, getAssignedRequestsList } from "../../controllers/thunks/request-thunk";
-
-interface Review {
-  id: number;
-  content: string;
-  time: string;
-}
-
-interface Report {
-  id: number;
-  name: string;
-  time: string;
-  reviews: Review[];
-}
-
-const reports: Report[] = [
-  {
-    id: 1,
-    name: "Report 1",
-    time: "10:00 AM",
-    reviews: [{ id: 2, content: "Review 1.2", time: "10:10 AM" }],
-  },
-  {
-    id: 2,
-    name: "Report 2",
-    time: "11:00 AM",
-    reviews: [{ id: 1, content: "Review 2.1", time: "11:05 AM" }],
-  },
-];
+import {
+  getCreatorRequestsList,
+  getAssignedRequestsList,
+} from "../../controllers/thunks/request-thunk";
+import ReviewResult from "../components/review-result/ReviewResult";
 
 const RequestPage = () => {
-  const [reportData, setReportData] = useState<any>();
+  const [reportDetails, setReportDetails] = useState<any>();
   const [targetRequest, setTargetRequest] = useState<GetRequestInterface>();
+  const [rightSectionFlag, setRightSectionFlag] = useState<
+    "report-details" | "review-details" | "create-review"
+  >("report-details");
 
   const params = new URLSearchParams(window.location.search);
-  const roleParam = params.get('role');
+  const roleParam = params.get("role");
   const { requestId } = useParams();
-  console.log(requestId,'requestId');
-  console.log(roleParam,'role');
+  console.log(requestId, "requestId");
+  console.log(roleParam, "role");
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const requestState: RequestState = useAppSelector(
     (state: RootState) => state.request
   );
 
+  // dispatch all requests to get their list in store
   useEffect(() => {
     dispatch(getCreatorRequestsList());
     dispatch(getAssignedRequestsList());
-  }, [dispatch])
+  }, [dispatch]);
 
+  // apply target request from requests list
   useEffect(() => {
-  const targetRequest = requestState?.requests?.find((request : GetRequestInterface) => request.id == requestId )
-  console.log(targetRequest,'targetRequest');
-  setTargetRequest(targetRequest)
-  }, [requestState?.requests, requestState?.assignedRequests, requestId])
-  
-  
+    let targetRequest;
+    if (roleParam === "creator") {
+      targetRequest = requestState?.requests?.find(
+        (request) => request.id === requestId
+      );
+    } else if (roleParam === "reviewer") {
+      targetRequest = requestState?.assignedRequests?.find(
+        (request) => request.id === requestId
+      );
+    }
+    console.log(targetRequest, "targetRequest");
+    setTargetRequest(targetRequest);
+    setReportDetails(targetRequest?.report?.[0]);
+  }, [
+    requestState?.requests,
+    requestState?.assignedRequests,
+    requestId,
+    roleParam,
+  ]);
+
   return (
     <Grid container>
       <Grid item lg={4} md={4} sm={12} xs={12}>
@@ -86,7 +84,12 @@ const RequestPage = () => {
               key={reportEl.id}
               sx={{ position: "relative", marginLeft: "2rem" }}
             >
-              <DisplayedRequest setReportData={setReportData} reportEl={reportEl} />
+              <DisplayedRequest
+                role={roleParam}
+                setRightSectionFlag={setRightSectionFlag}
+                setReportData={setReportDetails}
+                reportEl={reportEl}
+              />
               {/* {report.reviews.map((review) => (
                 <DisplayedReview
                   key={review.id}
@@ -111,11 +114,16 @@ const RequestPage = () => {
           borderLeftWidth: "3px",
           borderLeftColor: "primary.lighter",
           borderLeftStyle: "solid",
-          overflow : "scroll"
+          overflow: "scroll",
         }}
       >
-        <ReportDetailsSection reportData={reportData} />
-        {/* <CreateReviewForm/> */}
+        {rightSectionFlag === "report-details" ? (
+          <ReportDetailsSection reportData={reportDetails} />
+        ) : rightSectionFlag === "create-review" ? (
+          <CreateReviewForm />
+        ) : rightSectionFlag === "review-details" ? (
+          <ReviewResult />
+        ) : null}
       </Grid>
     </Grid>
   );
