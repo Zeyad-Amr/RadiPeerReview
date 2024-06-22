@@ -64,12 +64,12 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <span
           key={index}
           style={{
-            backgroundColor: "#003768",
-            borderRadius: "4rem",
+            backgroundColor: "#343f7a",
+            borderRadius: "0.5rem",
             color: "#fff",
             padding: "0.5rem 1rem",
             fontSize: "10px",
-            margin: "0rem 0.35rem",
+            margin: "0rem 0.2rem",
           }}
         >
           {item}
@@ -82,6 +82,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   const handleSelectChange = (event: SelectChangeEvent<T>) => {
     const newValue = event.target.value as any;
     if (multiple && newValue && newValue.includes(0)) {
+      console.log(newValue);
       const allIds = options.map((option) => option.id);
       setSelectAll(!selectAll);
       onChange(
@@ -98,7 +99,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
   //* Handling appearance of multiple items in input field
   const handleApearanceOfSelectedItems = (
     selectedItems: unknown[],
-    itemsNumber: number = 4
+    itemsNumber: number = 1
   ) => {
     if (selectedItems.length > itemsNumber) {
       let items = [];
@@ -109,17 +110,18 @@ const CustomSelectField = <T extends { id: any; value: string }>({
       }
       return (
         <span style={{ display: "flex", alignItems: "center" }}>
+          {handleSelectedElementStyle(items)}
           <span
             style={{
-              color: "#061540",
+              color: "#343f7a",
               fontSize: "15px",
               display: "flex",
               alignItems: "center",
+              marginLeft: 2
             }}
           >
-            {selectedItems.length - items.length}+
+            +{selectedItems.length - items.length}
           </span>
-          {handleSelectedElementStyle(items)}
         </span>
       );
     } else {
@@ -149,7 +151,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           component="div"
           sx={{
             flexGrow: 1,
-            fontSize: "0.9rem !important",
+            fontSize: "0.8rem !important",
             margin: "0rem 0.5rem",
           }}
         >
@@ -166,6 +168,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
         <Select
           multiple={multiple ?? false}
           label={label}
+          
           onChange={handleSelectChange}
           onBlur={onBlur}
           disabled={isDisabled}
@@ -179,7 +182,7 @@ const CustomSelectField = <T extends { id: any; value: string }>({
           displayEmpty
           renderValue={(selected: unknown) => {
             if (Array.isArray(selected)) {
-              return handleApearanceOfSelectedItems(selected);
+              return handleApearanceOfSelectedItems(selected.includes('0')?selected.slice(1):selected);
             }
             const selectedOption = options.find(
               (option) => option.id === selected

@@ -10,10 +10,11 @@ const SecondaryButton = (props: any) => {
         display: props.display,
         color: "#061540",
         backgroundColor: "transparent",
-        fontSize: "0.9rem",
+        fontSize: "0.8rem",
+        fontWeight: '400',
         height: "40px",
         border: "1px solid #0f70f2",
-        padding:'0 3rem',
+        padding: '0 3rem',
         ...props.sx
       }}
       onClick={props.onClick}

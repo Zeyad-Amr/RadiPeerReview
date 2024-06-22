@@ -19,7 +19,7 @@ export const login = createAsyncThunk(
         Endpoints.auth.login,
         authModel.toJson(data)
       );
-      //   SessionStorage.saveData(SessionStorageKeys.userData, response.data.auth);
+      SessionStorage.saveData(SessionStorageKeys.userData, response.data.auth);
       SessionStorage.saveData(SessionStorageKeys.token, response.data.token);
       return userModel.fromJson(response.data.auth);
     } catch (error: any) {
@@ -46,3 +46,18 @@ export const logout = createAsyncThunk(
     }
   }
 );
+
+export const getMe = createAsyncThunk("auth/getMe", async (_, thunkApi) => {
+  const { rejectWithValue } = thunkApi;
+
+  try {
+    const userData = SessionStorage.getDataByKey(SessionStorageKeys.userData);
+    if (userData) return userModel.fromJson(userData);
+
+    return null;
+  } catch (error: any) {
+    const errorResponse: ErrorResponse =
+      error instanceof Error ? ErrorMessage.get(error.message) : error;
+    return rejectWithValue(errorResponse);
+  }
+});

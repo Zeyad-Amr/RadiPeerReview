@@ -51,4 +51,12 @@ export class RadiologistService {
       throw error;
     }
   }
+
+  async update(id: string, data: any) {
+    try {
+      return await this.radiologistRepo.update(id, data);
+    } catch (error) {
+      throw error;
+    }
+  }
 }

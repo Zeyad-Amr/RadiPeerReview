@@ -48,16 +48,16 @@ export default function CustomizedDialog(props: {
       >
         <Box
           sx={{
-            backgroundColor: "primary.dark",
+            backgroundColor: "secondary.main",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            padding: "0.2rem 0.5rem",
+            padding: "0.2rem 0.5rem 0rem 1rem",
           }}
         >
           {props.title ? (
             <DialogTitle
-              sx={{ m: 0, p: 2, color: "white", fontWeight: "600" }}
+              sx={{ m: 0, p: 2, color: "white", fontWeight: "400" }}
               id="dialog-title"
             >
               {props.title}
@@ -69,9 +69,9 @@ export default function CustomizedDialog(props: {
             sx={{
               position: "absolute",
               right: 8,
-              top: 8,
+              top:5,
               color: "white",
-              margin: "0.5rem 0",
+              margin: "0.5rem 1rem 0.5rem 0",
               fontSize: "2rem",
               cursor: "pointer",
             }}

@@ -33,5 +33,9 @@ const Endpoints = {
     update: "/radiologist/:id",
     delete: "/radiologist/:id",
   },
+  notification: {
+    list: "/notifications/user/:id",
+    markAsRead: "/notifications/mark-as-read/:id",
+  },
 };
 export default Endpoints;

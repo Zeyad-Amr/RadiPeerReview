@@ -55,6 +55,7 @@ export class NotificationsService {
       // If user is not admin, fetch their notifications
       return this.notificationsRepo.getAll({
         where: { receiverId: userId, status: NotificationStatus.UNREAD },
+        include: { receiver: true },
       });
     }
   }

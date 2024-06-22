@@ -1,4 +1,3 @@
-import { PaginatedList } from "@/core/api";
 import { RadiologistInterface } from "../interfaces/radiologist-interface";
 
 export interface RadiologistState {

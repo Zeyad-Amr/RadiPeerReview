@@ -6,7 +6,7 @@ const useSocketConnection = (userId: string): Socket => {
   const [socketInstance, setSocketInstance] = useState<Socket | null>(null);
 
   useEffect(() => {
-    const socket = io(Endpoints.hostDev, {
+    const socket = io(Endpoints.host, {
       query: {
         userId: userId,
       },
