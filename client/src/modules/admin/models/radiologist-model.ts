@@ -28,7 +28,20 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
     username: Yup.string().required("Username is required"),
     password: Yup.string().required("Password is required"),
   });
-  fromJson(json: any): RadiologistInterface {
+  editValidationSchema = Yup.object({
+    fname: Yup.string().required("First name is required"),
+    lname: Yup.string().required("Last name is required"),
+    email: Yup.string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    specializations: Yup.array()
+      .of(Yup.string().required("Specialization is required"))
+      .required("Specializations are required"),
+    phone: Yup.string()
+      .matches(/^01\d{9}$/, "Phone number is not valid")
+      .required("Phone number is required"),
+  });
+  fromJson(json: any): (RadiologistInterface) {
     return {
       id: json.id,
       fname: json.fname,
@@ -36,12 +49,12 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
       email: json.email,
       specializations: json.specializations,
       phone: json.phone,
-      username: json.username ?? "",
+      username: json.auth.username,
+      isdeactivated: json.auth.isdeactivated,
     };
   }
-  toJson(model: RadiologistInterface): any {
+  toJson(model: (RadiologistInterface)): any {
     return {
-      id: model.id,
       fname: model.fname,
       lname: model.lname,
       email: model.email,
@@ -51,6 +64,7 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
       password: model.password,
     };
   }
+  
 }
 const radiologistModel = new RadiologistModel();
 export default radiologistModel;

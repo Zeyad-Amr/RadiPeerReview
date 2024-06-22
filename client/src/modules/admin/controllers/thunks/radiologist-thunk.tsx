@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
-import { RadiologistInterface } from "../../interfaces/radiologist-interface";
+import {  RadiologistInterface } from "../../interfaces/radiologist-interface";
 import radiologistModel from "../../models/radiologist-model";
 
 //*  Create Radiologist
@@ -57,6 +57,8 @@ export const updateRadiologist = createAsyncThunk(
     }
   }
 );
+
+
 
 //*  Get All AddRadiologist
 export const getRadiologistList = createAsyncThunk(
