@@ -29,6 +29,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { handleError } from '@/shared/http-error';
 
+const UPLOAD_PATH = resolve('src', 'shared', 'uploads');
 @ApiBearerAuth()
 @ApiTags('review-request')
 @Controller('review-request')
@@ -47,7 +48,7 @@ export class ReviewRequestController {
       {
         storage: diskStorage({
           destination: (req, file, cb) => {
-            const uploadPath = resolve('src', 'shared', 'uploads');
+            const uploadPath = UPLOAD_PATH;
             if (!fs.existsSync(uploadPath)) {
               fs.mkdirSync(uploadPath, { recursive: true });
             }

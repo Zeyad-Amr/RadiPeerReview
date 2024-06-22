@@ -26,6 +26,8 @@ import {
 import { handleError } from '@/shared/http-error'; // Adjust the path as needed
 import { CreateReportDto } from './dto/create-report.dto';
 
+const UPLOAD_PATH = resolve('src', 'shared', 'uploads');
+
 @ApiTags('report')
 @ApiUnauthorizedResponse({ description: 'No token provided' })
 @ApiBearerAuth()
@@ -43,7 +45,7 @@ export class ReportController {
       {
         storage: diskStorage({
           destination: (req, file, cb) => {
-            const uploadPath = resolve(__dirname, '..', 'uploads');
+            const uploadPath = UPLOAD_PATH;
             if (!fs.existsSync(uploadPath)) {
               fs.mkdirSync(uploadPath, { recursive: true });
             }
@@ -80,7 +82,7 @@ export class ReportController {
 
   @Get('files/:filename')
   getFile(@Param('filename') filename: string, @Res() res: any) {
-    const filePath = join(__dirname, '..', 'uploads', filename);
+    const filePath = join(UPLOAD_PATH, filename);
     if (fs.existsSync(filePath)) {
       return res.sendFile(filePath);
     } else {
