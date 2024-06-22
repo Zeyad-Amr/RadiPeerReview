@@ -2,20 +2,9 @@ import { HeaderItem } from "@/core/shared/components/CustomDataTable";
 
 export const radiologistHeaderTable: HeaderItem[] = [
   {
-    filterKey: "fname",
-    id: "fname",
-    label: "First Name",
-    minWidth: 100,
-    maxWidth: 150,
-    tableCellProps: { align: "center" },
-    sortable: false,
-    searchable: false,
-    filterable: false,
-  },
-  {
-    filterKey: "lname",
-    id: "lname",
-    label: "Last Name",
+    filterKey: "fullname",
+    id: "fullname",
+    label: "Full Name",
     minWidth: 100,
     maxWidth: 150,
     tableCellProps: { align: "center" },
