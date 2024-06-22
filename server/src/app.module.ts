@@ -15,6 +15,7 @@ import { ConfigModule } from './config/config.module';
 import { ConfigService } from './config/config.service';
 import { ConfigRepo } from './config/config.repo';
 import { PrismaService } from './shared/prisma-client/prisma.service';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { PrismaService } from './shared/prisma-client/prisma.service';
     ReviewRequestModule,
     NotificationsModule,
     ConfigModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [
