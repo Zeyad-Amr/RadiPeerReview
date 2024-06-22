@@ -8,6 +8,7 @@ import {
 import { NotifyUserDto } from './dto/notify-user.dto';
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { NotificationsService } from './notifications.service';
+import { handleError } from '@/shared/http-error';
 
 @ApiTags('notifications')
 @Controller('notifications')
@@ -20,8 +21,12 @@ export class NotificationsController {
   @ApiBearerAuth()
   @ApiResponse({ status: 200, description: 'Notification sent successfully.' })
   notifyUser(@Body() notifyUserDto: NotifyUserDto) {
-    this.notificationsService.notifyUser(notifyUserDto);
-    return { status: 'Notification sent successfully' };
+    try {
+      this.notificationsService.notifyUser(notifyUserDto);
+      return { status: 'Notification sent successfully' };
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   @Get()
@@ -32,7 +37,11 @@ export class NotificationsController {
     description: 'All notifications fetched successfully.',
   })
   getAllNotifications() {
-    return this.notificationsService.getAllNotifications();
+    try {
+      return this.notificationsService.getAllNotifications();
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   @Get('user/:userId')
@@ -43,7 +52,11 @@ export class NotificationsController {
     description: 'User notifications fetched successfully.',
   })
   getUserNotifications(@Param('userId') userId: string) {
-    return this.notificationsService.getUserNotifications(userId);
+    try {
+      return this.notificationsService.getUserNotifications(userId);
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   @Post('mark-as-read/:notificationId')
@@ -54,6 +67,10 @@ export class NotificationsController {
     description: 'Notification marked as read successfully.',
   })
   markAsRead(@Param('notificationId') notificationId: string) {
-    return this.notificationsService.markAsRead(notificationId);
+    try {
+      return this.notificationsService.markAsRead(notificationId);
+    } catch (error) {
+      handleError(error);
+    }
   }
 }
