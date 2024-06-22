@@ -60,7 +60,7 @@ const DisplayedRequest = ({
           >
             {reportEl.additionalComments ?? "No Comments"}
           </Typography>
-          {role === "reviewer" ? (
+          { !reportEl.review  && role === "reviewer" ? (
             <RateReviewIcon
               sx={{
                 color: "primary.light",

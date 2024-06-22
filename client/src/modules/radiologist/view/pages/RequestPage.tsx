@@ -17,9 +17,11 @@ import {
   getAssignedRequestsList,
 } from "../../controllers/thunks/request-thunk";
 import ReviewResult from "../components/review-result/ReviewResult";
+import { ReviewDataInterface } from "../../interfaces/review-interface";
 
 const RequestPage = () => {
-  const [reportDetails, setReportDetails] = useState<any>();
+  const [reportDetails, setReportDetails] = useState<GetReportInterface>();
+  const [reviewDetails, setReviewDetails] = useState<ReviewDataInterface>();
   const [targetRequest, setTargetRequest] = useState<GetRequestInterface>();
   const [rightSectionFlag, setRightSectionFlag] = useState<
     "report-details" | "review-details" | "create-review"
@@ -91,7 +93,9 @@ const RequestPage = () => {
                 reportEl={reportEl}
               />
               <DisplayedReview
-                reviewData={reportEl?.review}
+                reviewEl={reportEl?.review}
+                setReviewData={setReviewDetails}
+                setRightSectionFlag={setRightSectionFlag}
               />
             </Box>
           ))}
@@ -114,11 +118,11 @@ const RequestPage = () => {
         }}
       >
         {rightSectionFlag === "report-details" ? (
-          <ReportDetailsSection reportData={reportDetails} />
+         reportDetails &&  <ReportDetailsSection reportDetails={reportDetails} />
         ) : rightSectionFlag === "create-review" ? (
           <CreateReviewForm />
         ) : rightSectionFlag === "review-details" ? (
-          <ReviewResult />
+          reportDetails && reviewDetails && <ReviewResult reviewDetails={reviewDetails} reportDetails={reportDetails} />
         ) : null}
       </Grid>
     </Grid>
