@@ -17,10 +17,15 @@ export const getUserNotifications = createAsyncThunk(
         pathVariables: {
           id: userId,
         },
+        config: { headers: { hideLoading: true } },
       });
       console.log("response", response);
 
-      return response.data.map((item: any) => notificationModel.fromJson(item));
+      return response.data
+        .map((item: any) => notificationModel.fromJson(item))
+        .sort((a: any, b: any) => {
+          return a.createdAt > b.createdAt ? -1 : 1;
+        });
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -46,6 +51,7 @@ export const markNotificationAsRead = createAsyncThunk(
           pathVariables: {
             id: notificationId,
           },
+          config: { headers: { hideLoading: true } },
         }
       );
       return notificationId;
