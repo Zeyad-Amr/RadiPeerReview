@@ -59,7 +59,7 @@ const TableRow = ({ isCreatorTable, data, light }: TableRowProps) => {
             {" "}
             {isCreatorTable
               ? requestEl.status ?? "--"
-              : requestEl.approved ?? "--"}
+              : requestEl.approved == false ? "No" : requestEl.approved ? "Yes" : "--"}
           </Box>
         </Box>
       ))}

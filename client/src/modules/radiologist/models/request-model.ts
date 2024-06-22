@@ -5,6 +5,7 @@ import {
   GetRequestInterface,
 } from "../interfaces/request-interface";
 import BaseModel from "@/core/base/base-model";
+import reviewDataModel from "./review-model";
 
 class ReportModel {
   //*   Default form values
@@ -81,7 +82,7 @@ class ReportModel {
       createdAt: this.formatDateTime(json.createdAt),
       creatorId: json.creatorId,
       creator: json.creator,
-      report: json?.report?.map((el: any) => this.fromReportJson(el)),
+      report: json?.report ? json?.report?.map((el: any) => this.fromReportJson(el)) : [],
     };
   }
 
@@ -93,6 +94,7 @@ class ReportModel {
       reportUrl: json.reportUrl,
       resultUrl: json.resultUrl,
       reviewId: json.reviewId,
+      review: json?.Review ? reviewDataModel.fromJson(json.Review) : null,
       reviewRequestId: json.reviewRequestId,
       updatedAt: this.formatDateTime(json.updatedAt),
     };

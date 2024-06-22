@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { ReviewDataInterface } from "../../interfaces/review-interface";
 
 interface DisplayedReviewProps {
-  content: string;
-  time: string;
+  reviewData: ReviewDataInterface | null;
 }
 
-const DisplayedReview: React.FC<DisplayedReviewProps> = ({ content, time }) => {
+const DisplayedReview = ({ reviewData }: DisplayedReviewProps) => {
   return (
     <Box
       sx={{
@@ -19,17 +19,25 @@ const DisplayedReview: React.FC<DisplayedReviewProps> = ({ content, time }) => {
       <Box
         sx={{
           marginLeft: 2,
-          padding: "0.5rem",
+          padding: "0.7rem",
           borderRadius: "10px",
           width: "72.2%",
           backgroundColor: "primary.lighter",
           cursor: "pointer",
         }}
       >
-        <Typography variant="body1">
-          Review
-        </Typography>
-        <Typography variant="body2" color="textSecondary">{content}</Typography>
+        {reviewData ? (
+          <>
+            <Typography sx={{fontSize : "13px" }} color="textSecondary">
+            Completeness of report : {reviewData?.clarityAndCompleteness?.completenessOfReport ?? "No Data Available"}
+            </Typography>
+            <Typography sx={{fontSize : "13px" }} color="textSecondary">
+            Accuracy of impression : {reviewData?.impressionAndRecommendations?.accuracyOfImpression ? "Yes" : "No"}
+            </Typography>
+          </>
+        ) : (
+          <Typography sx={{ textAlign : "center" , fontSize : "15px" }} color="textSecondary">Not Reviewed Yet</Typography>
+        )}
       </Box>
     </Box>
   );
