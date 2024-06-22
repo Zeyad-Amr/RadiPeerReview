@@ -47,8 +47,7 @@ model Report {
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
 
-  Review             Review?        @relation(fields: [reviewId], references: [id])
-  reviewId           String?        @unique
+  Review             Review?
   ReviewRequest      ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
   reviewRequestId    String?
 }
@@ -77,8 +76,9 @@ model Review {
   createdAt                      DateTime                      @default(now())
   updatedAt                      DateTime                      @updatedAt
  
+  Report                         Report?                       @relation(fields: [reportId], references: [id])
+  reportId                       String?                       @unique
   feedbacks                      Feedback[]
-  Report                         Report?
   accuracyOfFindings             AccuracyOfFindings?           @relation(fields: [accuracyOfFindingsId], references: [id])
   accuracyOfFindingsId           String?                       @unique
   clarityAndCompleteness         ClarityAndCompleteness?       @relation(fields: [clarityAndCompletenessId], references: [id])
