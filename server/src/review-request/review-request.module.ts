@@ -9,10 +9,6 @@ import { RadiologistRepo } from '@/radiologist/radiologist.repo';
 @Module({
   imports: [ReportModule],
   controllers: [ReviewRequestController],
-  providers: [
-    ReviewRequestService,
-    ReviewRequestRepo,
-    PrismaService,
-  ],
+  providers: [ReviewRequestService, ReviewRequestRepo, PrismaService],
 })
 export class ReviewRequestModule {}

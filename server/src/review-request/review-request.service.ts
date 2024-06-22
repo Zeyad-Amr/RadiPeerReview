@@ -3,14 +3,9 @@ import { ReviewRequestRepo } from './review-request.repo';
 
 @Injectable()
 export class ReviewRequestService {
-  constructor(
-    private reviewRequestRepo: ReviewRequestRepo,
-  ) {}
+  constructor(private reviewRequestRepo: ReviewRequestRepo) {}
 
-  async createReviewRequest(
-    reportId: string,
-    creatorId: string,
-  ) {
+  async createReviewRequest(reportId: string, creatorId: string) {
     try {
       return await this.reviewRequestRepo.create({
         report: {
@@ -29,9 +24,12 @@ export class ReviewRequestService {
     }
   }
 
-  async findAll(query,radiologistId) {
+  async findAll(query, radiologistId) {
     try {
-      const review = await this.reviewRequestRepo.getAllRequests(query,radiologistId);
+      const review = await this.reviewRequestRepo.getAllRequests(
+        query,
+        radiologistId,
+      );
       return review;
     } catch (error) {
       throw error;

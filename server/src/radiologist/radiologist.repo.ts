@@ -57,4 +57,26 @@ export class RadiologistRepo extends PrismaGenericRepo<
       },
     }));
   }
+
+  async deativate(id: string) {
+    try {
+      return await this.prismaService.auth.update({
+        where: { radiologistId: id },
+        data: { isdeactivated: true },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async activate(id: string) {
+    try {
+      return await this.prismaService.auth.update({
+        where: { radiologistId: id },
+        data: { isdeactivated: false },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }
