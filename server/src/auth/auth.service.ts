@@ -25,6 +25,10 @@ export class AuthService {
       if (!validPass) {
         throw new UnauthorizedException(errInvalidCredentials);
       }
+
+      if (auth.isdeactivated) {
+        throw new UnauthorizedException('Account is deactivated');
+      }
       const token = await this.jwtService.signAsync({
         sub: auth.id,
         role: auth.role,

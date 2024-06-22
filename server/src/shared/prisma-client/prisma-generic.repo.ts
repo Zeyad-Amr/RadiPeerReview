@@ -62,7 +62,6 @@ export class PrismaGenericRepo<N, T, I = any> {
       await this.prisma[this.modelName].delete({
         where: {
           id,
-          include: this.includesObj,
         },
       });
     } catch (error) {

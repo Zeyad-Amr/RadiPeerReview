@@ -6,7 +6,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseGuards,
 } from '@nestjs/common';
 import { RadiologistService } from './radiologist.service';
@@ -53,20 +52,29 @@ export class RadiologistController {
     }
   }
 
+  @Patch('deactivate/:id')
+  async deativate(@Param('id') id: string) {
+    try {
+      return await this.radiologistService.deativate(id);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @Patch('activate/:id')
+  async activate(@Param('id') id: string) {
+    try {
+      return await this.radiologistService.activate(id);
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
   @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateRadiologistDto: UpdateRadiologistDto,
   ) {
     return this.radiologistService.update(id, updateRadiologistDto);
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    try {
-      return await this.radiologistService.remove(id);
-    } catch (error) {
-      throw handleError(error);
-    }
   }
 }

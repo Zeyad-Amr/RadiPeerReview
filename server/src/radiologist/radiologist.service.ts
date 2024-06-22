@@ -44,14 +44,21 @@ export class RadiologistService {
     }
   }
 
-  async remove(id: string) {
+  async deativate(id: string) {
     try {
-      return await this.radiologistRepo.delete(id);
+      return await this.radiologistRepo.deativate(id);
     } catch (error) {
       throw error;
     }
   }
 
+  async activate(id: string) {
+    try {
+      return await this.radiologistRepo.activate(id);
+    } catch (error) {
+      throw error;
+    }
+  }
   async update(id: string, data: any) {
     try {
       return await this.radiologistRepo.update(id, data);
