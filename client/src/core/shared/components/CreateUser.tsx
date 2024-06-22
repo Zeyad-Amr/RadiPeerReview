@@ -28,28 +28,29 @@ export default function CreateUser({
 }: any) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
-  const [isViewMode, setIsViewMode] = useState<boolean>(false);
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [userId, setUserID] = useState<string>('')
-  const [checked, setChecked] = useState<boolean>(false)
 
   const handleToggle = async (item: RadiologistInterface) => {
     setTableItemData(item);
-    console.log(item.id);
-
     if (!item.isdeactivated) {
       await dispatch(deactivateRadiologist(item.id ?? ''));
     } else {
-      // Handle the activation logic here if needed
       await dispatch(activateRadiologist(item.id ?? ''));
       console.log(`Radiologist ${item.id} is already deactivated`);
     }
-
-    // // Optionally, refresh the list after toggling
-    // dispatch(getRadiologistList());
   };
+
+  function formatSpecializatopns(specializatopns: string[]) {
+    return specializatopns.map(specialization => {
+      return specialization
+        .toLowerCase()
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, char => char.toUpperCase());
+    }).join(', ');
+  }
 
   const updatedTableHeader: HeaderItem[] = [
     ...tableHeader,
@@ -86,7 +87,6 @@ export default function CreateUser({
           onClick={(event) => {
             event.stopPropagation();
             setTableItemData(undefined);
-            setIsViewMode(false);
             setIsDialogOpen(true);
           }}
         />
@@ -94,12 +94,13 @@ export default function CreateUser({
       <Box sx={{ mt: 2 }}>
         <CustomDataTable
           boxShadow={0}
-          height="40vh"
+          height="75vh"
           sx={{ mb: 0 }}
           showPagination={false}
           showToolbar={false}
           fetchData={() => {
             dispatch(getListThunk());
+            console.log(tableList)
           }}
           totalItems={tableList?.length}
           noDataMessage={
@@ -107,6 +108,8 @@ export default function CreateUser({
           }
           data={tableList?.map((item: any) => {
             return {
+              fullname: item.fname + " " + item.lname,
+              specialization:formatSpecializatopns(item.specializations),
               ...item,
               update: (
                 <Box
@@ -118,19 +121,9 @@ export default function CreateUser({
                     color: "primary.dark",
                   }}
                 >
-                  {/* <VisibilityIcon
-                    sx={{ cursor: "pointer", color: "primary.light" }}
-                    onClick={() => {
-                      setIsViewMode(true);
-                      setTableItemData({ ...item, password: '' });
-                      setUserID(item.id);
-                      setIsDialogOpen(true);
-                    }}
-                  /> */}
                   <EditRoundedIcon
                     sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
-                      setIsViewMode(false);
                       setTableItemData({ ...item, password: '' });
                       setUserID(item.id);
                       setIsDialogOpen(true);
@@ -144,8 +137,6 @@ export default function CreateUser({
                     }}
                   /> */}
                   <Switch checked={!item.isdeactivated} onClick={() => handleToggle(item)} />
-
-
                 </Box>
               ),
             };
@@ -157,28 +148,18 @@ export default function CreateUser({
       {/* Create or Edit Item */}
       <CustomizedDialog
         title={
-          isViewMode ? "Show Item" : tableItemData ? "Edit Item" : "Add Item"
+          tableItemData ? "Edit Radiologist" : "Add Radiologist"
         }
         open={isDialogOpen}
         setOpen={setIsDialogOpen}
         maxWidth={formDialogMaxWidth}
       >
         <FormComponent
-          isViewMode={isViewMode}
           initialValues={tableItemData}
           setShowFormDialog={setIsDialogOpen}
           id={userId}
         />
-        {/* Convert from view mode to edit mode */}
-        {isViewMode && (
-          <PrimaryButton
-            title={"تعديل العنصر"}
-            type="submit"
-            onClick={() => {
-              setIsViewMode(false);
-            }}
-          />
-        )}
+
       </CustomizedDialog>
     </>
   );
