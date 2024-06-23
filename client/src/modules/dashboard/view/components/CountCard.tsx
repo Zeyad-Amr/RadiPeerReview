@@ -4,7 +4,7 @@ import React, { ReactNode } from 'react'
 
 interface CountCardProps {
     title: string
-    number: number
+    number: number | string
     icon: ReactNode
     highlight?: boolean
     success?: boolean
