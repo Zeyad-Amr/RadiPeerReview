@@ -2,39 +2,36 @@ import { CustomDataTable, HeaderItem } from '@/core/shared/components/CustomData
 import PageTitle from '@/core/shared/components/PageTitle';
 import { Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react'
-import AssignReview from '../../components/reports/AssignReview';
+import React, { useEffect } from 'react'
+import AssignReview from '../../components/review-request/AssignReview';
+import { RootState, useAppDispatch, useAppSelector } from '@/core/state/store';
+import { getAdminReports } from '@/modules/review-request/controllers/thunks/review-request-thunk';
+import { ReviewRequestState } from '@/modules/review-request/controllers/types';
 
 const ReportsPage = () => {
 
-    const data = [
-        {
-            reportName: 'report',
-            reportAuther: 'Body',
-            reportReviwer: 'Zeyad',
-            status: 'Accepted',
-            score: 85,
-        },
-        {
-            reportName: 'report2',
-            reportAuther: 'Body',
-            reportReviwer: '',
-            status: '',
-            score: '',
-        },
-    ]
+    const reviewRequestState: ReviewRequestState = useAppSelector(
+        (state: RootState) => state.reviewRequestSlice
+    )
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        dispatch(getAdminReports());
+    }, [])
+
+    console.log(reviewRequestState.reports)
 
     let newTableData: any[] = [];
-    data.forEach((item) => {
+    reviewRequestState.reports.forEach((item) => {
         newTableData.push({
-            reportName: item.reportName,
-            reportAuther: item.reportAuther,
-            reportReviwer: item.reportReviwer === '' ? <AssignReview /> : <Typography sx={{ fontSize: '0.8rem' }}>{item.reportReviwer}</Typography>,
+            reportName: item.name ?? '',
+            reportAuther: item.creator?.fname + ' ' + item.creator?.lname,
+            reportReviwer: item.reviewer === undefined ? <AssignReview id={item.id ?? ''} /> : <Typography sx={{ fontSize: '0.8rem' }}>{item.reviewer?.fname + ' ' + item.reviewer?.lname}</Typography>,
             status: <Typography sx={{
                 fontSize: '0.8rem',
-                color: item.status === 'Accepted' ? 'green' : 'black'
-            }}>{item.status}</Typography>,
-            score: item.score,
+                color: item.approved ? 'green' : 'black'
+            }}>{item.approved ? 'Accepted' : item.status}</Typography>,
         })
     })
 
@@ -42,7 +39,7 @@ const ReportsPage = () => {
         {
             filterKey: "reportName",
             id: "reportName",
-            label: "Report Name",
+            label: "Name",
             minWidth: 50,
             tableCellProps: { align: "center" },
             showBorder: true,
@@ -71,13 +68,7 @@ const ReportsPage = () => {
             tableCellProps: { align: "center", },
             isComponent: true,
         },
-        {
-            filterKey: "score",
-            id: "score",
-            label: "Score",
-            minWidth: 100,
-            tableCellProps: { align: "center", },
-        },
+
     ];
     return (
         <>
