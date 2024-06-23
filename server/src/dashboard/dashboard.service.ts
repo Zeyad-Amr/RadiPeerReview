@@ -36,4 +36,20 @@ export class DashboardService {
       throw error;
     }
   }
+
+  async getAverageSuccessScore() {
+    try {
+      return await this.dashboardRepo.getAverageSuccessScore();
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAverageFailureScore() {
+    try {
+      return await this.dashboardRepo.getAverageFailureScore();
+    } catch (error) {
+      throw error;
+    }
+  }
 }

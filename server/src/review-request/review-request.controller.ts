@@ -112,10 +112,12 @@ export class ReviewRequestController {
           entityId: request.id,
         });
       } else if (config.value.toLowerCase() === 'auto') {
+        const radiologist =
+          await this.reviewRequestService.allocateRadiologist();
         // If Assignment Mode is Auto, then notify the Radiologists
         await this.notificationsService.notifyUser({
           receiverRole: Role.RADIOLOGIST,
-          receiverId: creatorId, // TODO: Change this to the Radiologist ID after auto-assignment is implemented
+          receiverId: radiologist.id,
           type: NotificationType.REQUEST_ASSIGNED,
           entityId: request.id,
         });

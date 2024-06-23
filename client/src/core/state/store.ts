@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import notificationsSlice from "@/modules/notifications/controllers/slices/notifications-slice";
 import settingsSlice from "@/modules/settings/controllers/slices/settings-slice";
 
+import reviewRequestSlice from "@/modules/review-request/controllers/slices/review-request-slice";
 const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -15,6 +16,7 @@ const store = configureStore({
     review,
     notifications: notificationsSlice,
     settings: settingsSlice,
+    reviewRequestSlice,
   },
 });
 
