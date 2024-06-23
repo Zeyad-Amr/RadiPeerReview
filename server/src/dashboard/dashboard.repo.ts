@@ -54,4 +54,75 @@ export class DashboardRepo {
       throw error;
     }
   }
+
+  async getAverageSuccessScore() {
+    try {
+      // calc average
+      const overAllQuality = await this.prisma.report.findMany({
+        where: {
+          ReviewRequest: {
+            approved: true,
+          },
+        },
+        select: {
+          Review: {
+            select: {
+              overallAssessment: {
+                select: {
+                  overallQuality: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!overAllQuality.length) {
+        return 0;
+      }
+
+      let sum = 0.0;
+      overAllQuality.forEach((report) => {
+        sum += report.Review.overallAssessment.overallQuality;
+      });
+      return sum / overAllQuality.length;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAverageFailureScore() {
+    try {
+      // calc average
+      const overAllQuality = await this.prisma.report.findMany({
+        where: {
+          ReviewRequest: {
+            approved: false,
+          },
+        },
+        select: {
+          Review: {
+            select: {
+              overallAssessment: {
+                select: {
+                  overallQuality: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      if (overAllQuality.length === 0) {
+        return 0;
+      }
+
+      let sum = 0.0;
+      overAllQuality.forEach((report) => {
+        sum += report.Review.overallAssessment.overallQuality;
+      });
+      return sum / overAllQuality.length;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

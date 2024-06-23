@@ -7,7 +7,7 @@ export class CreateReviewRequestDto {
   @IsString()
   @ApiProperty({ type: String, example: 'Mamogram Exam' })
   name: string;
-  
+
   @IsOptional()
   @IsString()
   @ApiProperty({ type: String, example: 'This is a test report' })
