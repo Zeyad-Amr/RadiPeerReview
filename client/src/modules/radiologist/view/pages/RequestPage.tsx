@@ -69,7 +69,18 @@ const RequestPage = () => {
 
   return (
     <Grid container>
-      <Grid item lg={4} md={4} sm={12} xs={12}>
+      <Grid
+        item
+        lg={4}
+        md={4}
+        sm={12}
+        xs={12}
+        sx={{
+          height: "100vh",
+          backgroundColor: "#fff",
+          overflow: "scroll",
+        }}
+      >
         <Box sx={{ margin: "1rem", position: "relative" }}>
           <Box
             sx={{
@@ -96,6 +107,8 @@ const RequestPage = () => {
                 reviewEl={reportEl?.review}
                 setReviewData={setReviewDetails}
                 setRightSectionFlag={setRightSectionFlag}
+                role={roleParam}
+                requestData={targetRequest}
               />
             </Box>
           ))}
@@ -118,11 +131,19 @@ const RequestPage = () => {
         }}
       >
         {rightSectionFlag === "report-details" ? (
-         reportDetails &&  <ReportDetailsSection reportDetails={reportDetails} />
+          reportDetails && (
+            <ReportDetailsSection reportDetails={reportDetails} />
+          )
         ) : rightSectionFlag === "create-review" ? (
-          <CreateReviewForm />
+          reportDetails?.id && <CreateReviewForm setRightSectionFlag={setRightSectionFlag} reportId={reportDetails?.id} />
         ) : rightSectionFlag === "review-details" ? (
-          reportDetails && reviewDetails && <ReviewResult reviewDetails={reviewDetails} reportDetails={reportDetails} />
+          reportDetails &&
+          reviewDetails && (
+            <ReviewResult
+              reviewDetails={reviewDetails}
+              reportDetails={reportDetails}
+            />
+          )
         ) : null}
       </Grid>
     </Grid>

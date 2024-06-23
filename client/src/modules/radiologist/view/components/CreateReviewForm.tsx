@@ -1,27 +1,51 @@
-import React from "react";
+"use-client";
+
+import React, { Dispatch, SetStateAction } from "react";
 import { Formik, FieldArray } from "formik";
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomTextField from "@/core/shared/components/CustomTextField";
 import { Grid, Button, Box, Typography } from "@mui/material";
 import reviewDataModel from "../../models/review-model";
-import { MissedFinding } from "../../interfaces/review-interface";
+import {
+  MissedFinding,
+  ReviewDataInterface,
+} from "../../interfaces/review-interface";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import CustomSeparator from "@/core/shared/components/CustomSeparator";
 import CustomRadioButton from "@/core/shared/components/CustomRadioButton";
+import { useAppDispatch } from "@/core/state/store";
+import { createReview } from "../../controllers/thunks/review-thunk";
+
+interface CreateReviewFormPropsInterface {
+  reportId: string | number;
+  setRightSectionFlag: Dispatch<
+    SetStateAction<"report-details" | "review-details" | "create-review">
+  >;
+}
 
 // The form component
-const CreateReviewForm = () => {
-  const handleSubmit = (values: any) => {
-    console.log(values);
-  };
+const CreateReviewForm = ({
+  reportId,
+  setRightSectionFlag,
+}: CreateReviewFormPropsInterface) => {
+  const dispatch = useAppDispatch();
 
   return (
     <Formik
       initialValues={reviewDataModel.defaultValues}
       validationSchema={reviewDataModel.validationSchema}
-      onSubmit={handleSubmit}
+      onSubmit={(values: ReviewDataInterface, { resetForm }) => {
+        console.log(values, "values");
+        const submitObject = { ...values, reportId: reportId };
+        dispatch(createReview(submitObject)).then((res) => {
+          if (res.meta.requestStatus == "fulfilled") {
+            resetForm();
+            setRightSectionFlag("report-details");
+          }
+        });
+      }}
     >
       {({
         values,
