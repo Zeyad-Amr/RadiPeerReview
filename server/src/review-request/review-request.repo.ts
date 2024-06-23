@@ -1,7 +1,11 @@
 import { PrismaGenericRepo } from '@/shared/prisma-client/prisma-generic.repo';
 import { PrismaService } from '@/shared/prisma-client/prisma.service';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma, ReviewRequest, Role, Status } from '@prisma/client';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { Prisma, ReviewRequest, Status } from '@prisma/client';
 
 @Injectable()
 export class ReviewRequestRepo extends PrismaGenericRepo<
@@ -47,12 +51,12 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
 
   async getAllRequests(query: { [key: string]: any }, radiologistId: string) {
     try {
-      let filters = Object.keys(query);
+      const filters = Object.keys(query);
       const filterErrorMsg = (cause: string) =>
         `Invalid filter value: ${cause}`;
 
       // where object initialization
-      let whereObj: Prisma.ReviewRequestWhereInput = {};
+      const whereObj: Prisma.ReviewRequestWhereInput = {};
 
       // filter the query object and insert where clause in where object
       let q;
@@ -114,32 +118,69 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
     }
   }
 
-  async getRadiologistWithLeastPendingReviewRequests() {
+  async getBestRadMatch(reportOwnerID: string) {
     try {
-      const result = await this.prismaService.auth.findFirst({
-        where: {
-          role: Role.RADIOLOGIST,
-          isdeactivated: false,
-        },
-        orderBy: {
-          ReviewRequestAsReviewer: {
-            _count: 'asc',
-          },
-        },
+      // get highes matching between specializations
+      const user = await this.prismaService.auth.findUnique({
+        where: { id: reportOwnerID },
         include: {
-          _count: {
+          radiologist: {
             select: {
-              ReviewRequestAsReviewer: {
-                where: {
-                  approved: null,
-                },
-              },
+              specializations: true,
             },
           },
         },
       });
 
-      return result;
+      if (!user) {
+        // get one with least number of reports assigned
+        return await this.prismaService.auth.findFirst({
+          where: {
+            role: 'RADIOLOGIST',
+            isdeactivated: false,
+          },
+          select: {
+            id: true,
+          },
+          orderBy: {
+            ReviewRequestAsReviewer: {
+              _count: 'asc',
+            },
+          },
+        });
+      }
+
+      const matchingRadiologists =
+        await this.prismaService.radiologist.findMany({
+          where: {
+            id: {
+              not: user.radiologistId,
+            },
+            specializations: {
+              hasSome: user.radiologist.specializations,
+            },
+          },
+          select: {
+            id: true,
+            specializations: true,
+          },
+        });
+
+      const sortedRadiologists = matchingRadiologists
+        .map((radiologist) => {
+          const matchingCount = radiologist.specializations.filter((spec) =>
+            user.radiologist.specializations.includes(spec),
+          ).length;
+          return { ...radiologist, matchingCount };
+        })
+        .filter((radiologist) => radiologist.matchingCount > 0)
+        .sort((a, b) => b.matchingCount - a.matchingCount);
+
+      if (sortedRadiologists.length === 0) {
+        throw new NotFoundException('No radiologist found');
+      }
+
+      return sortedRadiologists[0];
     } catch (error) {
       throw error;
     }

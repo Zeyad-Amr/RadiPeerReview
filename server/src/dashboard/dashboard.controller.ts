@@ -66,4 +66,13 @@ export class DashboardController {
       throw handleError(error);
     }
   }
+
+  @Get('leader-board')
+  async getLeaderBoard() {
+    try {
+      return await this.dashboardService.getLeaderBoard();
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
 }

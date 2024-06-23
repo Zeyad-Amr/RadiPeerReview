@@ -125,4 +125,44 @@ export class DashboardRepo {
       throw error;
     }
   }
+
+  async getLeaderBoard() {
+    try {
+      const highestApprovalRadiologists =
+        await this.prisma.reviewRequest.groupBy({
+          by: 'creatorId',
+          _count: { approved: true },
+          where: {
+            approved: true,
+          },
+          orderBy: {
+            _count: {
+              approved: 'desc',
+            },
+          },
+          take: 5,
+        });
+
+      return highestApprovalRadiologists;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getRadiologistsData(creatorIds: string[]) {
+    try {
+      return await this.prisma.auth.findMany({
+        where: {
+          id: {
+            in: creatorIds,
+          },
+        },
+        include: {
+          radiologist: true,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

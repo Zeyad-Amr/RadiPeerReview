@@ -52,4 +52,32 @@ export class DashboardService {
       throw error;
     }
   }
+
+  async getLeaderBoard() {
+    try {
+      const highestApprovalRadiologists =
+        await this.dashboardRepo.getLeaderBoard();
+
+      // get the creators details
+      const creatorsIDs = highestApprovalRadiologists.map(
+        (creator) => creator.creatorId,
+      );
+      // get their data from the db
+      const creatorsData =
+        await this.dashboardRepo.getRadiologistsData(creatorsIDs);
+
+      const result = [];
+      for (let i = 0; i < highestApprovalRadiologists.length; i++) {
+        const creator = creatorsData.find(
+          (creator) => creator.id === highestApprovalRadiologists[i].creatorId,
+        );
+        result.push({
+          ...highestApprovalRadiologists[i],
+          creator: creator.radiologist,
+        });
+      }
+
+      return result;
+    } catch (error) {}
+  }
 }
