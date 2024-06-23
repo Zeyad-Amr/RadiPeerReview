@@ -8,6 +8,7 @@ import notificationsSlice from "@/modules/notifications/controllers/slices/notif
 import settingsSlice from "@/modules/settings/controllers/slices/settings-slice";
 
 import reviewRequestSlice from "@/modules/review-request/controllers/slices/review-request-slice";
+import dashboardSlice from "@/modules/dashboard/controllers/slices/dashboard-slice";
 const store = configureStore({
   reducer: {
     auth: authSlice,
@@ -17,6 +18,7 @@ const store = configureStore({
     notifications: notificationsSlice,
     settings: settingsSlice,
     reviewRequestSlice,
+    dashboardSlice,
   },
 });
 

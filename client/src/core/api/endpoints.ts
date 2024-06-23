@@ -44,5 +44,14 @@ const Endpoints = {
     get: "/config/:key",
     update: "/config",
   },
+  dashboard:{
+    totalReports: "/dashboard/total-reports",
+    acceptedReports: "/dashboard/accepted-reports",
+    rejectedReports: "/dashboard/rejected-reports",
+    pendingReports: "/dashboard/pending-reports",
+    averageSuccessScore: "/dashboard/average-success-score",
+    averageFailureScore: "/dashboard/average-failure-score",
+    leaderboard: "/dashboard/leader-board",
+  }
 };
 export default Endpoints;

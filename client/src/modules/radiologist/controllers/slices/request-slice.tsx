@@ -17,8 +17,8 @@ const initialState: RequestState = {
   requests: [],
   assignedRequests: [],
   currentRequest: {
-    creator : null,
-    creatorId : "",
+    creator: null,
+    creatorId: "",
     approved: null,
     createdAt: null,
     report: [],
