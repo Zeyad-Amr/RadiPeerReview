@@ -9,13 +9,16 @@ import reportModel from "../../models/request-model";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
 import { createRequest } from "../../controllers/thunks/request-thunk";
+import { createReport } from "../../controllers/thunks/report-thunk";
 
 interface CreateRequestFormPropsInterface {
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
+  reviewRequestId? : string ;
 }
 
 const CreateRequestForm = ({
   setShowFormDialog,
+  reviewRequestId
 }: CreateRequestFormPropsInterface) => {
   // useRef
   const pdfFileInputRef = useRef<HTMLInputElement>(null);
@@ -38,7 +41,9 @@ const CreateRequestForm = ({
       formData.append("result", values.result);
     }
     formData.append("additionalComments", values.additionalComments);
-    dispatch(createRequest(formData)).then((res) => {
+    reviewRequestId ? formData.append("reviewRequestId", reviewRequestId) : null
+    const action = reviewRequestId ? createReport : createRequest
+    dispatch(action(formData)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
         setShowFormDialog(false);
         resetForm();
@@ -200,7 +205,7 @@ const CreateRequestForm = ({
 
           {/* Submit Button */}
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <PrimaryButton title="Add" type="submit" />
+            <PrimaryButton title={ reviewRequestId ? "Resubmit" : "Add"} type="submit" />
           </Box>
         </form>
       )}

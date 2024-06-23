@@ -92,7 +92,7 @@ const RequestPage = () => {
               backgroundColor: "gray",
             }}
           />
-          {targetRequest?.report?.map((reportEl, index) => (
+          {targetRequest?.report?.map((reportEl, index : number) => (
             <Box
               key={reportEl.id}
               sx={{ position: "relative", marginLeft: "2rem" }}
@@ -109,6 +109,7 @@ const RequestPage = () => {
                 setRightSectionFlag={setRightSectionFlag}
                 role={roleParam}
                 requestData={targetRequest}
+                reportIndex={index}
               />
             </Box>
           ))}

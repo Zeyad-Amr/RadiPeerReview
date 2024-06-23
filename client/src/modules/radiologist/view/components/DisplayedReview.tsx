@@ -1,8 +1,10 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { ReviewDataInterface } from "../../interfaces/review-interface";
 import SendIcon from "@mui/icons-material/Send";
 import { GetRequestInterface } from "../../interfaces/request-interface";
+import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
+import CreateRequestForm from "./CreateRequestForm";
 
 interface DisplayedReviewProps {
   reviewEl: ReviewDataInterface | null;
@@ -12,6 +14,7 @@ interface DisplayedReviewProps {
   >;
   role: string | null;
   requestData: GetRequestInterface;
+  reportIndex: number;
 }
 
 const DisplayedReview = ({
@@ -19,81 +22,107 @@ const DisplayedReview = ({
   setReviewData,
   reviewEl,
   requestData,
+  reportIndex,
   role,
 }: DisplayedReviewProps) => {
+
+  // useState
+  const [showResubmitFormDialog, setShowResubmitFormDialog] =
+    useState<boolean>(false);
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        marginBottom: 6,
-        paddingLeft: 2,
-      }}
-    >
+    <>
+      {/* Create resubmit report form dialog */}
+      <CustomizedDialog
+        open={showResubmitFormDialog}
+        setOpen={setShowResubmitFormDialog}
+        title="Resubmit Report"
+        maxWidth="md"
+      >
+        <CreateRequestForm
+          reviewRequestId={requestData?.id}
+          setShowFormDialog={setShowResubmitFormDialog}
+        />
+      </CustomizedDialog>
       <Box
         sx={{
           display: "flex",
-          alignItems: "center",
-          marginBottom: 3,
-          // paddingLeft: 2,
+          flexDirection: "column",
+          marginBottom: 6,
+          paddingLeft: 2,
         }}
       >
         <Box
           sx={{
-            marginLeft: 2,
-            padding: "0.7rem",
-            borderRadius: "10px",
-            width: "72.2%",
-            backgroundColor: "primary.lighter",
-            cursor: reviewEl ? "pointer" : "default",
-          }}
-          onClick={() => {
-            if (reviewEl) {
-              setReviewData(reviewEl);
-              setRightSectionFlag("review-details");
-            }
-          }}
-        >
-          {/* review data */}
-          {reviewEl ? (
-            <>
-              <Typography sx={{ fontSize: "13px" }} color="textSecondary">
-                Completeness of report :{" "}
-                {reviewEl?.clarityAndCompleteness?.completenessOfReport ??
-                  "No Data Available"}
-              </Typography>
-              <Typography sx={{ fontSize: "13px" }} color="textSecondary">
-                Accuracy of impression :{" "}
-                {reviewEl?.impressionAndRecommendations?.accuracyOfImpression
-                  ? "Yes"
-                  : "No"}
-              </Typography>
-            </>
-          ) : (
-            // no review data
-            <Typography
-              sx={{ textAlign: "center", fontSize: "13px" }}
-              color="textSecondary"
-            >
-              Not Reviewed Yet
-            </Typography>
-          )}
-        </Box>
-      </Box>
-      {role === "creator" && reviewEl && !requestData?.approved && (
-        <Box
-          sx={{
-            color: "secondary.main",
             display: "flex",
             alignItems: "center",
-            cursor: "pointer",
+            marginBottom: 3,
+            // paddingLeft: 2,
           }}
         >
-          <Typography sx={{ fontSize: "13px" }}>Resubmit</Typography>
-          <SendIcon sx={{ fontSize: "14px", marginLeft: "0.5rem" }} />
+          <Box
+            sx={{
+              marginLeft: 2,
+              padding: "0.7rem",
+              borderRadius: "10px",
+              width: "72.2%",
+              backgroundColor: "primary.lighter",
+              cursor: reviewEl ? "pointer" : "default",
+            }}
+            onClick={() => {
+              if (reviewEl) {
+                setReviewData(reviewEl);
+                setRightSectionFlag("review-details");
+              }
+            }}
+          >
+            {/* review data */}
+            {reviewEl ? (
+              <>
+                <Typography sx={{ fontSize: "13px" }} color="textSecondary">
+                  Completeness of report :{" "}
+                  {reviewEl?.clarityAndCompleteness?.completenessOfReport ??
+                    "No Data Available"}
+                </Typography>
+                <Typography sx={{ fontSize: "13px" }} color="textSecondary">
+                  Accuracy of impression :{" "}
+                  {reviewEl?.impressionAndRecommendations?.accuracyOfImpression
+                    ? "Yes"
+                    : "No"}
+                </Typography>
+              </>
+            ) : (
+              // no review data
+              <Typography
+                sx={{ textAlign: "center", fontSize: "13px" }}
+                color="textSecondary"
+              >
+                Not Reviewed Yet
+              </Typography>
+            )}
+          </Box>
         </Box>
-      )}
-    </Box>
+        {role === "creator" &&
+          reviewEl &&
+          reportIndex === requestData?.report.length - 1 &&
+          !requestData?.approved && (
+            <Box
+              sx={{
+                color: "secondary.main",
+                display: "flex",
+                alignItems: "center",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setShowResubmitFormDialog(true)
+              }}
+            >
+              <Typography sx={{ fontSize: "13px" }}>Resubmit</Typography>
+              <SendIcon sx={{ fontSize: "14px", marginLeft: "0.5rem" }} />
+            </Box>
+          )}
+      </Box>
+    </>
   );
 };
 

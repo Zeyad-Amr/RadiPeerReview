@@ -5,10 +5,11 @@ export interface CreateRequestInterface {
   report: File | null;
   result: File | null;
   additionalComments: string;
+  reviewRequestId? : string;
 }
 
 export interface GetRequestInterface {
-  id?: string | number;
+  id?: string;
   reviewerId?: string | number;
   creatorId?: string | number;
   creator?: creatorInterface | null;
