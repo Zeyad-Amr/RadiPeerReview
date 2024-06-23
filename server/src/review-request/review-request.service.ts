@@ -100,9 +100,7 @@ export class ReviewRequestService {
 
   async allocateRadiologist(reportOwnerID: string) {
     try {
-      return await this.reviewRequestRepo.getRadiologistWithLeastPendingReviewRequests(
-        reportOwnerID,
-      );
+      return await this.reviewRequestRepo.getBestRadMatch(reportOwnerID);
     } catch (error) {
       throw error;
     }
