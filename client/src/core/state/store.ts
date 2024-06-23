@@ -5,6 +5,7 @@ import review from "@/modules/radiologist/controllers/slices/review-slice";
 import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import notificationsSlice from "@/modules/notifications/controllers/slices/notifications-slice";
+import settingsSlice from "@/modules/settings/controllers/slices/settings-slice";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     request,
     review,
     notifications: notificationsSlice,
+    settings: settingsSlice,
   },
 });
 
