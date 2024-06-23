@@ -5,8 +5,8 @@ import AddRadiologistPage from "@/modules/admin/view/pages/radiologist/AddRadiol
 
 export default function AddRadiologist() {
   return (
-    <Layout >
+    <Layout>
       <AddRadiologistPage />
     </Layout>
-  )
+  );
 }

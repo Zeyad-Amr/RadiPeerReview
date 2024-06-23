@@ -23,13 +23,17 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { extname, resolve } from 'path';
+import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import { handleError } from '@/shared/http-error';
+import { NotificationsService } from '@/notifications/notifications.service';
+import { ConfigService } from '@/config/config.service';
+import { ConfigKeys } from '@/config/entities/config.entity';
+import { NotificationType, Role } from '@prisma/client';
 
-const UPLOAD_PATH = resolve('src', 'shared', 'uploads');
+const UPLOAD_PATH = process.env.UPLOAD_DIR;
 @ApiBearerAuth()
 @ApiTags('review-request')
 @Controller('review-request')
@@ -37,6 +41,8 @@ export class ReviewRequestController {
   constructor(
     private readonly reviewRequestService: ReviewRequestService,
     private reportService: ReportService,
+    private notificationsService: NotificationsService,
+    private configService: ConfigService,
   ) {}
 
   @UseInterceptors(
@@ -88,11 +94,43 @@ export class ReviewRequestController {
       const report = await this.reportService.saveReport(files, {
         additionalComments: createReviewRequestDto.additionalComments,
       });
-      return this.reviewRequestService.createReviewRequest(
+      const request = await this.reviewRequestService.createReviewRequest(
         createReviewRequestDto.name,
         report.id,
         creatorId,
       );
+
+      const config = await this.configService.getConfig(
+        ConfigKeys.ASSIGNMENT_MODE,
+      );
+
+      if (config.value.toLowerCase() === 'manual') {
+        // If Assignment Mode is Manual, then notify the Admin
+        this.notificationsService.notifyUser({
+          receiverRole: Role.ADMIN,
+          type: NotificationType.UNASSIGNED_REVIEW_REQUEST,
+          entityId: request.id,
+        });
+      } else if (config.value.toLowerCase() === 'auto') {
+        const radiologist = await this.reviewRequestService.allocateRadiologist(
+          req.user.sub,
+        );
+
+        await this.reviewRequestService.assignReviewer(
+          request.id,
+          radiologist.id,
+        );
+
+        // If Assignment Mode is Auto, then notify the Radiologists
+        await this.notificationsService.notifyUser({
+          receiverRole: Role.RADIOLOGIST,
+          receiverId: radiologist.id,
+          type: NotificationType.REQUEST_ASSIGNED,
+          entityId: request.id,
+        });
+      }
+
+      return request;
     } catch (error) {
       handleError(error);
     }
@@ -120,15 +158,48 @@ export class ReviewRequestController {
     }
   }
 
-  @Patch(':id')
-  update(
+  @Patch('assign/:id')
+  async assignReview(
     @Param('id') id: string,
     @Body() updateReviewRequestDto: UpdateReviewRequestDto,
   ) {
-    return this.reviewRequestService.assignReview(
-      id,
-      updateReviewRequestDto.reviewerId,
-    );
+    try {
+      const request = await this.reviewRequestService.assignReviewRequest(
+        id,
+        updateReviewRequestDto.reviewerId,
+      );
+
+      // Notify the Radiologist that the request has been assigned to them
+      await this.notificationsService.notifyUser({
+        receiverRole: Role.RADIOLOGIST,
+        receiverId: updateReviewRequestDto.reviewerId,
+        type: NotificationType.REQUEST_ASSIGNED,
+        entityId: request.id,
+      });
+
+      return request;
+    } catch (error) {
+      handleError(error);
+    }
+  }
+
+  @Patch('approve/:id')
+  async update(@Param('id') id: string) {
+    try {
+      const request = await this.reviewRequestService.approveReviewRequest(id);
+
+      // Notify the Radiologist that the request has been approved
+      await this.notificationsService.notifyUser({
+        receiverRole: Role.RADIOLOGIST,
+        receiverId: request.creatorId,
+        type: NotificationType.REQUEST_APPROVED,
+        entityId: request.id,
+      });
+
+      return request;
+    } catch (error) {
+      handleError(error);
+    }
   }
 
   @Delete(':id')

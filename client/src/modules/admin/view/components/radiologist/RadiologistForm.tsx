@@ -14,14 +14,20 @@ import RadiologistModel from "@/modules/admin/models/radiologist-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 const RadiologistForm = ({
     id,
     initialValues,
     isViewMode,
     setShowFormDialog,
-}: ExaminationFormComponentPropsInterface) => {
+}: {
+    isViewMode: boolean;
+    id?: string;
+    visitCode?: string;
+    initialValues: any;
+    setShowFormDialog: Dispatch<SetStateAction<boolean>>
+}) => {
     const specializationList = Object.values(Specialization).map(
         (specialization) => ({
             value: specialization
@@ -36,17 +42,23 @@ const RadiologistForm = ({
     const dispatch = useAppDispatch();
     return (
         <Formik
-        initialValues={
-            initialValues
-              ? ({
-                  ...initialValues,
-                } as RadiologistInterface)
-              : RadiologistModel.defaultValues
-          }
-          onSubmit={async (values) => {
-
+            initialValues={
+                initialValues
+                    ? ({
+                        ...initialValues,
+                    } as RadiologistInterface)
+                    : RadiologistModel.defaultValues
+            }
+            onSubmit={async (values) => {
                 const action = initialValues
-                    ? updateRadiologist({ ...values, id: id })
+                    ? updateRadiologist({
+                        id: id,
+                        email: values.email,
+                        fname: values.fname,
+                        lname: values.lname,
+                        phone: values.phone,
+                        specializations: values.specializations
+                    })
                     : createRadiologist(values);
 
                 dispatch(action).then((res) => {
@@ -55,7 +67,7 @@ const RadiologistForm = ({
                     }
                 });
             }}
-            validationSchema={radiologistModel.validationSchema}
+            validationSchema={initialValues ? radiologistModel.editValidationSchema : radiologistModel.validationSchema}
         >
             {({
                 values,
@@ -146,38 +158,40 @@ const RadiologistForm = ({
                                 }}
                             />
                         </Grid>
-                        <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <CustomTextField
-                                name="username"
-                                label="Username"
-                                value={values.username}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={errors.username}
-                                touched={touched.username}
-                                width="100%"
-                                props={{
-                                    type: "text",
-                                    disabled: isViewMode,
-                                }}
-                            />
-                        </Grid>
-                        <Grid item lg={6} md={6} sm={12} xs={12}>
-                            <CustomTextField
-                                name="password"
-                                label="Password"
-                                value={values.password}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={errors.password}
-                                touched={touched.password}
-                                width="100%"
-                                props={{
-                                    type: "text",
-                                    disabled: isViewMode,
-                                }}
-                            />
-                        </Grid>
+                        {radiologistModel ? null :
+                            <>
+                                <Grid item lg={6} md={6} sm={12} xs={12}>
+                                    <CustomTextField
+                                        name="username"
+                                        label="Username"
+                                        value={values.username}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={errors.username}
+                                        touched={touched.username}
+                                        width="100%"
+                                        props={{
+                                            type: "text",
+                                            disabled: isViewMode,
+                                        }} />
+                                </Grid>
+                                <Grid item lg={6} md={6} sm={12} xs={12}>
+                                    <CustomTextField
+                                        name="password"
+                                        label="Password"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={errors.password}
+                                        touched={touched.password}
+                                        width="100%"
+                                        props={{
+                                            type: "text",
+                                            disabled: isViewMode,
+                                        }} />
+                                </Grid>
+                            </>
+                        }
                         <Grid
                             item
                             lg={12}

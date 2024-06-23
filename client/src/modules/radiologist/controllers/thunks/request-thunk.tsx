@@ -10,14 +10,14 @@ import reportModel from "../../models/request-model";
 export const createRequest = createAsyncThunk(
   "request/create",
   async (data: FormData, thunkApi) => {
-    const { rejectWithValue , dispatch } = thunkApi;
+    const { rejectWithValue, dispatch } = thunkApi;
     try {
       await ApiClient.post(Endpoints.reviewRequest.create, data).then((res) => {
         if (res.status == 201) {
-          dispatch(getCreatorRequestsList())
-          dispatch(getAssignedRequestsList())
+          dispatch(getCreatorRequestsList(false));
+          dispatch(getAssignedRequestsList(false));
         }
-      })
+      });
       return true;
     } catch (error: any) {
       const errorResponse: ErrorResponse =
@@ -52,11 +52,12 @@ export const updateRequest = createAsyncThunk(
 //*  Get All Creator Requests
 export const getCreatorRequestsList = createAsyncThunk(
   "request/creator/list",
-  async (_data, thunkApi) => {
+  async (hideLoading: boolean, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.reviewRequest.list, {
         queryParams: { user_is: "creator" },
+        config: { headers: { hideLoading: hideLoading } },
       });
       console.log(response, "response");
       return response?.data?.map((item: any) => reportModel.fromJson(item));
@@ -70,11 +71,12 @@ export const getCreatorRequestsList = createAsyncThunk(
 
 export const getAssignedRequestsList = createAsyncThunk(
   "request/reviewer/list",
-  async (_data, thunkApi) => {
+  async (hideLoading: boolean, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.reviewRequest.list, {
         queryParams: { user_is: "reviewer" },
+        config: { headers: { hideLoading: hideLoading } },
       });
       console.log(response, "response");
       return response?.data?.map((item: any) => reportModel.fromJson(item));

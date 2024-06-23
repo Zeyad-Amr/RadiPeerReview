@@ -41,8 +41,8 @@ const RequestPage = () => {
 
   // dispatch all requests to get their list in store
   useEffect(() => {
-    dispatch(getCreatorRequestsList());
-    dispatch(getAssignedRequestsList());
+    dispatch(getCreatorRequestsList(false));
+    dispatch(getAssignedRequestsList(false));
   }, [dispatch]);
 
   // apply target request from requests list

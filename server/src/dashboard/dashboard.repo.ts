@@ -54,4 +54,115 @@ export class DashboardRepo {
       throw error;
     }
   }
+
+  async getAverageSuccessScore() {
+    try {
+      // calc average
+      const overAllQuality = await this.prisma.report.findMany({
+        where: {
+          ReviewRequest: {
+            approved: true,
+          },
+        },
+        select: {
+          Review: {
+            select: {
+              overallAssessment: {
+                select: {
+                  overallQuality: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (!overAllQuality.length) {
+        return 0;
+      }
+
+      let sum = 0.0;
+      overAllQuality.forEach((report) => {
+        sum += report.Review.overallAssessment.overallQuality;
+      });
+      return sum / overAllQuality.length;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAverageFailureScore() {
+    try {
+      // calc average
+      const overAllQuality = await this.prisma.report.findMany({
+        where: {
+          ReviewRequest: {
+            approved: false,
+          },
+        },
+        select: {
+          Review: {
+            select: {
+              overallAssessment: {
+                select: {
+                  overallQuality: true,
+                },
+              },
+            },
+          },
+        },
+      });
+      if (overAllQuality.length === 0) {
+        return 0;
+      }
+
+      let sum = 0.0;
+      overAllQuality.forEach((report) => {
+        sum += report.Review.overallAssessment.overallQuality;
+      });
+      return sum / overAllQuality.length;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getLeaderBoard() {
+    try {
+      const highestApprovalRadiologists =
+        await this.prisma.reviewRequest.groupBy({
+          by: 'creatorId',
+          _count: { approved: true },
+          where: {
+            approved: true,
+          },
+          orderBy: {
+            _count: {
+              approved: 'desc',
+            },
+          },
+          take: 5,
+        });
+
+      return highestApprovalRadiologists;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getRadiologistsData(creatorIds: string[]) {
+    try {
+      return await this.prisma.auth.findMany({
+        where: {
+          id: {
+            in: creatorIds,
+          },
+        },
+        include: {
+          radiologist: true,
+        },
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
 }

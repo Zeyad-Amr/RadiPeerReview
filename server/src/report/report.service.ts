@@ -1,17 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ReportRepo } from './report.repo';
+import { NotificationsService } from '@/notifications/notifications.service';
+import { NotificationType, Role } from '@prisma/client';
+import { ReviewRequestService } from '@/review-request/review-request.service';
 
 @Injectable()
 export class ReportService {
-  constructor(private reportRepo: ReportRepo) {}
+  constructor(
+    private reportRepo: ReportRepo,
+  ) {}
 
   async saveReport(
     files: { report?: Express.Multer.File[]; result?: Express.Multer.File[] },
     data: CreateReportDto,
   ) {
     try {
-      return await this.reportRepo.create({
+      const report = await this.reportRepo.create({
         reportUrl: this.makeURL(files.report[0].filename),
         resultUrl: this.makeURL(files.result[0].filename),
         additionalComments: data.additionalComments,
@@ -23,6 +28,7 @@ export class ReportService {
             }
           : undefined,
       });
+      return report;
     } catch (error) {
       throw error;
     }

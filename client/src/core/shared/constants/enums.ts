@@ -1,4 +1,3 @@
-import Radiologist from "../../../app/radiologist/add-report/page";
 enum Role {
   ADMIN = "ADMIN",
   RADIOLOGIST = "RADIOLOGIST",

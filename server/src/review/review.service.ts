@@ -4,7 +4,9 @@ import { ReviewRepo } from './review.repo';
 
 @Injectable()
 export class ReviewService {
-  constructor(private reviewRepo: ReviewRepo) {}
+  constructor(
+    private reviewRepo: ReviewRepo,
+  ) {}
 
   async create(createReviewDto: CreateReviewDto) {
     try {

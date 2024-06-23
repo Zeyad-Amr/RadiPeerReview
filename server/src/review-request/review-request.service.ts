@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewRequestRepo } from './review-request.repo';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class ReviewRequestService {
   constructor(private reviewRequestRepo: ReviewRequestRepo) {}
 
-  async createReviewRequest(name:string,reportId: string, creatorId: string) {
+  async createReviewRequest(name: string, reportId: string, creatorId: string) {
     try {
-      return await this.reviewRequestRepo.create({
+      const request = await this.reviewRequestRepo.create({
         name,
         report: {
           connect: {
@@ -20,6 +21,22 @@ export class ReviewRequestService {
           },
         },
       });
+      return request;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async assignReviewer(reviewRequestId: string, reviewerId: string) {
+    try {
+      const request = await this.reviewRequestRepo.update(reviewRequestId, {
+        reviewer: {
+          connect: {
+            id: reviewerId,
+          },
+        },
+      });
+      return request;
     } catch (error) {
       throw error;
     }
@@ -46,26 +63,44 @@ export class ReviewRequestService {
     }
   }
 
-  async assignReview(id: string, reviewerId: string) {
+  async remove(id: string) {
     try {
-      const review = await this.reviewRequestRepo.update(id, {
-        reviewer: {
-          connect: {
-            id: reviewerId,
-          },
-        },
-        status: 'Assigned',
-      });
+      const review = await this.reviewRequestRepo.delete(id);
       return review;
     } catch (error) {
       throw error;
     }
   }
-
-  async remove(id: string) {
+  async assignReviewRequest(id: string, reviewerId: string) {
     try {
-      const review = await this.reviewRequestRepo.delete(id);
-      return review;
+      const reviewRequest = await this.reviewRequestRepo.update(id, {
+        reviewer: {
+          connect: {
+            id: reviewerId,
+          },
+        },
+        status: Status.Assigned,
+      });
+      return reviewRequest;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async approveReviewRequest(id: string) {
+    try {
+      const reviewRequest = await this.reviewRequestRepo.update(id, {
+        approved: true,
+      });
+      return reviewRequest;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async allocateRadiologist(reportOwnerID: string) {
+    try {
+      return await this.reviewRequestRepo.getBestRadMatch(reportOwnerID);
     } catch (error) {
       throw error;
     }

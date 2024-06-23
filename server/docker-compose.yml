@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: nest_app
+    ports:
+      - "4000:4000"
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgresql://postgres:password@postgres:5432/nestdb"
+      UPLOAD_DIR: "/usr/src/app/dist/upload"
+      JWT_SECRET: "8yCHXlQql79QEOnnZ6fQ0YFA8tTPFa2T"
+      BASE_URL: "http://localhost:4000"
+    volumes:
+      - .:/usr/src/app
+      - upload_data:/usr/src/app/dist/upload
+
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nestdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  upload_data:
+  postgres_data:

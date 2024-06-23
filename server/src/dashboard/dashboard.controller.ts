@@ -48,4 +48,31 @@ export class DashboardController {
       throw handleError(error);
     }
   }
+
+  @Get('average-success-score')
+  async getAverageSuccessScore() {
+    try {
+      return await this.dashboardService.getAverageSuccessScore();
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @Get('average-failure-score')
+  async getAverageFailureScore() {
+    try {
+      return await this.dashboardService.getAverageFailureScore();
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
+
+  @Get('leader-board')
+  async getLeaderBoard() {
+    try {
+      return await this.dashboardService.getLeaderBoard();
+    } catch (error) {
+      throw handleError(error);
+    }
+  }
 }

@@ -3,7 +3,6 @@ import { AuthInterface } from "../interfaces/auth-interface";
 import { Yup } from "@/core/shared/utils/validation";
 import { UserInterface } from "../interfaces/user-interface";
 import { Role } from "@/core/shared/constants/enums";
-import Radiologist from "../../../app/radiologist/add-report/page";
 import RadiologistModel from "@/modules/admin/models/radiologist-model";
 
 class UserModel extends BaseModel<UserInterface> {
@@ -19,6 +18,7 @@ class UserModel extends BaseModel<UserInterface> {
 
   validationSchema = Yup.object().shape({});
   fromJson(json: any): UserInterface {
+    console.log(json);
     return {
       id: json.id,
       username: json.username,

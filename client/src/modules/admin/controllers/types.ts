@@ -1,3 +1,4 @@
+import { DeactivateInterface } from "../interfaces/deactivate-interface";
 import { RadiologistInterface } from "../interfaces/radiologist-interface";
 
 export interface RadiologistState {
@@ -5,4 +6,9 @@ export interface RadiologistState {
   currentRadiologist: RadiologistInterface;
   loading: boolean;
   error: string;
+}
+export interface DeactivateState {
+  loading: boolean;
+  error: string;
+  isdeactivated: boolean;
 }
