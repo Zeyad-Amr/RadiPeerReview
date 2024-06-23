@@ -34,7 +34,7 @@ export const updateRequest = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       await ApiClient.patch(
-        Endpoints.reviewRequest.update,
+        Endpoints.reviewRequest.assign,
         reportModel.toJson(data),
         {
           pathVariables: { id: data.id },

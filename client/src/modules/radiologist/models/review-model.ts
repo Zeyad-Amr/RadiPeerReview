@@ -130,10 +130,10 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
 
   private toClarityAndCompletenessDataJson(entity: ClarityAndCompleteness): any {
     return {
-      clarityOfLanguage: entity.clarityOfLanguage,
+      clarityOfLanguage: Number(entity.clarityOfLanguage),
       commentsOnCompleteness: entity.commentsOnCompleteness,
       commentsOnLanguage: entity.commentsOnLanguage,
-      completenessOfReport: entity.completenessOfReport,
+      completenessOfReport: Number(entity.completenessOfReport),
    }
   }
 
@@ -141,15 +141,15 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
     return {
       accuracyOfImpression: entity.accuracyOfImpression,
       commentsOnImpression: entity.commentsOnImpression,
-      appropriatenessOfRecommendations: entity.appropriatenessOfRecommendations,
+      appropriatenessOfRecommendations: Number(entity.appropriatenessOfRecommendations),
       suggestionsForRecommendations: entity.suggestionsForRecommendations,
    }
   }
 
   private toTechnicalQualityDataJson(entity: TechnicalQuality): any {
     return {
-      imageQuality: entity.imageQuality,
-      imagingTechnique: entity.imagingTechnique,
+      imageQuality: Number(entity.imageQuality),
+      imagingTechnique: Number(entity.imagingTechnique),
       commentsOnImageQuality: entity.commentsOnImageQuality,
       commentsOnTechnique: entity.commentsOnTechnique,
    }
@@ -158,7 +158,7 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
   private toOverallAssessmentDataJson(entity: OverallAssessment): any {
     return {
       generalComments: entity.generalComments,
-      overallQuality: entity.overallQuality,
+      overallQuality: Number(entity.overallQuality),
    }
   }
 
@@ -190,7 +190,7 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
       id: json.id,
       commentsOnAccuracy: json.commentsOnAccuracy,
       correctnessOfFindings: json.correctnessOfFindings,
-      missedFindings: json.missedFindings ? json?.missedFindings?.map((el : MissedFinding ) => this.fromMissedFindingDataJson(el)) : [],
+      missedFindings: json.MissedFinding ? json?.MissedFinding?.map((el : MissedFinding ) => this.fromMissedFindingDataJson(el)) : [],
    }
   }
 
