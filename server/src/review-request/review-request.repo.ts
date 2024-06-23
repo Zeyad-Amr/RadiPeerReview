@@ -133,7 +133,21 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
       });
 
       if (!user) {
-        throw new NotFoundException('Radiologist not found');
+        // get one with least number of reports assigned
+        return await this.prismaService.auth.findFirst({
+          where: {
+            role: 'RADIOLOGIST',
+            isdeactivated: false,
+          },
+          select: {
+            id: true,
+          },
+          orderBy: {
+            ReviewRequestAsReviewer: {
+              _count: 'asc',
+            },
+          },
+        });
       }
 
       const matchingRadiologists =
