@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ReviewRequestRepo } from './review-request.repo';
-import { NotificationType, Role, Status } from '@prisma/client';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class ReviewRequestService {
-  constructor(
-    private reviewRequestRepo: ReviewRequestRepo,
-  ) {}
+  constructor(private reviewRequestRepo: ReviewRequestRepo) {}
 
   async createReviewRequest(name: string, reportId: string, creatorId: string) {
     try {
@@ -80,6 +78,14 @@ export class ReviewRequestService {
         approved: true,
       });
       return reviewRequest;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async allocateRadiologist() {
+    try {
+      return await this.reviewRequestRepo.getRadiologistWithLeastPendingReviewRequests();
     } catch (error) {
       throw error;
     }

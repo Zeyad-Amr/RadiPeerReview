@@ -11,14 +11,12 @@ model Auth {
   id                      String          @id @default(cuid())
   username                String          @unique
   password                String
-  role                    Role            @default(RADIOLOGIST)
-  isdeactivated           Boolean         @default(false)
-
   createdAt               DateTime        @default(now())
   updatedAt               DateTime        @updatedAt
-  
-  radiologist             Radiologist?    @relation(fields: [radiologistId], references: [id])
+  role                    Role            @default(RADIOLOGIST)
   radiologistId           String?         @unique
+  isdeactivated           Boolean         @default(false)
+  radiologist             Radiologist?    @relation(fields: [radiologistId], references: [id])
   Notification            Notification[]
   ReviewRequestAsCreator  ReviewRequest[] @relation("CreatorRadiologist")
   ReviewRequestAsReviewer ReviewRequest[] @relation("ReviewerRadiologist")
@@ -29,68 +27,60 @@ model Radiologist {
   fname           String
   lname           String
   email           String           @unique
+  specializations Specialization[]
   phone           String           @unique
-  
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
-  
   auth            Auth?
-  specializations Specialization[]
 }
 
 model Report {
   id                 String         @id @default(cuid())
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
   reportUrl          String
   resultUrl          String
   additionalComments String?
- 
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-
-  Review             Review?        @relation(fields: [reviewId], references: [id])
-  reviewId           String?        @unique
-  ReviewRequest      ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
   reviewRequestId    String?
+  reviewId           String?        @unique
+  Review             Review?        @relation(fields: [reviewId], references: [id])
+  ReviewRequest      ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
 }
 
 model ReviewRequest {
   id         String   @id @default(cuid())
-  name       String
   status     Status   @default(Created)
   approved   Boolean?
- 
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
- 
-  creator    Auth     @relation("CreatorRadiologist", fields: [creatorId], references: [id])
   creatorId  String
-  reviewer   Auth?    @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
   reviewerId String?
+  name       String
   report     Report[]
+  creator    Auth     @relation("CreatorRadiologist", fields: [creatorId], references: [id])
+  reviewer   Auth?    @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
 }
 
 model Review {
   id                             String                        @id @default(cuid())
-  feedbackToRadiologist          String?
-  additionalReviewerComments     String?
- 
   createdAt                      DateTime                      @default(now())
   updatedAt                      DateTime                      @updatedAt
- 
+  feedbackToRadiologist          String?
+  additionalReviewerComments     String?
+  accuracyOfFindingsId           String?                       @unique
+  clarityAndCompletenessId       String?                       @unique
+  impressionAndRecommendationsId String?                       @unique
+  technicalQualityId             String?                       @unique
+  overallAssessmentId            String?                       @unique
+  complianceAndStandardizationId String?                       @unique
   feedbacks                      Feedback[]
   Report                         Report?
   accuracyOfFindings             AccuracyOfFindings?           @relation(fields: [accuracyOfFindingsId], references: [id])
-  accuracyOfFindingsId           String?                       @unique
   clarityAndCompleteness         ClarityAndCompleteness?       @relation(fields: [clarityAndCompletenessId], references: [id])
-  clarityAndCompletenessId       String?                       @unique
   complianceAndStandardization   ComplianceAndStandardization? @relation(fields: [complianceAndStandardizationId], references: [id])
-  complianceAndStandardizationId String?                       @unique
   impressionAndRecommendations   ImpressionAndRecommendations? @relation(fields: [impressionAndRecommendationsId], references: [id])
-  impressionAndRecommendationsId String?                       @unique
   overallAssessment              OverallAssessment?            @relation(fields: [overallAssessmentId], references: [id])
-  overallAssessmentId            String?                       @unique
   technicalQuality               TechnicalQuality?             @relation(fields: [technicalQualityId], references: [id])
-  technicalQualityId             String?                       @unique
 }
 
 model Config {

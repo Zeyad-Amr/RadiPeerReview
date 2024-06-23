@@ -1,7 +1,7 @@
 import { PrismaGenericRepo } from '@/shared/prisma-client/prisma-generic.repo';
 import { PrismaService } from '@/shared/prisma-client/prisma.service';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Prisma, ReviewRequest, Status } from '@prisma/client';
+import { Prisma, ReviewRequest, Role, Status } from '@prisma/client';
 
 @Injectable()
 export class ReviewRequestRepo extends PrismaGenericRepo<
@@ -27,20 +27,20 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
         },
       },
       reviewer: {
-        select:{
-          id:true,
-          username:true,
-          role:true,
-        radiologist:true
-      }
-    },
+        select: {
+          id: true,
+          username: true,
+          role: true,
+          radiologist: true,
+        },
+      },
       creator: {
-        select:{
-          id:true,
-          username:true,
-          role:true,
-          radiologist:true
-        }
+        select: {
+          id: true,
+          username: true,
+          role: true,
+          radiologist: true,
+        },
       },
     });
   }
@@ -111,6 +111,37 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
       return false;
     } else {
       return s;
+    }
+  }
+
+  async getRadiologistWithLeastPendingReviewRequests() {
+    try {
+      const result = await this.prismaService.auth.findFirst({
+        where: {
+          role: Role.RADIOLOGIST,
+          isdeactivated: false,
+        },
+        orderBy: {
+          ReviewRequestAsReviewer: {
+            _count: 'asc',
+          },
+        },
+        include: {
+          _count: {
+            select: {
+              ReviewRequestAsReviewer: {
+                where: {
+                  approved: null,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      return result;
+    } catch (error) {
+      throw error;
     }
   }
 
