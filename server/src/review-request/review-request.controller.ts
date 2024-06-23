@@ -23,7 +23,7 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { extname, resolve } from 'path';
+import { extname } from 'path';
 import { diskStorage } from 'multer';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
@@ -112,8 +112,15 @@ export class ReviewRequestController {
           entityId: request.id,
         });
       } else if (config.value.toLowerCase() === 'auto') {
-        const radiologist =
-          await this.reviewRequestService.allocateRadiologist();
+        const radiologist = await this.reviewRequestService.allocateRadiologist(
+          req.user.sub,
+        );
+
+        await this.reviewRequestService.assignReviewer(
+          request.id,
+          radiologist.id,
+        );
+
         // If Assignment Mode is Auto, then notify the Radiologists
         await this.notificationsService.notifyUser({
           receiverRole: Role.RADIOLOGIST,

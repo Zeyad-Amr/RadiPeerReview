@@ -27,6 +27,21 @@ export class ReviewRequestService {
     }
   }
 
+  async assignReviewer(reviewRequestId: string, reviewerId: string) {
+    try {
+      const request = await this.reviewRequestRepo.update(reviewRequestId, {
+        reviewer: {
+          connect: {
+            id: reviewerId,
+          },
+        },
+      });
+      return request;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async findAll(query, radiologistId) {
     try {
       const review = await this.reviewRequestRepo.getAllRequests(
@@ -83,9 +98,11 @@ export class ReviewRequestService {
     }
   }
 
-  async allocateRadiologist() {
+  async allocateRadiologist(reportOwnerID: string) {
     try {
-      return await this.reviewRequestRepo.getRadiologistWithLeastPendingReviewRequests();
+      return await this.reviewRequestRepo.getRadiologistWithLeastPendingReviewRequests(
+        reportOwnerID,
+      );
     } catch (error) {
       throw error;
     }

@@ -47,12 +47,12 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
 
   async getAllRequests(query: { [key: string]: any }, radiologistId: string) {
     try {
-      let filters = Object.keys(query);
+      const filters = Object.keys(query);
       const filterErrorMsg = (cause: string) =>
         `Invalid filter value: ${cause}`;
 
       // where object initialization
-      let whereObj: Prisma.ReviewRequestWhereInput = {};
+      const whereObj: Prisma.ReviewRequestWhereInput = {};
 
       // filter the query object and insert where clause in where object
       let q;
@@ -114,12 +114,15 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
     }
   }
 
-  async getRadiologistWithLeastPendingReviewRequests() {
+  async getRadiologistWithLeastPendingReviewRequests(reportOwnerID: string) {
     try {
       const result = await this.prismaService.auth.findFirst({
         where: {
           role: Role.RADIOLOGIST,
           isdeactivated: false,
+          id: {
+            not: reportOwnerID,
+          },
         },
         orderBy: {
           ReviewRequestAsReviewer: {
