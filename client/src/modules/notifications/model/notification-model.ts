@@ -20,7 +20,6 @@ class NotificationModel extends BaseModel<NotificationInterface> {
   };
   validationSchema = Yup.object().shape({});
   fromJson(json: any): NotificationInterface {
-    console.log("json", json);
     return {
       id: json.id,
       message: json.message,
@@ -29,10 +28,10 @@ class NotificationModel extends BaseModel<NotificationInterface> {
       createdAt: json.createdAt,
       updatedAt: json.updatedAt,
       entityId: json.entityId,
-      receiver: undefined,
-      // json.receiverId === null
-      //   ? undefined
-      //   : userModel.fromJson(json.receiver),
+      receiver:
+        json.receiverId === null
+          ? undefined
+          : userModel.fromJson(json.receiver),
     };
   }
   toJson(model: NotificationInterface): any {

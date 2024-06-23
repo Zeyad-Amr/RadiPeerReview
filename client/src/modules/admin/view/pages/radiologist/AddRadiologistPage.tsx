@@ -23,8 +23,6 @@ const AddRadiologistPage = () => {
       FormComponent={RadiologistForm}
       formDialogMaxWidth="md"
     />
-
-
   );
 };
 

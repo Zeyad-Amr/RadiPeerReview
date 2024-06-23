@@ -13,9 +13,12 @@ const axiosInstance = axios.create({ baseURL: Endpoints.base });
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.headers["hideLoading"] === "true") {
+    const hideLoading = config.headers?.hideLoading === true;
+
+    if (!hideLoading) {
       LoadingService.showLoading();
     }
+
     // Modify the request configuration here (e.g., add headers, authentication tokens, etc.)
     const token: string =
       SessionStorage.getDataByKey(SessionStorageKeys.token) ?? "";
@@ -35,7 +38,10 @@ axiosInstance.interceptors.request.use(
 // Add a response interceptor
 axiosInstance.interceptors.response.use(
   (response) => {
-    LoadingService.hideLoading();
+    const hideLoading = response.config.headers?.hideLoading === true;
+    if (!hideLoading) {
+      LoadingService.hideLoading();
+    }
     // Modify the response or perform other tasks
     return response;
   },
