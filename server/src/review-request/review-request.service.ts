@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { ReviewRequestRepo } from './review-request.repo';
 import { Status } from '@prisma/client';
 
@@ -87,10 +87,11 @@ export class ReviewRequestService {
     }
   }
 
-  async approveReviewRequest(id: string) {
+  async approveReviewRequest(id: string,status:number) {
     try {
+      if([0,1].includes(status)) throw new BadRequestException("Invalid status value")
       const reviewRequest = await this.reviewRequestRepo.update(id, {
-        approved: true,
+        status: status === 1? Status.Completed: Status.Reviewed,
       });
       return reviewRequest;
     } catch (error) {

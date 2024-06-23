@@ -50,7 +50,6 @@ model Report {
 model ReviewRequest {
   id         String   @id @default(cuid())
   status     Status   @default(Created)
-  approved   Boolean?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   creatorId  String
@@ -175,6 +174,7 @@ enum Status {
   Created
   Assigned
   Reviewed
+  Completed
 }
 
 enum Specialization {

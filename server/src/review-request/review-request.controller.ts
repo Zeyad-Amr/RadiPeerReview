@@ -32,6 +32,7 @@ import { NotificationsService } from '@/notifications/notifications.service';
 import { ConfigService } from '@/config/config.service';
 import { ConfigKeys } from '@/config/entities/config.entity';
 import { NotificationType, Role } from '@prisma/client';
+import { ApproveReqDto } from './dto/approve-review-request.dto';
 
 const UPLOAD_PATH = process.env.UPLOAD_DIR;
 @ApiBearerAuth()
@@ -184,9 +185,9 @@ export class ReviewRequestController {
   }
 
   @Patch('approve/:id')
-  async update(@Param('id') id: string) {
+  async update(@Param('id') id: string,@Body() approveReqDto:ApproveReqDto) {
     try {
-      const request = await this.reviewRequestService.approveReviewRequest(id);
+      const request = await this.reviewRequestService.approveReviewRequest(id,approveReqDto.status);
 
       // Notify the Radiologist that the request has been approved
       await this.notificationsService.notifyUser({

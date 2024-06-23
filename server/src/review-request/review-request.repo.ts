@@ -79,15 +79,6 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
               }
               whereObj['status'] = q;
               break;
-            case 'approved':
-              if (q === 'true') {
-                whereObj['approved'] = true;
-              } else if (q === 'false') {
-                whereObj['approved'] = false;
-              } else {
-                throw new BadRequestException(filterErrorMsg('approved'));
-              }
-              break;
 
             default:
               break;
