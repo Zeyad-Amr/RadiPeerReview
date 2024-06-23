@@ -1,5 +1,6 @@
 import { PrismaService } from '@/shared/prisma-client/prisma.service';
 import { Injectable } from '@nestjs/common';
+import { Status } from '@prisma/client';
 
 @Injectable()
 export class DashboardRepo {
@@ -18,7 +19,7 @@ export class DashboardRepo {
       return await this.prisma.report.count({
         where: {
           ReviewRequest: {
-            approved: true,
+            status: Status.Completed
           },
         },
       });
@@ -32,7 +33,7 @@ export class DashboardRepo {
       return await this.prisma.report.count({
         where: {
           ReviewRequest: {
-            approved: false,
+            status: Status.Reviewed
           },
         },
       });
@@ -46,7 +47,7 @@ export class DashboardRepo {
       return await this.prisma.report.count({
         where: {
           ReviewRequest: {
-            approved: null,
+            status: Status.Assigned
           },
         },
       });
@@ -61,7 +62,7 @@ export class DashboardRepo {
       const overAllQuality = await this.prisma.report.findMany({
         where: {
           ReviewRequest: {
-            approved: true,
+            status: Status.Completed
           },
         },
         select: {
@@ -97,7 +98,7 @@ export class DashboardRepo {
       const overAllQuality = await this.prisma.report.findMany({
         where: {
           ReviewRequest: {
-            approved: false,
+            status: Status.Reviewed,
           },
         },
         select: {
@@ -131,13 +132,13 @@ export class DashboardRepo {
       const highestApprovalRadiologists =
         await this.prisma.reviewRequest.groupBy({
           by: 'creatorId',
-          _count: { approved: true },
+          _count: { status: true },
           where: {
-            approved: true,
+            status: Status.Completed
           },
           orderBy: {
             _count: {
-              approved: 'desc',
+              status: 'desc',
             },
           },
           take: 5,
