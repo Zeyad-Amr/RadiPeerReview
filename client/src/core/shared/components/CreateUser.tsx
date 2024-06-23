@@ -39,7 +39,6 @@ export default function CreateUser({
       await dispatch(deactivateRadiologist(item.id ?? ''));
     } else {
       await dispatch(activateRadiologist(item.id ?? ''));
-      console.log(`Radiologist ${item.id} is already deactivated`);
     }
   };
 
@@ -100,7 +99,6 @@ export default function CreateUser({
           showToolbar={false}
           fetchData={() => {
             dispatch(getListThunk());
-            console.log(tableList)
           }}
           totalItems={tableList?.length}
           noDataMessage={

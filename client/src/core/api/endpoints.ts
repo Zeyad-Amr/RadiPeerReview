@@ -23,7 +23,8 @@ const Endpoints = {
     list: "/review-request",
     details: "/review-request/:id",
     create: "/review-request",
-    update: "/review-request/:id",
+    assign: "/review-request/assign/:id",
+    approve: "/review-request/approve/:id",
     delete: "/review-request/:id",
   },
   radiologist: {
