@@ -13,8 +13,7 @@ import {
 } from "../../interfaces/request-interface";
 import { useParams } from "next/navigation";
 import {
-  getCreatorRequestsList,
-  getAssignedRequestsList,
+  getRequestDetails,
 } from "../../controllers/thunks/request-thunk";
 import ReviewResult from "../components/review-result/ReviewResult";
 import { ReviewDataInterface } from "../../interfaces/review-interface";
@@ -41,28 +40,21 @@ const RequestPage = () => {
 
   // dispatch all requests to get their list in store
   useEffect(() => {
-    dispatch(getCreatorRequestsList(false));
-    dispatch(getAssignedRequestsList(false));
-  }, [dispatch]);
+    if (requestId) {
+      dispatch(getRequestDetails(requestId));
+    }
+  }, [dispatch, requestId]);
 
   // apply target request from requests list
   useEffect(() => {
-    let targetRequest;
-    if (roleParam === "creator") {
-      targetRequest = requestState?.requests?.find(
-        (request) => request.id === requestId
-      );
-    } else if (roleParam === "reviewer") {
-      targetRequest = requestState?.assignedRequests?.find(
-        (request) => request.id === requestId
-      );
-    }
+    // set target request
+    const  targetRequest = requestState?.currentRequest
+
     console.log(targetRequest, "targetRequest");
     setTargetRequest(targetRequest);
     setReportDetails(targetRequest?.report?.[0]);
   }, [
-    requestState?.requests,
-    requestState?.assignedRequests,
+    requestState?.currentRequest,
     requestId,
     roleParam,
   ]);

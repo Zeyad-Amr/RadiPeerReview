@@ -17,6 +17,8 @@ import CustomSeparator from "@/core/shared/components/CustomSeparator";
 import CustomRadioButton from "@/core/shared/components/CustomRadioButton";
 import { useAppDispatch } from "@/core/state/store";
 import { createReview } from "../../controllers/thunks/review-thunk";
+import { useParams } from "next/navigation";
+import { getRequestDetails } from "../../controllers/thunks/request-thunk";
 
 interface CreateReviewFormPropsInterface {
   reportId: string | number;
@@ -31,6 +33,7 @@ const CreateReviewForm = ({
   setRightSectionFlag,
 }: CreateReviewFormPropsInterface) => {
   const dispatch = useAppDispatch();
+  const { requestId } = useParams();
 
   return (
     <Formik
@@ -43,6 +46,7 @@ const CreateReviewForm = ({
           if (res.meta.requestStatus == "fulfilled") {
             resetForm();
             setRightSectionFlag("report-details");
+            dispatch(getRequestDetails(requestId)) 
           }
         });
       }}

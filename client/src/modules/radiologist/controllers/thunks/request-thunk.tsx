@@ -91,7 +91,7 @@ export const getAssignedRequestsList = createAsyncThunk(
 //*  Get Request Details
 export const getRequestDetails = createAsyncThunk(
   "request/details",
-  async (id: string | number, thunkApi) => {
+  async (id: any, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.reviewRequest.details, {

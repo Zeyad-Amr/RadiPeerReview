@@ -117,7 +117,7 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
   private toAccuracyOfFindingsDataJson(entity: AccuracyOfFindings): any {
     return {
       commentsOnAccuracy: entity.commentsOnAccuracy,
-      correctnessOfFindings: entity.correctnessOfFindings,
+      correctnessOfFindings: Boolean(entity.correctnessOfFindings),
       MissedFindings: entity.missedFindings.map((el) => this.toMissedFindingDataJson(el)),
    }
   }
@@ -139,7 +139,7 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
 
   private toImpressionAndRecommendationsDataJson(entity: ImpressionAndRecommendations): any {
     return {
-      accuracyOfImpression: entity.accuracyOfImpression,
+      accuracyOfImpression: Boolean(entity.accuracyOfImpression),
       commentsOnImpression: entity.commentsOnImpression,
       appropriatenessOfRecommendations: Number(entity.appropriatenessOfRecommendations),
       suggestionsForRecommendations: entity.suggestionsForRecommendations,
@@ -164,7 +164,7 @@ class ReviewDataModel extends BaseModel<ReviewDataInterface> {
 
   private toComplianceAndStandardizationDataJson(entity: ComplianceAndStandardization): any {
     return {
-      adherenceToGuidelines: entity.adherenceToGuidelines,
+      adherenceToGuidelines: Boolean(entity.adherenceToGuidelines),
       commentsOnCompliance: entity.commentsOnCompliance,
    }
   }

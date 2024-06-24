@@ -8,7 +8,7 @@ import { CreateRequestInterface } from "../../interfaces/request-interface";
 import reportModel from "../../models/request-model";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
-import { createRequest } from "../../controllers/thunks/request-thunk";
+import { createRequest, getRequestDetails } from "../../controllers/thunks/request-thunk";
 import { createReport } from "../../controllers/thunks/report-thunk";
 
 interface CreateRequestFormPropsInterface {
@@ -45,6 +45,9 @@ const CreateRequestForm = ({
     const action = reviewRequestId ? createReport : createRequest
     dispatch(action(formData)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
+        if (reviewRequestId) { // resubmit condition
+         dispatch(getRequestDetails(reviewRequestId)) 
+        }
         setShowFormDialog(false);
         resetForm();
       }
