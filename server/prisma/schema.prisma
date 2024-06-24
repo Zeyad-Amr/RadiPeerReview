@@ -34,19 +34,6 @@ model Radiologist {
   auth            Auth?
 }
 
-model Report {
-  id                 String         @id @default(cuid())
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-  reportUrl          String
-  resultUrl          String
-  additionalComments String?
-  reviewRequestId    String?
-  reviewId           String?        @unique
-  Review             Review?        @relation(fields: [reviewId], references: [id])
-  ReviewRequest      ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
-}
-
 model ReviewRequest {
   id         String   @id @default(cuid())
   status     Status   @default(Created)
@@ -58,6 +45,19 @@ model ReviewRequest {
   report     Report[]
   creator    Auth     @relation("CreatorRadiologist", fields: [creatorId], references: [id])
   reviewer   Auth?    @relation("ReviewerRadiologist", fields: [reviewerId], references: [id])
+}
+
+model Report {
+  id                 String         @id @default(cuid())
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  reportUrl          String
+  resultUrl          String
+  additionalComments String?
+  reviewRequestId    String?
+  reviewId           String?        @unique
+  Review             Review?        @relation(fields: [reviewId], references: [id])
+  ReviewRequest      ReviewRequest? @relation(fields: [reviewRequestId], references: [id])
 }
 
 model Review {
