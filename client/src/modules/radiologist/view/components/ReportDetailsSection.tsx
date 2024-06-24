@@ -5,11 +5,11 @@ import { GetReportInterface } from "../../interfaces/request-interface";
 import { useRouter } from "next/navigation";
 
 interface ReportDetailsPropsInterface {
-  reportData: GetReportInterface;
+  reportDetails: GetReportInterface;
 }
 
 const ReportDetailsSection = ({
-  reportData,
+  reportDetails,
 }: ReportDetailsPropsInterface) => {
   const router = useRouter()
   return (
@@ -22,7 +22,7 @@ const ReportDetailsSection = ({
           fontSize: "1.5rem",
         }}
       >
-        {reportData?.createdAt}
+        {reportDetails?.createdAt}
       </Typography>
       {/* Start Dicom file name & view */}
       <Box sx={{ marginBottom: "1.5rem" }}>
@@ -35,11 +35,11 @@ const ReportDetailsSection = ({
           }}
         >
           <Typography sx={{ fontSize: "13px", color: "primary.light" }}>
-            {reportData?.resultUrl}
+            {reportDetails?.resultUrl}
           </Typography>
           <Box>
             <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} onClick={() => {
-              router.push(`/dicom-viewer?file=${reportData?.resultUrl}`)
+              router.push(`/dicom-viewer?file=${reportDetails?.resultUrl}`)
             }} />
           </Box>
         </Box>
@@ -55,12 +55,12 @@ const ReportDetailsSection = ({
           }}
         >
           <Typography sx={{ fontSize: "13px", color: "primary.light" }}>
-          {reportData?.reportUrl}
+          {reportDetails?.reportUrl}
           </Typography>
           <Box>
             <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} 
             onClick={() => {
-              router.push(`/pdf-viewer?file=${reportData?.reportUrl}`)
+              router.push(`/pdf-viewer?file=${reportDetails?.reportUrl}`)
             }}
             />
           </Box>
@@ -82,7 +82,7 @@ const ReportDetailsSection = ({
             color: "primary.light",
           }}
         >
-         {reportData?.additionalComments}
+         {reportDetails?.additionalComments}
         </Box>
       </Box>
     </Box>

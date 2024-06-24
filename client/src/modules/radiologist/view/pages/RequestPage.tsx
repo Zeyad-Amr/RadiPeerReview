@@ -13,13 +13,15 @@ import {
 } from "../../interfaces/request-interface";
 import { useParams } from "next/navigation";
 import {
-  getCreatorRequestsList,
-  getAssignedRequestsList,
+  getRequestDetails,
 } from "../../controllers/thunks/request-thunk";
 import ReviewResult from "../components/review-result/ReviewResult";
+import { ReviewDataInterface } from "../../interfaces/review-interface";
+import RequestStatus from "../components/RequestStatus";
 
 const RequestPage = () => {
-  const [reportDetails, setReportDetails] = useState<any>();
+  const [reportDetails, setReportDetails] = useState<GetReportInterface>();
+  const [reviewDetails, setReviewDetails] = useState<ReviewDataInterface>();
   const [targetRequest, setTargetRequest] = useState<GetRequestInterface>();
   const [rightSectionFlag, setRightSectionFlag] = useState<
     "report-details" | "review-details" | "create-review"
@@ -39,35 +41,48 @@ const RequestPage = () => {
 
   // dispatch all requests to get their list in store
   useEffect(() => {
-    dispatch(getCreatorRequestsList(false));
-    dispatch(getAssignedRequestsList(false));
-  }, [dispatch]);
+    if (requestId) {
+      dispatch(getRequestDetails(requestId));
+    }
+  }, [dispatch, requestId]);
 
   // apply target request from requests list
   useEffect(() => {
-    let targetRequest;
-    if (roleParam === "creator") {
-      targetRequest = requestState?.requests?.find(
-        (request) => request.id === requestId
-      );
-    } else if (roleParam === "reviewer") {
-      targetRequest = requestState?.assignedRequests?.find(
-        (request) => request.id === requestId
-      );
-    }
+    // set target request
+    const  targetRequest = requestState?.currentRequest
+
     console.log(targetRequest, "targetRequest");
     setTargetRequest(targetRequest);
     setReportDetails(targetRequest?.report?.[0]);
   }, [
-    requestState?.requests,
-    requestState?.assignedRequests,
+    requestState?.currentRequest,
     requestId,
     roleParam,
   ]);
 
+  // Function to get the ID of the last report
+  const getLastReportId = () => {
+    if ( targetRequest && targetRequest?.report?.length > 0) {
+      return targetRequest.report[targetRequest.report.length - 1].id as string;
+    }
+    return "";
+  };
+
   return (
     <Grid container>
-      <Grid item lg={4} md={4} sm={12} xs={12}>
+      <Grid
+        item
+        lg={4}
+        md={4}
+        sm={12}
+        xs={12}
+        sx={{
+          height: "100vh",
+          backgroundColor: "#fff",
+          overflow: "scroll",
+        }}
+      >
+        { targetRequest && ( <RequestStatus requestData={targetRequest} role={roleParam}/> ) }
         <Box sx={{ margin: "1rem", position: "relative" }}>
           <Box
             sx={{
@@ -79,7 +94,7 @@ const RequestPage = () => {
               backgroundColor: "gray",
             }}
           />
-          {targetRequest?.report?.map((reportEl, index) => (
+          {targetRequest?.report?.map((reportEl, index : number) => (
             <Box
               key={reportEl.id}
               sx={{ position: "relative", marginLeft: "2rem" }}
@@ -90,7 +105,14 @@ const RequestPage = () => {
                 setReportData={setReportDetails}
                 reportEl={reportEl}
               />
-              <DisplayedReview reviewData={reportEl?.review} />
+              <DisplayedReview
+                reviewEl={reportEl?.review}
+                setReviewData={setReviewDetails}
+                setRightSectionFlag={setRightSectionFlag}
+                role={roleParam}
+                requestData={targetRequest}
+                reportIndex={index}
+              />
             </Box>
           ))}
         </Box>
@@ -112,11 +134,19 @@ const RequestPage = () => {
         }}
       >
         {rightSectionFlag === "report-details" ? (
-          <ReportDetailsSection reportData={reportDetails} />
+          reportDetails && (
+            <ReportDetailsSection reportDetails={reportDetails} />
+          )
         ) : rightSectionFlag === "create-review" ? (
-          <CreateReviewForm />
+          <CreateReviewForm setRightSectionFlag={setRightSectionFlag} reportId={getLastReportId()} />
         ) : rightSectionFlag === "review-details" ? (
-          <ReviewResult />
+          reportDetails &&
+          reviewDetails && (
+            <ReviewResult
+              reviewDetails={reviewDetails}
+              reportDetails={reportDetails}
+            />
+          )
         ) : null}
       </Grid>
     </Grid>

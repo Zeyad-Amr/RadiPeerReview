@@ -19,4 +19,8 @@ export interface ReviewState {
   loading: boolean;
   error: string;
 }
+export interface ReportState {
+  loading: boolean;
+  error: string;
+}
 

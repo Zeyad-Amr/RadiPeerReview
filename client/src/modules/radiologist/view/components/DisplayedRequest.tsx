@@ -58,9 +58,13 @@ const DisplayedRequest = ({
             variant="body1"
             color="#fff"
           >
-            {reportEl.additionalComments ?? "No Comments"}
+            {reportEl.additionalComments === undefined ||
+            reportEl.additionalComments === null ||
+            reportEl.additionalComments === ""
+              ? "There are no comments"
+              : reportEl.additionalComments}
           </Typography>
-          {role === "reviewer" ? (
+          {!reportEl.review && role === "reviewer" ? (
             <RateReviewIcon
               sx={{
                 color: "primary.light",

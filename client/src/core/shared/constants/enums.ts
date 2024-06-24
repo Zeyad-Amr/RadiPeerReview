@@ -7,6 +7,7 @@ enum Status {
   Created = "Created",
   Assigned = "Assigned",
   Reviewed = "Reviewed",
+  Completed = "Completed",
 }
 
 enum Specialization {
