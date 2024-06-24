@@ -85,7 +85,6 @@ export const getRadiologistList = createAsyncThunk(
 export const getRadiologistDetails = createAsyncThunk(
   "radiologist/details",
   async (id: string | number, thunkApi) => {
-    console.log(id);
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.radiologist.details, {

@@ -10,11 +10,10 @@ import NotificationsCard from '../components/NotificationsCard';
 import CountCard from '../components/CountCard';
 import Pie from '../components/Pie';
 import Leaderboard from '../components/Leaderboard';
-import { useAppSelector, RootState, useAppDispatch } from '@/core/state/store';
-import { dashboardState } from '../../controllers/types';
+import { useAppDispatch } from '@/core/state/store';
 import { getAcceptedReports, getAverageFailureScore, getAverageSuccessScore, getLeaderboard, getPendingReports, getRejectedReports, getTotalReports } from '../../controllers/thunks/dashboard-thunk';
-import { RadiologistData, dashboardData, leaderboardTransformedDataItem } from '../../interfaces/dashboard-interface';
-
+import { dashboardData, leaderboardTransformedDataItem } from '../../interfaces/dashboard-interface';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 const DashboardPage = () => {
 
     const [data, setData] = useState<dashboardData>();
@@ -22,17 +21,28 @@ const DashboardPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const totalReports = await dispatch(getTotalReports()).unwrap();
-            const acceptedReports = await dispatch(getAcceptedReports()).unwrap();
-            const rejectedReports = await dispatch(getRejectedReports()).unwrap();
-            const pendingReports = await dispatch(getPendingReports()).unwrap();
-            const averageSuccessScore = await dispatch(getAverageSuccessScore()).unwrap();
-            const averageFailureScore = await dispatch(getAverageFailureScore()).unwrap();
-            const leaderboard = await dispatch(getLeaderboard()).unwrap();
-            console.log(leaderboard);
+            const [
+                totalReports,
+                acceptedReports,
+                rejectedReports,
+                pendingReports,
+                averageSuccessScore,
+                averageFailureScore,
+                leaderboard
+            ] = await Promise.all([
+                dispatch(getTotalReports()).unwrap(),
+                dispatch(getAcceptedReports()).unwrap(),
+                dispatch(getRejectedReports()).unwrap(),
+                dispatch(getPendingReports()).unwrap(),
+                dispatch(getAverageSuccessScore()).unwrap(),
+                dispatch(getAverageFailureScore()).unwrap(),
+                dispatch(getLeaderboard()).unwrap()
+            ]);
+
             setData(
                 {
                     'totalReports': totalReports.response.data,
+                    'unassignedReports': totalReports.response.data - (acceptedReports.response.data + rejectedReports.response.data + pendingReports.response.data),
                     'acceptedReports': acceptedReports.response.data,
                     'rejectedReports': rejectedReports.response.data,
                     'pendingReports': pendingReports.response.data,
@@ -58,32 +68,35 @@ const DashboardPage = () => {
     return (
         <>
             <PageTitle title='Main Dashboard' />
-            <Grid container spacing={1}>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+            <Grid container spacing={1} columns={20}>
+                <Grid item lg={4} md={4} sm={10} xs={20}>
                     <CountCard highlight title='Total Reports' number={data?.totalReports ?? '-'} icon={<FeedRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+                <Grid item lg={4} md={4} sm={10} xs={20}>
+                    <CountCard title='Unassigned Reports' number={data?.unassignedReports ?? '-'} icon={<PersonAddAlt1Icon sx={{ fontSize: 'inherit' }} />} />
+                </Grid>
+                <Grid item lg={4} md={4} sm={10} xs={20}>
                     <CountCard title='Accepted Reports' number={data?.acceptedReports ?? '-'} icon={<CheckRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+                <Grid item lg={4} md={4} sm={10} xs={20}>
                     <CountCard title='Reviewed Reports' number={data?.rejectedReports ?? '-'} icon={<ClearRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+                <Grid item lg={4} md={4} sm={10} xs={20}>
                     <CountCard title='Processing Reports' number={data?.pendingReports ?? '-'} icon={<HourglassTopRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={12}>
+                <Grid item lg={10} md={10} sm={10} xs={20}>
                     <CountCard title='Average Accepted Score' number={data?.averageSuccessScore ?? '-'} icon={<SportsScoreRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={12}>
+                <Grid item lg={10} md={10} sm={10} xs={20}>
                     <CountCard title='Average Rejected Score' number={data?.averageFailureScore ?? '-'} icon={<SportsScoreRoundedIcon sx={{ fontSize: 'inherit' }} />} />
                 </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+                <Grid item lg={5} md={5} sm={10} xs={20}>
                     <Pie Accepted={data?.acceptedReports ?? 0} Pending={data?.pendingReports ?? 0} Rejected={data?.rejectedReports ?? 0} />
                 </Grid>
-                <Grid item lg={3} md={3} sm={6} xs={12}>
+                <Grid item lg={5} md={5} sm={10} xs={20}>
                     <Leaderboard data={data ? transformData(data.leaderboard) : []} />
                 </Grid>
-                <Grid item lg={6} md={6} sm={6} xs={12}>
+                <Grid item lg={10} md={10} sm={10} xs={20}>
                     <NotificationsCard />
                 </Grid>
             </Grid>
