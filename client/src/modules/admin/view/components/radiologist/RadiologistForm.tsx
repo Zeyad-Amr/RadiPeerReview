@@ -158,7 +158,7 @@ const RadiologistForm = ({
                                 }}
                             />
                         </Grid>
-                        {radiologistModel ? null :
+                        {initialValues ? null :
                             <>
                                 <Grid item lg={6} md={6} sm={12} xs={12}>
                                     <CustomTextField
