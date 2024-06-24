@@ -47,7 +47,7 @@ const TableRow = ({ isCreatorTable, data, light }: TableRowProps) => {
             }}
           >
             {" "}
-            {requestEl.createdAt ?? "--"}
+            {requestEl.name ?? "No name"}
           </Box>
           <Box
             sx={{

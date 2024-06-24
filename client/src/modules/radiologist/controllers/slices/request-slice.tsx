@@ -24,6 +24,7 @@ const initialState: RequestState = {
     report: [],
     reviewerId: "",
     status: "",
+    name : "",
     id: "",
   },
   isFetched: false,
