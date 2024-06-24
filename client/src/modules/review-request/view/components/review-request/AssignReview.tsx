@@ -1,37 +1,50 @@
 import CustomSelectField from '@/core/shared/components/CustomSelectField';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
 import { RootState, useAppDispatch, useAppSelector } from '@/core/state/store';
-import { getRadiologistList } from '@/modules/admin/controllers/thunks/radiologist-thunk';
 import { RadiologistState } from '@/modules/admin/controllers/types';
 import { RadiologistInterface } from '@/modules/admin/interfaces/radiologist-interface';
-import { AssignReviewRequest } from '@/modules/review-request/controllers/thunks/review-request-thunk';
+import { UserInterface } from '@/modules/auth/interfaces/user-interface';
+import { AssignReviewRequest, getRadiologists } from '@/modules/review-request/controllers/thunks/review-request-thunk';
+import { ReviewRequestState } from '@/modules/review-request/controllers/types';
 import { Box, Grid } from '@mui/material';
 import { Formik } from 'formik';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 
 const AssignReview = ({ id }: { id: string }) => {
 
+    const allRadiologistsState: ReviewRequestState = useAppSelector(
+        (state: RootState) => state.reviewRequestSlice
+    )
+
     // get all radiologists //
-    function formatRadiologists(radiologists: RadiologistInterface[]) {
-        return radiologists.map((radiologist: RadiologistInterface, index: number) => {
+    function formatRadiologists(users: UserInterface[]) {
+        return users.map((user: UserInterface) => {
             return {
-                id: radiologist.id,
-                value: `${radiologist.fname} ${radiologist.lname}`
+                id: user.id,
+                value: `${user.radiologist?.fname} ${user.radiologist?.lname}`
             };
         });
     }
 
-    const radiologistState: RadiologistState = useAppSelector(
-        (state: RootState) => state.radiologists
-    )
 
+    const [radiologists, setRadiologists] = useState()
     const dispatch = useAppDispatch();
 
+
+
+
     useEffect(() => {
-        dispatch(getRadiologistList());
-    }, [])
+            const fetchData = async () => {
 
+                const data = await dispatch(getRadiologists()).unwrap();
+                setRadiologists(data)
+            }
 
+            fetchData()
+        
+    }, [dispatch])
+
+    console.log(formatRadiologists(radiologists ?? []))
     return (
         <Formik
             initialValues={{ reviewer: '' }}
@@ -53,7 +66,7 @@ const AssignReview = ({ id }: { id: string }) => {
                     <Grid container spacing={1} sx={{ alignItems: 'center', justifyContent: 'center' }}>
                         <Grid item lg={6} md={6} sm={12} xs={12}>
                             <CustomSelectField
-                                options={formatRadiologists(radiologistState.radiologists)}
+                                options={formatRadiologists(radiologists ?? [])}
                                 height='2rem'
                                 name="reviewer"
                                 label=""

@@ -2,6 +2,7 @@ import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import reviewRequestModel from "../../models/review-request-model";
 import { ReviewRequestInterface } from "../../interfaces/review-request-interface";
+import userModel from "@/modules/auth/models/user-model";
 
 
 //*  Get All Reports
@@ -12,6 +13,26 @@ export const getAdminReports = createAsyncThunk(
         try {
             const response = await ApiClient.get(Endpoints.reviewRequest.list);
             return response.data.map((item: any) => reviewRequestModel.fromJson(item));
+        } catch (error) {
+            let errorResponse: ErrorResponse;
+            if (error instanceof Error) {
+                errorResponse = ErrorMessage.get(error.message) as ErrorResponse;
+            } else {
+                errorResponse = error as ErrorResponse;
+            }
+            return rejectWithValue(errorResponse);
+        }
+    }
+);
+
+//*  Get All Radiologists
+export const getRadiologists = createAsyncThunk(
+    "review-request/get-radiologists",
+    async (_, thunkApi) => {
+        const { rejectWithValue } = thunkApi;
+        try {
+            const response = await ApiClient.get(Endpoints.auth.list);
+            return response.data.map((item: any) => userModel.fromJson(item));
         } catch (error) {
             let errorResponse: ErrorResponse;
             if (error instanceof Error) {
