@@ -53,11 +53,13 @@ export default function RadiologistNavbar() {
   };
 
   const [popUp, setPopUp] = React.useState<boolean>(false);
-
+  const isUpdated = (updated: boolean) => {
+    setPopUp(!updated);
+  }
   return (
     <>
       <CustomizedDialog open={popUp} setOpen={setPopUp} title="Change Password">
-        <ChangePasswordForm />
+        <ChangePasswordForm isUpdated={isUpdated} />
       </CustomizedDialog>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar

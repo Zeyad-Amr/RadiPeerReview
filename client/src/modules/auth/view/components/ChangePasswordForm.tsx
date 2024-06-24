@@ -1,5 +1,5 @@
 import CustomTextField from '@/core/shared/components/CustomTextField';
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik } from "formik";
 import { ChangePasswordInterface } from '../../interfaces/change-password-interface';
 import changePasswordModel from '../../models/change-password-model';
@@ -8,17 +8,23 @@ import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
 import { changePassoword } from '../../controllers/thunks/change-password-thunk';
 import { useAppDispatch } from '@/core/state/store';
 
-const ChangePasswordForm = () => {
+const ChangePasswordForm = ({ isUpdated }: { isUpdated: (updated: boolean) => void }) => {
 
     const dispatch = useAppDispatch();
-
+    const [updated, setUpdated] = useState<boolean>(false)
     return (
         <Formik
             initialValues={changePasswordModel.defaultValues}
             validationSchema={changePasswordModel.validationSchema}
-            onSubmit={async (values:ChangePasswordInterface) => {
+            onSubmit={async (values: ChangePasswordInterface) => {
                 const action = changePassoword(values)
-                dispatch(action)
+                dispatch(action).then((response) => {
+                    const payload = response.payload ;
+                    if (payload === true) {
+                        setUpdated(true);
+                        isUpdated(updated);
+                    }
+                });
             }}
         >
             {({
