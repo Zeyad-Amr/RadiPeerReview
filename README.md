@@ -1,46 +1,43 @@
 # RadiPeerReview Documentation
 
 ## Table of Contents
-
-- [RadiPeerReview Documentation](#radipeerreview-documentation)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Portals](#portals)
-    - [Radiologist Portal](#radiologist-portal)
-    - [Admin Portal](#admin-portal)
-  - [User Stories](#user-stories)
-    - [Authentication \& Authorization](#authentication--authorization)
-    - [Report Submission](#report-submission)
-    - [Peer Review Assignment](#peer-review-assignment)
-    - [Review Process](#review-process)
-    - [Report Resubmission](#report-resubmission)
-    - [Final Approval](#final-approval)
-    - [Admin Management](#admin-management)
-    - [Files Viewer](#files-viewer)
-    - [Change Password](#change-password)
-    - [Real-time Notifications](#real-time-notifications)
-  - [Request Status](#request-status)
-  - [Specializations](#specializations)
-  - [Notification Types](#notification-types)
-  - [Automatic Assessment Criteria](#automatic-assessment-criteria)
-  - [Assignment Modes](#assignment-modes)
-  - [Technologies \& Tools](#technologies--tools)
-    - [Frontend](#frontend)
-    - [Backend](#backend)
-    - [Containerization](#containerization)
-    - [Architecture](#architecture)
-  - [Code Naming Conventions](#code-naming-conventions)
-    - [Variables and Functions](#variables-and-functions)
-    - [Classes](#classes)
-    - [Files](#files)
-    - [Interfaces and Types](#interfaces-and-types)
-    - [Folder Structure](#folder-structure)
-    - [Constants](#constants)
-  - [Contributors](#contributors)
+- [Introduction](#introduction)
+- [Portals](#portals)
+  - [Radiologist Portal](#radiologist-portal)
+  - [Admin Portal](#admin-portal)
+- [User Stories](#user-stories)
+  - [Authentication \& Authorization](#authentication--authorization)
+  - [Report Submission](#report-submission)
+  - [Peer Review Assignment](#peer-review-assignment)
+  - [Review Process](#review-process)
+  - [Report Resubmission](#report-resubmission)
+  - [Final Approval](#final-approval)
+  - [Admin Management](#admin-management)
+  - [Files Viewer](#files-viewer)
+  - [Change Password](#change-password)
+  - [Real-time Notifications](#real-time-notifications)
+- [Request Status](#request-status)
+- [Specializations](#specializations)
+- [Notification Types](#notification-types)
+- [Automatic Assessment Criteria](#automatic-assessment-criteria)
+- [Assignment Modes](#assignment-modes)
+- [Technologies \& Tools](#technologies--tools)
+  - [Frontend](#frontend)
+  - [Backend](#backend)
+  - [Containerization](#containerization)
+  - [Architecture](#architecture)
+- [Code Naming Conventions](#code-naming-conventions)
+  - [Variables and Functions](#variables-and-functions)
+  - [Classes](#classes)
+  - [Files](#files)
+  - [Interfaces and Types](#interfaces-and-types)
+  - [Folder Structure](#folder-structure)
+  - [Constants](#constants)
+- [Contributors](#contributors)
 
 ## Introduction
 
-RadiPeerReview is a web-based platform designed for peer reviewing radiology reports. It includes two main portals: Radiologist and Admin. The platform supports secure authentication, efficient report submission, structured peer reviews, and comprehensive admin management capabilities.
+RadiPeerReview is a web-based platform designed for peer-reviewing radiology reports. It includes two main portals: Radiologist and Admin. The platform supports secure authentication, efficient report submission, structured peer reviews, and comprehensive admin management capabilities.
 
 ## Portals
 
@@ -56,12 +53,12 @@ The Admin Portal is built for administrators to manage the overall review proces
 
 ### Authentication & Authorization
 
-1. **Radiologist Login**: As a radiologist, I want to log in to the platform securely, so I can access my reports and assigned review requests.
+1. **Radiologist Login**: As a radiologist, I want to log in to the platform securely to access my reports and assigned review requests.
 2. **Admin Login**: As an admin, I want to log in to manage users and oversee the review process.
 
 ### Report Submission
 
-1. **Upload Reports**: As a radiologist, I want to upload and submit my reports within review requests to be stored, so they can be reviewed by peers.
+1. **Upload Reports**: As a radiologist, I want to upload and submit my reports within review requests to be stored so that peers can review them.
 
 ### Peer Review Assignment
 
@@ -80,7 +77,7 @@ The Admin Portal is built for administrators to manage the overall review proces
 
 ### Final Approval
 
-1. **Streamlined Workflow for Approval**: As a radiologist, I want a streamlined workflow for final approval of reviewed reports.
+1. **Streamlined Workflow for Approval**: As a radiologist, I want a streamlined workflow for the final approval of reviewed reports.
 
 ### Admin Management
 
@@ -160,7 +157,7 @@ The Admin Portal is built for administrators to manage the overall review proces
 ### Frontend
 
 1. **Next.js**: React framework for server-side rendering and static websites.
-2. **TypeScript**: Strongly typed superset of JavaScript for better tooling.
+2. **TypeScript**: A strongly typed superset of JavaScript for better tooling.
 3. **MUI (Material-UI)**: React UI framework following Material Design principles.
 4. **Redux Toolkit**: Library for efficient Redux logic and state management.
 5. **Axios**: Promise-based HTTP client for backend requests.
