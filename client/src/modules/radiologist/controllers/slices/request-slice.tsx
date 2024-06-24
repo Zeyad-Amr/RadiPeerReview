@@ -10,6 +10,7 @@ import {
   getCreatorRequestsList,
   getAssignedRequestsList,
   updateRequest,
+  approveRequest,
 } from "../thunks/request-thunk";
 
 //* Initial State
@@ -135,6 +136,22 @@ const requestSlice = createSlice({
       AlertService.showAlert("Request updated successfully", "success");
     });
     builder.addCase(updateRequest.rejected, (state, action) => {
+      state.loading = false;
+      state.error = (action.payload as ErrorResponse).message;
+      AlertService.showAlert(`${state.error}`, "error");
+    });
+
+    //* approve request
+    builder.addCase(approveRequest.pending, (state, _action) => {
+      state.loading = true;
+      state.error = "";
+    });
+    builder.addCase(approveRequest.fulfilled, (state, _action) => {
+      state.loading = false;
+      state.error = "";
+      AlertService.showAlert("Request approved successfully", "success");
+    });
+    builder.addCase(approveRequest.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
       AlertService.showAlert(`${state.error}`, "error");

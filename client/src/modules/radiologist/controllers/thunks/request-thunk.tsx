@@ -49,6 +49,30 @@ export const updateRequest = createAsyncThunk(
   }
 );
 
+//*  Approve Request
+export const approveRequest = createAsyncThunk(
+  "request/approve",
+  async (requestId: string | number, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      await ApiClient.patch(
+        Endpoints.reviewRequest.approve,
+        {
+          status: 1,
+        },
+        {
+          pathVariables: { id: requestId },
+        }
+      );
+      return true;
+    } catch (error: any) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      return rejectWithValue(errorResponse);
+    }
+  }
+);
+
 //*  Get All Creator Requests
 export const getCreatorRequestsList = createAsyncThunk(
   "request/creator/list",

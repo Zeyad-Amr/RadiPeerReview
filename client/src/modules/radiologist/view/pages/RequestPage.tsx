@@ -17,6 +17,7 @@ import {
 } from "../../controllers/thunks/request-thunk";
 import ReviewResult from "../components/review-result/ReviewResult";
 import { ReviewDataInterface } from "../../interfaces/review-interface";
+import RequestStatus from "../components/RequestStatus";
 
 const RequestPage = () => {
   const [reportDetails, setReportDetails] = useState<GetReportInterface>();
@@ -81,6 +82,7 @@ const RequestPage = () => {
           overflow: "scroll",
         }}
       >
+        { targetRequest && ( <RequestStatus requestData={targetRequest} role={roleParam}/> ) }
         <Box sx={{ margin: "1rem", position: "relative" }}>
           <Box
             sx={{
