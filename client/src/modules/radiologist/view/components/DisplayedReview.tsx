@@ -5,6 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { GetRequestInterface } from "../../interfaces/request-interface";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateRequestForm from "./CreateRequestForm";
+import { Status } from "@/core/shared/constants/enums";
 
 interface DisplayedReviewProps {
   reviewEl: ReviewDataInterface | null;
@@ -105,7 +106,7 @@ const DisplayedReview = ({
         {role === "creator" &&
           reviewEl &&
           reportIndex === requestData?.report.length - 1 &&
-          !requestData?.approved && (
+          requestData?.status !== Status.Completed && (
             <Box
               sx={{
                 color: "secondary.main",

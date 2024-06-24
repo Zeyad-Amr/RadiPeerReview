@@ -13,10 +13,11 @@ class ReportModel {
     report: null,
     result: null,
     additionalComments: "",
+    name: "",
   };
 
   //* Define validation schema using Yup
-  validationSchema = Yup.object().shape({
+  validationSchema = (isCreateRequest: boolean) => Yup.object().shape({
     report: Yup.mixed()
       .required("A PDF file is required")
       .test(
@@ -42,7 +43,14 @@ class ReportModel {
         (value) => value && /\.(dcm|dicom)$/i.test((value as File).name) // Check for .dcm or .dicom extension
       ),
     additionalComments: Yup.string().max(500, "Maximum 500 characters"),
+    name: Yup.string().when([], {
+      is: () => isCreateRequest,
+      then: schema => schema.required("Name is required"),
+      otherwise: schema => schema.optional(),
+    }),
   });
+
+
 
   formatDateTime = (dateString: string): string | null => {
     if (!dateString) return null;
@@ -76,9 +84,9 @@ class ReportModel {
   fromJson(json: any): GetRequestInterface {
     return {
       id: json.id,
+      name : json.name,
       reviewerId: json.reviewerId,
       status: json.status,
-      approved: json.approved,
       createdAt: this.formatDateTime(json.createdAt),
       creatorId: json.creatorId,
       creator: json.creator,

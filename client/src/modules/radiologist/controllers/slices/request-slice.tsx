@@ -20,11 +20,11 @@ const initialState: RequestState = {
   currentRequest: {
     creator: null,
     creatorId: "",
-    approved: null,
     createdAt: null,
     report: [],
     reviewerId: "",
     status: "",
+    name : "",
     id: "",
   },
   isFetched: false,

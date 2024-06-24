@@ -103,6 +103,7 @@ const RequestPage = () => {
                 role={roleParam}
                 setRightSectionFlag={setRightSectionFlag}
                 setReportData={setReportDetails}
+                requestData={targetRequest}
                 reportEl={reportEl}
               />
               <DisplayedReview
@@ -134,8 +135,8 @@ const RequestPage = () => {
         }}
       >
         {rightSectionFlag === "report-details" ? (
-          reportDetails && (
-            <ReportDetailsSection reportDetails={reportDetails} />
+          reportDetails && targetRequest && (
+            <ReportDetailsSection requestData={targetRequest} reportDetails={reportDetails} />
           )
         ) : rightSectionFlag === "create-review" ? (
           <CreateReviewForm setRightSectionFlag={setRightSectionFlag} reportId={getLastReportId()} />

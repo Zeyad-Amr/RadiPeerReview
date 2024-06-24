@@ -2,10 +2,11 @@ import { ReviewDataInterface } from "./review-interface";
 
 export interface CreateRequestInterface {
   id?: string | number;
+  name : string
+  reviewRequestId? : string;
   report: File | null;
   result: File | null;
   additionalComments: string;
-  reviewRequestId? : string;
 }
 
 export interface GetRequestInterface {
@@ -13,9 +14,9 @@ export interface GetRequestInterface {
   reviewerId?: string | number;
   creatorId?: string | number;
   creator?: creatorInterface | null;
-  approved: boolean | null;
   createdAt: string | null;
   status: string;
+  name: string;
   report: GetReportInterface[];
 }
 

@@ -1,6 +1,6 @@
-import { Box , Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { Formik, FormikHelpers } from "formik";
-import React, { Dispatch, SetStateAction , useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import { DoneRounded } from "@mui/icons-material";
 import FileUploadRoundedIcon from "@mui/icons-material/FileUploadRounded";
 import CustomTextField from "@/core/shared/components/CustomTextField";
@@ -8,17 +8,20 @@ import { CreateRequestInterface } from "../../interfaces/request-interface";
 import reportModel from "../../models/request-model";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { useAppDispatch } from "@/core/state/store";
-import { createRequest, getRequestDetails } from "../../controllers/thunks/request-thunk";
+import {
+  createRequest,
+  getRequestDetails,
+} from "../../controllers/thunks/request-thunk";
 import { createReport } from "../../controllers/thunks/report-thunk";
 
 interface CreateRequestFormPropsInterface {
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
-  reviewRequestId? : string ;
+  reviewRequestId?: string;
 }
 
 const CreateRequestForm = ({
   setShowFormDialog,
-  reviewRequestId
+  reviewRequestId,
 }: CreateRequestFormPropsInterface) => {
   // useRef
   const pdfFileInputRef = useRef<HTMLInputElement>(null);
@@ -41,12 +44,15 @@ const CreateRequestForm = ({
       formData.append("result", values.result);
     }
     formData.append("additionalComments", values.additionalComments);
-    reviewRequestId ? formData.append("reviewRequestId", reviewRequestId) : null
-    const action = reviewRequestId ? createReport : createRequest
+    reviewRequestId
+      ? formData.append("reviewRequestId", reviewRequestId) // resubmit condition
+      : formData.append("name", values.name); // create request condition
+    const action = reviewRequestId ? createReport : createRequest;
     dispatch(action(formData)).then((res) => {
       if (res.meta.requestStatus === "fulfilled") {
-        if (reviewRequestId) { // resubmit condition
-         dispatch(getRequestDetails(reviewRequestId)) 
+        if (reviewRequestId) {
+          // resubmit condition
+          dispatch(getRequestDetails(reviewRequestId));
         }
         setShowFormDialog(false);
         resetForm();
@@ -58,7 +64,9 @@ const CreateRequestForm = ({
     <Formik
       initialValues={reportModel.defaultValues}
       onSubmit={handleSubmit}
-      validationSchema={reportModel.validationSchema}
+      validationSchema={reportModel.validationSchema(
+        reviewRequestId ? false : true
+      )}
     >
       {({
         values,
@@ -183,6 +191,26 @@ const CreateRequestForm = ({
             </Grid>
           </Grid>
 
+          {!reviewRequestId ? (
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <CustomTextField
+                  name="name"
+                  label="Request Name"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.name}
+                  touched={touched.name}
+                  width="100%"
+                  props={{
+                    type: "text",
+                  }}
+                />
+              </Grid>
+            </Grid>
+          ) : null}
+
           <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
               {/* Additional Comments */}
@@ -208,7 +236,10 @@ const CreateRequestForm = ({
 
           {/* Submit Button */}
           <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-            <PrimaryButton title={ reviewRequestId ? "Resubmit" : "Add"} type="submit" />
+            <PrimaryButton
+              title={reviewRequestId ? "Resubmit" : "Add"}
+              type="submit"
+            />
           </Box>
         </form>
       )}

@@ -1,19 +1,22 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { GetReportInterface } from "../../interfaces/request-interface";
+import { GetReportInterface, GetRequestInterface } from "../../interfaces/request-interface";
 import { useRouter } from "next/navigation";
 
 interface ReportDetailsPropsInterface {
   reportDetails: GetReportInterface;
+  requestData: GetRequestInterface;
 }
 
 const ReportDetailsSection = ({
   reportDetails,
+  requestData
 }: ReportDetailsPropsInterface) => {
   const router = useRouter()
   return (
     <Box>
+      <Box sx={{ display : "flex" , justifyContent : "space-between" }}>
       <Typography
         sx={{
           fontWeight: "700",
@@ -22,8 +25,19 @@ const ReportDetailsSection = ({
           fontSize: "1.5rem",
         }}
       >
+        {requestData?.name ?? "No name"}
+      </Typography>
+      <Typography
+        sx={{
+          fontWeight: "700",
+          marginBottom: "20px",
+          lineHeight: "1.5",
+          fontSize: "1rem",
+        }}
+      >
         {reportDetails?.createdAt}
       </Typography>
+      </Box>
       {/* Start Dicom file name & view */}
       <Box sx={{ marginBottom: "1.5rem" }}>
         <Typography>Dicom File</Typography>
