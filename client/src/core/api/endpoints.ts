@@ -6,6 +6,7 @@ const Endpoints = {
   auth: {
     list: "/auth",
     login: "/auth/login",
+    changePassoword: "/auth/changepassword",
   },
   report: {
     list: "/report",
@@ -53,6 +54,6 @@ const Endpoints = {
     averageSuccessScore: "/dashboard/average-success-score",
     averageFailureScore: "/dashboard/average-failure-score",
     leaderboard: "/dashboard/leader-board",
-  }
+  },
 };
 export default Endpoints;

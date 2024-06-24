@@ -5,14 +5,20 @@ import { ChangePasswordInterface } from '../../interfaces/change-password-interf
 import changePasswordModel from '../../models/change-password-model';
 import { Box } from '@mui/material';
 import PrimaryButton from '@/core/shared/components/btns/PrimaryButton';
+import { changePassoword } from '../../controllers/thunks/change-password-thunk';
+import { useAppDispatch } from '@/core/state/store';
 
 const ChangePasswordForm = () => {
+
+    const dispatch = useAppDispatch();
+
     return (
         <Formik
             initialValues={changePasswordModel.defaultValues}
             validationSchema={changePasswordModel.validationSchema}
-            onSubmit={(values: ChangePasswordInterface) => {
-                console.log(values);
+            onSubmit={async (values:ChangePasswordInterface) => {
+                const action = changePassoword(values)
+                dispatch(action)
             }}
         >
             {({

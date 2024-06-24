@@ -13,10 +13,7 @@ import React, { useEffect, useState } from 'react'
 
 const AssignReview = ({ id, users }: { id: string, users: { id: string, value: string }[] }) => {
 
-
     const dispatch = useAppDispatch();
-
-
 
     return (
         <Formik
