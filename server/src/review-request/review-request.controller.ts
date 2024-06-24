@@ -119,7 +119,7 @@ export class ReviewRequestController {
           req.user.sub,
         );
 
-        request = await this.reviewRequestService.assignReviewer(
+        request = await this.reviewRequestService.assignReviewRequest(
           request.id,
           radiologist.id,
         );

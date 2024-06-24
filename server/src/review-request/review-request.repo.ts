@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Prisma, ReviewRequest, Status } from '@prisma/client';
+import { $Enums, Prisma, ReviewRequest, Status } from '@prisma/client';
 
 @Injectable()
 export class ReviewRequestRepo extends PrismaGenericRepo<
@@ -48,6 +48,19 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
       },
     });
   }
+
+  async getOne(where: Prisma.ReviewRequestWhereInput){
+    try {
+      const res = await this.prismaService.reviewRequest.findFirst({
+        where,
+        include: this.includesObj,
+      });
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
+
 
   async getAllRequests(query: { [key: string]: any }, radiologistId: string) {
     try {
@@ -95,17 +108,6 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
       return data;
     } catch (error: any) {
       throw error;
-    }
-  }
-
-  checkBool(s: string) {
-    if (s === 'true') {
-      return true;
-    }
-    if (s === 'false') {
-      return false;
-    } else {
-      return s;
     }
   }
 
