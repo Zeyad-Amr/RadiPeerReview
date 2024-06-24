@@ -7,6 +7,9 @@ import AssignReview from '../../components/review-request/AssignReview';
 import { RootState, useAppDispatch, useAppSelector } from '@/core/state/store';
 import { getAdminReports } from '@/modules/review-request/controllers/thunks/review-request-thunk';
 import { ReviewRequestState } from '@/modules/review-request/controllers/types';
+import { getAllUsers } from '@/modules/auth/controllers/thunks/auth-thunk';
+import { allUsersState } from '@/modules/auth/controllers/types';
+import { UserInterface } from '@/modules/auth/interfaces/user-interface';
 
 const ReportsPage = () => {
 
@@ -18,16 +21,37 @@ const ReportsPage = () => {
 
     useEffect(() => {
         dispatch(getAdminReports());
+        dispatch(getAllUsers());
+
     }, [])
 
-    console.log(reviewRequestState)
+    // get all radiologists //
+    function formatRadiologists(users: UserInterface[], creator: string) {
+        const usersArray: { id: string, value: string }[] = []
+        users.map((user: UserInterface) => {
+            if (user.role === 'RADIOLOGIST' && 
+               ` ${user.radiologist?.fname} ${user.radiologist?.lname}` !== ` ${creator}`
+            ) {
+                usersArray.push({
+                    id: user.id,
+                    value: `${user.radiologist?.fname} ${user.radiologist?.lname}`
+                });
+            }
+        });
+        return usersArray;
+    }
+    const allRadiologistsState: allUsersState = useAppSelector(
+        (state: RootState) => state.allUsersSlice
+    )
+
+
 
     let newTableData: any[] = [];
     reviewRequestState.reports.forEach((item) => {
         newTableData.push({
             reportName: item.name ?? '',
             reportAuther: item.creator?.fname + ' ' + item.creator?.lname,
-            reportReviwer: item.reviewer === undefined ? <AssignReview id={item.id ?? ''} /> : <Typography sx={{ fontSize: '0.8rem' }}>{item.reviewer?.fname + ' ' + item.reviewer?.lname}</Typography>,
+            reportReviwer: item.reviewer === undefined ? <AssignReview id={item.id ?? ''} users={formatRadiologists(allRadiologistsState.users, item.creator?.fname + ' ' + item.creator?.lname)} /> : <Typography sx={{ fontSize: '0.8rem' }}>{item.reviewer?.fname + ' ' + item.reviewer?.lname}</Typography>,
             status: <Typography sx={{
                 fontSize: '0.8rem',
                 color: item.approved ? 'green' : 'black'
