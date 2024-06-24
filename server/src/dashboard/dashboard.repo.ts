@@ -19,7 +19,7 @@ export class DashboardRepo {
       return await this.prisma.report.count({
         where: {
           ReviewRequest: {
-            status: Status.Completed
+            status: Status.Completed,
           },
         },
       });
@@ -33,7 +33,7 @@ export class DashboardRepo {
       return await this.prisma.report.count({
         where: {
           ReviewRequest: {
-            status: Status.Reviewed
+            status: Status.Reviewed,
           },
         },
       });
@@ -47,7 +47,7 @@ export class DashboardRepo {
       return await this.prisma.report.count({
         where: {
           ReviewRequest: {
-            status: Status.Assigned
+            status: Status.Assigned,
           },
         },
       });
@@ -62,7 +62,7 @@ export class DashboardRepo {
       const overAllQuality = await this.prisma.report.findMany({
         where: {
           ReviewRequest: {
-            status: Status.Completed
+            status: Status.Completed,
           },
         },
         select: {
@@ -134,7 +134,7 @@ export class DashboardRepo {
           by: 'creatorId',
           _count: { status: true },
           where: {
-            status: Status.Completed
+            status: Status.Completed,
           },
           orderBy: {
             _count: {
