@@ -152,7 +152,7 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
             },
           },
           select: {
-            id: true,
+            auth: { select: { id: true } },
             specializations: true,
           },
         });
@@ -170,8 +170,7 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
       if (sortedRadiologists.length === 0) {
         throw new NotFoundException('No radiologist found');
       }
-
-      return sortedRadiologists[0];
+      return sortedRadiologists.map((radi) => ({ id: radi.auth.id }))[0];
     } catch (error) {
       throw error;
     }
