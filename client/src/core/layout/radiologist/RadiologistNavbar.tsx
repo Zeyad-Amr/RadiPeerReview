@@ -54,7 +54,7 @@ export default function RadiologistNavbar() {
 
   const [popUp, setPopUp] = React.useState<boolean>(false);
   const isUpdated = (updated: boolean) => {
-    setPopUp(!updated);
+    setPopUp(false);
   }
   return (
     <>
