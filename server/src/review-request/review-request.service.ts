@@ -27,21 +27,6 @@ export class ReviewRequestService {
     }
   }
 
-  async assignReviewer(reviewRequestId: string, reviewerId: string) {
-    try {
-      const request = await this.reviewRequestRepo.update(reviewRequestId, {
-        reviewer: {
-          connect: {
-            id: reviewerId,
-          },
-        },
-      });
-      return request;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async findAll(query, radiologistId) {
     try {
       const review = await this.reviewRequestRepo.getAllRequests(
