@@ -89,7 +89,6 @@ export class ReviewRequestService {
 
   async approveReviewRequest(id: string,status:number) {
     try {
-      if([0,1].includes(status)) throw new BadRequestException("Invalid status value")
       const reviewRequest = await this.reviewRequestRepo.update(id, {
         status: status === 1? Status.Completed: Status.Reviewed,
       });
