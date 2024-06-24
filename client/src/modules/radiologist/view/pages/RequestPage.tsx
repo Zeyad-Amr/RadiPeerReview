@@ -59,6 +59,14 @@ const RequestPage = () => {
     roleParam,
   ]);
 
+  // Function to get the ID of the last report
+  const getLastReportId = () => {
+    if ( targetRequest && targetRequest?.report?.length > 0) {
+      return targetRequest.report[targetRequest.report.length - 1].id as string;
+    }
+    return "";
+  };
+
   return (
     <Grid container>
       <Grid
@@ -128,7 +136,7 @@ const RequestPage = () => {
             <ReportDetailsSection reportDetails={reportDetails} />
           )
         ) : rightSectionFlag === "create-review" ? (
-          reportDetails?.id && <CreateReviewForm setRightSectionFlag={setRightSectionFlag} reportId={reportDetails?.id} />
+          <CreateReviewForm setRightSectionFlag={setRightSectionFlag} reportId={getLastReportId()} />
         ) : rightSectionFlag === "review-details" ? (
           reportDetails &&
           reviewDetails && (

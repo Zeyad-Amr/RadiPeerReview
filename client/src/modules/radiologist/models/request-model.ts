@@ -82,7 +82,7 @@ class ReportModel {
       createdAt: this.formatDateTime(json.createdAt),
       creatorId: json.creatorId,
       creator: json.creator,
-      report: json?.report ? json?.report?.reverse().map((el: any) => this.fromReportJson(el)) : [],
+      report: json?.report ? json?.report?.map((el: any) => this.fromReportJson(el)) : [],
     };
   }
 

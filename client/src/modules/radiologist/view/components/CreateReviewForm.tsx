@@ -40,8 +40,9 @@ const CreateReviewForm = ({
       initialValues={reviewDataModel.defaultValues}
       validationSchema={reviewDataModel.validationSchema}
       onSubmit={(values: ReviewDataInterface, { resetForm }) => {
-        console.log(values, "values");
         const submitObject = { ...values, reportId: reportId };
+        console.log(submitObject, "submitObject");
+        console.log(requestId, "requestId");
         dispatch(createReview(submitObject)).then((res) => {
           if (res.meta.requestStatus == "fulfilled") {
             resetForm();
