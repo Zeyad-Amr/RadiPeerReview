@@ -55,15 +55,12 @@ const RequestStatus = ({ requestData, role }: RequestStatusPropsInterface) => {
           {requestData.status}
         </Box>
       </Box>
-      {role == "reviewer" && !requestData.approved && (
+      {role == "reviewer" && requestData.status !== Status.Completed && (
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
             backgroundColor : "secondary.main",
-            // borderWidth: "1px",
-            // borderStyle: "solid",
-            // borderColor: "secondary.main",
             padding: "0.5rem",
             borderRadius: "10px",
             cursor: "pointer",

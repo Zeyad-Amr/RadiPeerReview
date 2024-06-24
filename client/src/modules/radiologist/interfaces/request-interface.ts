@@ -13,7 +13,6 @@ export interface GetRequestInterface {
   reviewerId?: string | number;
   creatorId?: string | number;
   creator?: creatorInterface | null;
-  approved: boolean | null;
   createdAt: string | null;
   status: string;
   report: GetReportInterface[];

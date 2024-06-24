@@ -41,6 +41,7 @@ const RequestPage = () => {
 
   // dispatch all requests to get their list in store
   useEffect(() => {
+    setTargetRequest(undefined);
     if (requestId) {
       dispatch(getRequestDetails(requestId));
     }

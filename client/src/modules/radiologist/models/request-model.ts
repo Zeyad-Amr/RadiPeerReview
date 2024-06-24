@@ -78,7 +78,6 @@ class ReportModel {
       id: json.id,
       reviewerId: json.reviewerId,
       status: json.status,
-      approved: json.approved,
       createdAt: this.formatDateTime(json.createdAt),
       creatorId: json.creatorId,
       creator: json.creator,
