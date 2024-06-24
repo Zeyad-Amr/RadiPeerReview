@@ -191,23 +191,25 @@ const CreateRequestForm = ({
             </Grid>
           </Grid>
 
-          <Grid container spacing={2}>
-            <Grid item lg={12} md={12} sm={12} xs={12}>
-              <CustomTextField
-                name="name"
-                label="Request Name"
-                value={values.name}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={errors.name}
-                touched={touched.name}
-                width="100%"
-                props={{
-                  type: "text",
-                }}
-              />
+          {!reviewRequestId ? (
+            <Grid container spacing={2}>
+              <Grid item lg={12} md={12} sm={12} xs={12}>
+                <CustomTextField
+                  name="name"
+                  label="Request Name"
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={errors.name}
+                  touched={touched.name}
+                  width="100%"
+                  props={{
+                    type: "text",
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+          ) : null}
 
           <Grid container spacing={2}>
             <Grid item lg={12} md={12} sm={12} xs={12}>
