@@ -2,15 +2,12 @@ import React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
-import CampaignRoundedIcon from "@mui/icons-material/CampaignRounded";
 import { NotificationInterface } from "../../interfaces/notification-interface";
 import { NotificationType } from "@/core/shared/constants/enums";
 import { fFullDateTime } from "@/core/shared/utils/format-time";
 import { useAppDispatch } from "@/core/state/store";
 import { markNotificationAsRead } from "../../controllers/thunks/notifications-thunk";
 import {
-  AssignmentTurnedIn,
   AssignmentInd,
   AssignmentLate,
   RateReview,
@@ -21,12 +18,14 @@ import {
   Cancel,
   Replay,
 } from "@mui/icons-material";
+import { useRouter } from "next/navigation";
 interface NotificationCardProps {
   notification: NotificationInterface;
 }
 
 const NotificationCard = (props: NotificationCardProps) => {
   const disptach = useAppDispatch();
+  const router = useRouter();
   const { notification } = props;
   const iconMapping = {
     [NotificationType.REQUEST_ASSIGNED]: AssignmentInd,
@@ -62,6 +61,30 @@ const NotificationCard = (props: NotificationCardProps) => {
       onClick={() => {
         console.log("Notification Clicked", notification);
         disptach(markNotificationAsRead(notification.id));
+        if (notification.type === NotificationType.UNASSIGNED_REVIEW_REQUEST) {
+          router.push("/reports");
+        } else if (
+          notification.type === NotificationType.REQUEST_REVIEWED ||
+          notification.type === NotificationType.REQUEST_APPROVED ||
+          notification.type === NotificationType.REQUEST_REJECTED ||
+          notification.type === NotificationType.REQUEST_REREVIEWED
+        ) {
+          if (notification.entityId) {
+            router.push(
+              `/radiologist/request/${notification.entityId}?role=creator`
+            );
+          }
+        } else if (
+          notification.type === NotificationType.REQUEST_ASSIGNED ||
+          notification.type === NotificationType.REQUEST_REPORT_RESUBMITTED ||
+          notification.type === NotificationType.REVIEW_FEEDBACK_RECEIVED
+        ) {
+          if (notification.entityId) {
+            router.push(
+              `/radiologist/request/${notification.entityId}?role=reviewer`
+            );
+          }
+        }
       }}
     >
       <Box sx={{ color: "secondary.main", mr: 2 }}>
