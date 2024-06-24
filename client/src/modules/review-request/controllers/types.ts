@@ -5,6 +5,5 @@ export interface ReviewRequestState {
   loading: boolean;
   error: string;
   reports: ReviewRequestInterface[];
-  radiologists: UserInterface[];
 }
 

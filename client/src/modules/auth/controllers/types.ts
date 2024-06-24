@@ -5,3 +5,9 @@ export interface AuthState {
   error: string;
   user: UserInterface | null;
 }
+
+export interface allUsersState {
+  loading: boolean;
+  error: string;
+  users: UserInterface[];
+}
