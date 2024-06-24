@@ -16,6 +16,7 @@ export interface dashboardInterface {
 
 export interface dashboardData {
   totalReports: number;
+  unassignedReports:number;
   acceptedReports: number;
   rejectedReports: number;
   pendingReports: number;
