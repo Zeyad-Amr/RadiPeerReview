@@ -19,6 +19,12 @@ const DashboardPage = () => {
     const [data, setData] = useState<dashboardData>();
     const dispatch = useAppDispatch();
 
+    function roundNumber(value: number, decimals: number): number {
+        const factor = Math.pow(10, decimals);
+        const roundedValue = Math.round(value * factor) / factor;
+        return Number.isInteger(roundedValue) ? roundedValue : parseFloat(roundedValue.toFixed(decimals));
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             const [
@@ -46,8 +52,8 @@ const DashboardPage = () => {
                     'acceptedReports': acceptedReports.response.data,
                     'rejectedReports': rejectedReports.response.data,
                     'pendingReports': pendingReports.response.data,
-                    'averageSuccessScore': averageSuccessScore.response.data,
-                    'averageFailureScore': averageFailureScore.response.data,
+                    'averageSuccessScore': roundNumber(averageSuccessScore.response.data, 2),
+                    'averageFailureScore': roundNumber(averageFailureScore.response.data, 2),
                     'leaderboard': leaderboard
                 },
             );
