@@ -7,5 +7,5 @@ export interface ReviewRequestInterface {
   creator: RadiologistInterface;
   reviewer: RadiologistInterface | null;
   status: string | undefined;
-  approved: boolean | null;
+  score?: number;
 }

@@ -12,7 +12,7 @@ class ReviewRequestModel extends BaseModel<ReviewRequestInterface> {
       reviewer:
         json.reviewer?.radiologist,
       status: json.status,
-      approved: json.approved,
+      score:json.report[json.report.length - 1]?.Review?.overallAssessment.overallQuality
     };
   }
 
