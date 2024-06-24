@@ -126,7 +126,7 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
 
       if (!user) {
         // get one with least number of reports assigned
-        return new NotFoundException('User not found');
+        throw new NotFoundException('User not found');
       }
 
       const matchingRadiologists =
@@ -173,7 +173,11 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
           (a, b) => a._count._all - b._count._all,
         );
 
-        return radiologistsWithLeastReports[0];
+        return await this.prismaService.auth.findUnique({
+          where: {
+            id: radiologistsWithLeastReports[0].reviewerId,
+          },
+        });
       }
       // get the radiologists with the same matching count and select the one with the least number of reports
       const highestMatchingCount = sortedRadiologists[0]?.matchingCount || 0;
@@ -199,7 +203,11 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
         });
 
       if (radiologistWithNoReports) {
-        return radiologistWithNoReports;
+        return await this.prismaService.auth.findUnique({
+          where: {
+            id: radiologistWithNoReports.auth.id,
+          },
+        });
       }
 
       // Get the radiologist with the least number of reports
@@ -225,7 +233,11 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
         (a, b) => a._count._all - b._count._all,
       );
 
-      return radiologistsWithLeastReports[0];
+      return await this.prismaService.auth.findUnique({
+        where: {
+          id: radiologistsWithLeastReports[0].reviewerId,
+        },
+      });
     } catch (error) {
       throw error;
     }
