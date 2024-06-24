@@ -20,7 +20,7 @@ const ReportsPage = () => {
         dispatch(getAdminReports());
     }, [])
 
-    console.log(reviewRequestState.reports)
+    console.log(reviewRequestState)
 
     let newTableData: any[] = [];
     reviewRequestState.reports.forEach((item) => {

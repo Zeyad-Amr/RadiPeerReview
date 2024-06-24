@@ -15,6 +15,7 @@ class ReviewRequestModel extends BaseModel<ReviewRequestInterface> {
       approved: json.approved,
     };
   }
+
   toJson(
     model: ReviewRequestInterface
   ): any {

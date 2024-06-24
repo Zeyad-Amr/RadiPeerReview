@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
     AssignReviewRequest,
     getAdminReports,
+    getRadiologists,
 } from "../thunks/review-request-thunk";
 import { ErrorResponse } from "@/core/api";
 import { ReviewRequestState } from "../types";
@@ -10,11 +11,12 @@ import AlertService from "@/core/shared/utils/alert-service";
 //* Initial State
 const initialState: ReviewRequestState = {
     reports: [],
+    radiologists: [],
     loading: false,
     error: "",
 };
 
-const adminReportsSlice = createSlice({
+const reviewRequestSlice = createSlice({
     name: "admin-reports",
     initialState,
     reducers: {
@@ -39,7 +41,23 @@ const adminReportsSlice = createSlice({
         builder.addCase(getAdminReports.rejected, (state, action) => {
             state.loading = false;
             state.error = (action.payload as ErrorResponse).message;
-            state.reports = initialState.reports;
+            state.radiologists = initialState.radiologists;
+        });
+      
+        //* get all radiologists
+        builder.addCase(getRadiologists.pending, (state, _action) => {
+            state.loading = true;
+            state.error = "";
+        });
+        builder.addCase(getRadiologists.fulfilled, (state, action) => {
+            state.loading = false;
+            state.radiologists = action.payload;
+            state.error = "";
+        });
+        builder.addCase(getRadiologists.rejected, (state, action) => {
+            state.loading = false;
+            state.error = (action.payload as ErrorResponse).message;
+            state.radiologists = initialState.radiologists;
         });
 
         //* get all assign request review
@@ -61,5 +79,5 @@ const adminReportsSlice = createSlice({
     },
 });
 
-export const { setLoading, clearError } = adminReportsSlice.actions;
-export default adminReportsSlice.reducer;
+export const { setLoading, clearError } = reviewRequestSlice.actions;
+export default reviewRequestSlice.reducer;
