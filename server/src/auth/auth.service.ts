@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { ChangePasswordDto } from './dto/change-password.dto';
 import { AuthRepo } from './auth.repo';
 import * as bcrypt from 'bcrypt';
 import { LoginDTO } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 import { hashPassword } from '@/shared/utlis/utils';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +35,26 @@ export class AuthService {
       });
       delete auth.password;
       return { token, auth };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findAll() {
+    try {
+      const auths = await this.authRepo.getAll();
+      auths.map((auth) => delete auth.password);
+      return auths;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async findOne(id: string) {
+    try {
+      const auth = await this.authRepo.getByID(id);
+      delete auth.password;
+      return auth;
     } catch (error) {
       throw error;
     }
