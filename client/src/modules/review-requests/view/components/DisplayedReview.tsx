@@ -55,16 +55,16 @@ const DisplayedReview = ({
             {reviewEl ? (
               <>
                 <Typography sx={{ fontSize: "13px" }} color="textSecondary">
-                  Completeness of report :{" "}
-                  {reviewEl?.clarityAndCompleteness?.completenessOfReport ??
+                  Overall Score :{" "}
+                  {reviewEl?.overallAssessment?.overallQuality ??
                     "No Data Available"}
                 </Typography>
-                <Typography sx={{ fontSize: "13px" }} color="textSecondary">
+                {/* <Typography sx={{ fontSize: "13px" }} color="textSecondary">
                   Accuracy of impression :{" "}
                   {reviewEl?.impressionAndRecommendations?.accuracyOfImpression
                     ? "Yes"
                     : "No"}
-                </Typography>
+                </Typography> */}
               </>
             ) : (
               // no review data
