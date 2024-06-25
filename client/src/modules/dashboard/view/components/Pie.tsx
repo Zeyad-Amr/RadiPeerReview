@@ -26,8 +26,8 @@ export default function Pie({ Accepted, Rejected, Pending }: chartCardProp) {
           {
             data: [
               { id: 0, value: Accepted, label: 'Accepted Reports', color: '#343f7a' },
-              { id: 1, value: Rejected, label: 'Rejected Reports', color: '#84d9fd' },
-              { id: 2, value: Pending, label: 'Pending Reports', color: '#eff4fb' },
+              { id: 1, value: Rejected, label: 'Reviewed Reports', color: '#84d9fd' },
+              { id: 2, value: Pending, label: 'Processing Reports', color: '#eff4fb' },
             ],
           },
         ]}
