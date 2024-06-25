@@ -6,12 +6,10 @@ import {
 } from "@/core/shared/utils/session-storage";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 const PdfViewer = () => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter(); // Initialize the router
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -60,16 +58,6 @@ const PdfViewer = () => {
 
   return (
     <div style={{ height: "100vh" }}>
-      <button
-        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-          e.stopPropagation();
-          e.preventDefault();
-          router.back();
-        }}
-        style={{ position: "absolute", bottom: 10, left: 10, zIndex: 1000 }}
-      >
-        Back
-      </button>
       {error ? (
         <div style={{ color: "red", textAlign: "center" }}>{error}</div>
       ) : (
