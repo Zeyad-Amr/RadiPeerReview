@@ -113,7 +113,9 @@ export class DashboardRepo {
 
       let sum = 0.0;
       overAllQuality.forEach((report) => {
-        sum += report.Review.overallAssessment.overallQuality;
+        if (report.Review) { 
+          sum += report.Review.overallAssessment.overallQuality;
+        }
       });
       return sum / overAllQuality.length;
     } catch (error) {
