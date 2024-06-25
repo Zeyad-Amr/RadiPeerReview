@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ErrorResponse } from "@/core/api";
 import AlertService from "@/core/shared/utils/alert-service";
-import { dashboardState } from "../types";
+import { AnalyticsState } from "../types";
 import {
   getAcceptedReports,
   getAverageFailureScore,
@@ -10,17 +10,25 @@ import {
   getPendingReports,
   getRejectedReports,
   getTotalReports,
-} from "../thunks/dashboard-thunk";
+} from "../thunks/analytics-thunk";
 
 //* Initial State
-const initialState: dashboardState = {
-  response: [],
+const initialState: AnalyticsState = {
   loading: false,
   error: "",
+  dashboardData: {
+    totalReports: 0,
+    acceptedReports: 0,
+    rejectedReports: 0,
+    pendingReports: 0,
+    averageSuccessScore: 0,
+    averageFailureScore: 0,
+    leaderboard: [],
+  },
 };
 
 const analytics = createSlice({
-  name: "dashboard",
+  name: "analytics",
   initialState,
   reducers: {
     clearError(state) {
@@ -38,13 +46,12 @@ const analytics = createSlice({
     });
     builder.addCase(getTotalReports.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.totalReports = action.payload;
       state.error = "";
     });
     builder.addCase(getTotalReports.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
 
@@ -55,13 +62,12 @@ const analytics = createSlice({
     });
     builder.addCase(getAcceptedReports.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.acceptedReports = action.payload;
       state.error = "";
     });
     builder.addCase(getAcceptedReports.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
 
@@ -72,13 +78,12 @@ const analytics = createSlice({
     });
     builder.addCase(getRejectedReports.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.rejectedReports = action.payload;
       state.error = "";
     });
     builder.addCase(getRejectedReports.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
 
@@ -89,13 +94,12 @@ const analytics = createSlice({
     });
     builder.addCase(getPendingReports.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.pendingReports = action.payload;
       state.error = "";
     });
     builder.addCase(getPendingReports.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
 
@@ -106,13 +110,12 @@ const analytics = createSlice({
     });
     builder.addCase(getAverageSuccessScore.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.averageSuccessScore = action.payload;
       state.error = "";
     });
     builder.addCase(getAverageSuccessScore.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
 
@@ -123,13 +126,12 @@ const analytics = createSlice({
     });
     builder.addCase(getAverageFailureScore.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.averageFailureScore = action.payload;
       state.error = "";
     });
     builder.addCase(getAverageFailureScore.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
 
@@ -140,13 +142,12 @@ const analytics = createSlice({
     });
     builder.addCase(getLeaderboard.fulfilled, (state, action) => {
       state.loading = false;
-      state.response = action.payload;
+      state.dashboardData.leaderboard = action.payload;
       state.error = "";
     });
     builder.addCase(getLeaderboard.rejected, (state, action) => {
       state.loading = false;
       state.error = (action.payload as ErrorResponse).message;
-      state.response = initialState.response;
       AlertService.showAlert(`${state.error}`, "error");
     });
   },

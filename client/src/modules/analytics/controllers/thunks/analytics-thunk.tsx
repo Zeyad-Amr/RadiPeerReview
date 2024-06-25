@@ -1,6 +1,6 @@
 import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import dashboardModel from "../../models/dashboard-model";
+import utilsFunctions from "@/core/shared/utils/functions";
 
 export const getTotalReports = createAsyncThunk(
   "dashboard/get-total-reports",
@@ -8,7 +8,7 @@ export const getTotalReports = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.dashboard.totalReports);
-      return dashboardModel.fromJson(response);
+      return response.data as number;
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -27,7 +27,7 @@ export const getAcceptedReports = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.dashboard.acceptedReports);
-      return dashboardModel.fromJson(response);
+      return response.data as number;
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -46,7 +46,7 @@ export const getRejectedReports = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.dashboard.rejectedReports);
-      return dashboardModel.fromJson(response);
+      return response.data as number;
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -65,7 +65,7 @@ export const getPendingReports = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.dashboard.pendingReports);
-      return dashboardModel.fromJson(response);
+      return response.data as number;
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -86,7 +86,7 @@ export const getAverageSuccessScore = createAsyncThunk(
       const response = await ApiClient.get(
         Endpoints.dashboard.averageSuccessScore
       );
-      return dashboardModel.fromJson(response);
+      return utilsFunctions.roundNumber(response.data, 2);
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -107,7 +107,7 @@ export const getAverageFailureScore = createAsyncThunk(
       const response = await ApiClient.get(
         Endpoints.dashboard.averageFailureScore
       );
-      return dashboardModel.fromJson(response);
+      return utilsFunctions.roundNumber(response.data, 2);
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -126,7 +126,7 @@ export const getLeaderboard = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.dashboard.leaderboard);
-      return response.data.map((item: number) => dashboardModel.fromJson(item));
+      return response.data as any[];
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {

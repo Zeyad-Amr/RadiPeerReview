@@ -1,6 +1,10 @@
-import { dashboardInterface } from "../interfaces/dashboard-interface";
+import {
+  DashboardData,
+  dashboardInterface,
+} from "../interfaces/analytics-interface";
 
-export interface dashboardState extends dashboardInterface {
+export interface AnalyticsState {
   loading: boolean;
   error: string;
+  dashboardData: DashboardData;
 }

@@ -14,9 +14,8 @@ export interface dashboardInterface {
   response: any | RadiologistData[];
 }
 
-export interface dashboardData {
+export interface DashboardData {
   totalReports: number;
-  unassignedReports: number;
   acceptedReports: number;
   rejectedReports: number;
   pendingReports: number;

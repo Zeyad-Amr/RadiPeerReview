@@ -9,7 +9,7 @@ import SportsScoreRoundedIcon from "@mui/icons-material/SportsScoreRounded";
 import CountCard from "../components/CountCard";
 import Pie from "../components/Pie";
 import Leaderboard from "../components/Leaderboard";
-import { useAppDispatch } from "@/core/state/store";
+import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
 import {
   getAcceptedReports,
   getAverageFailureScore,
@@ -18,58 +18,28 @@ import {
   getPendingReports,
   getRejectedReports,
   getTotalReports,
-} from "../../controllers/thunks/dashboard-thunk";
-import {
-  dashboardData,
-  leaderboardTransformedDataItem,
-} from "../../interfaces/dashboard-interface";
+} from "../../controllers/thunks/analytics-thunk";
+import { leaderboardTransformedDataItem } from "../../interfaces/analytics-interface";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
+import { AnalyticsState } from "../../controllers/types";
+import { fPositive } from "@/core/shared/utils/format-number";
 const DashboardPage = () => {
-  const [data, setData] = useState<dashboardData>();
+  const analyticsState: AnalyticsState = useAppSelector(
+    (state: RootState) => state.analytics
+  );
   const dispatch = useAppDispatch();
-
-  function roundNumber(value: number, decimals: number): number {
-    const factor = Math.pow(10, decimals);
-    const roundedValue = Math.round(value * factor) / factor;
-    return Number.isInteger(roundedValue)
-      ? roundedValue
-      : parseFloat(roundedValue.toFixed(decimals));
-  }
 
   useEffect(() => {
     const fetchData = async () => {
-      const [
-        totalReports,
-        acceptedReports,
-        rejectedReports,
-        pendingReports,
-        averageSuccessScore,
-        averageFailureScore,
-        leaderboard,
-      ] = await Promise.all([
-        dispatch(getTotalReports()).unwrap(),
-        dispatch(getAcceptedReports()).unwrap(),
-        dispatch(getRejectedReports()).unwrap(),
-        dispatch(getPendingReports()).unwrap(),
-        dispatch(getAverageSuccessScore()).unwrap(),
-        dispatch(getAverageFailureScore()).unwrap(),
-        dispatch(getLeaderboard()).unwrap(),
+      await Promise.all([
+        dispatch(getTotalReports()),
+        dispatch(getAcceptedReports()),
+        dispatch(getRejectedReports()),
+        dispatch(getPendingReports()),
+        dispatch(getAverageSuccessScore()),
+        dispatch(getAverageFailureScore()),
+        dispatch(getLeaderboard()),
       ]);
-
-      setData({
-        totalReports: totalReports.response.data,
-        unassignedReports:
-          totalReports.response.data -
-          (acceptedReports.response.data +
-            rejectedReports.response.data +
-            pendingReports.response.data),
-        acceptedReports: acceptedReports.response.data,
-        rejectedReports: rejectedReports.response.data,
-        pendingReports: pendingReports.response.data,
-        averageSuccessScore: roundNumber(averageSuccessScore.response.data, 2),
-        averageFailureScore: roundNumber(averageFailureScore.response.data, 2),
-        leaderboard: leaderboard,
-      });
     };
 
     fetchData();
@@ -79,12 +49,12 @@ const DashboardPage = () => {
     originalData: any[]
   ): leaderboardTransformedDataItem[] => {
     return originalData.map((item) => {
-      const name = `${item.response.creator.fname} ${item.response.creator.lname}`;
-      const AcceptedReports = String(item.response._count.status);
+      const name = `${item.creator.fname} ${item.creator.lname}`;
+      const AcceptedReports = String(item._count.status);
       return { name, AcceptedReports };
     });
   };
-  data ? console.log(transformData(data.leaderboard)) : null;
+  // data ? console.log(transformData(data.leaderboard)) : null;
 
   return (
     <>
@@ -94,61 +64,72 @@ const DashboardPage = () => {
           <CountCard
             highlight
             title="Total Reports"
-            number={data?.totalReports ?? "-"}
+            number={analyticsState.dashboardData.totalReports}
             icon={<FeedRoundedIcon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={4} md={4} sm={10} xs={20}>
           <CountCard
             title="Unassigned"
-            number={data?.unassignedReports ?? "-"}
+            number={fPositive(
+              analyticsState.dashboardData.totalReports -
+                (analyticsState.dashboardData.acceptedReports +
+                  analyticsState.dashboardData.rejectedReports +
+                  analyticsState.dashboardData.pendingReports)
+            )}
             icon={<PersonAddAlt1Icon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={4} md={4} sm={10} xs={20}>
           <CountCard
             title="Accepted"
-            number={data?.acceptedReports ?? "-"}
+            number={analyticsState.dashboardData.acceptedReports}
             icon={<CheckRoundedIcon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={4} md={4} sm={10} xs={20}>
           <CountCard
             title="Reviewed"
-            number={data?.rejectedReports ?? "-"}
+            number={analyticsState.dashboardData.rejectedReports}
             icon={<ClearRoundedIcon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={4} md={4} sm={10} xs={20}>
           <CountCard
             title="Processing"
-            number={data?.pendingReports ?? "-"}
+            number={analyticsState.dashboardData.pendingReports}
             icon={<HourglassTopRoundedIcon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={10} md={10} sm={10} xs={20}>
           <CountCard
             title="Average Acceptance Score"
-            number={data?.averageSuccessScore ?? "-"}
+            number={analyticsState.dashboardData.averageSuccessScore}
             icon={<SportsScoreRoundedIcon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={10} md={10} sm={10} xs={20}>
           <CountCard
             title="Average Rejection Score"
-            number={data?.averageFailureScore ?? "-"}
+            number={analyticsState.dashboardData.averageFailureScore}
             icon={<SportsScoreRoundedIcon sx={{ fontSize: "inherit" }} />}
           />
         </Grid>
         <Grid item lg={10} md={10} sm={10} xs={20}>
           <Pie
-            Accepted={data?.acceptedReports ?? 0}
-            Pending={data?.pendingReports ?? 0}
-            Rejected={data?.rejectedReports ?? 0}
+            Accepted={analyticsState.dashboardData.acceptedReports ?? 0}
+            Pending={analyticsState.dashboardData.pendingReports ?? 0}
+            Rejected={analyticsState.dashboardData.rejectedReports ?? 0}
           />
         </Grid>
         <Grid item lg={10} md={10} sm={10} xs={20}>
-          <Leaderboard data={data ? transformData(data.leaderboard) : []} />
+          <Leaderboard
+            data={
+              analyticsState.dashboardData
+                ? transformData(analyticsState.dashboardData.leaderboard)
+                : []
+            }
+          />
         </Grid>
       </Grid>
     </>

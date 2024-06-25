@@ -7,7 +7,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import notificationsSlice from "@/modules/notifications/controllers/slices/notifications-slice";
 import settingsSlice from "@/modules/settings/controllers/slices/settings-slice";
-import analytics from "@/modules/analytics/controllers/slices/dashboard-slice";
+import analytics from "@/modules/analytics/controllers/slices/analytics-slice";
 import changePassword from "@/modules/auth/controllers/slices/change-password-slice";
 
 const store = configureStore({
