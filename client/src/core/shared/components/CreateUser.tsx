@@ -13,9 +13,12 @@ import PrimaryButton from "./btns/PrimaryButton";
 import PageTitle from "./PageTitle";
 import IconBtn from "./btns/IconBtn";
 import { Switch } from "@mui/material";
-import { updateRadiologist } from "@/modules/admin/controllers/thunks/radiologist-thunk";
-import { activateRadiologist, deactivateRadiologist } from "@/modules/admin/controllers/thunks/deactivate-thunk";
-import { RadiologistInterface } from "@/modules/admin/interfaces/radiologist-interface";
+import { updateRadiologist } from "@/modules/radiologists/controllers/thunks/radiologist-thunk";
+import {
+  activateRadiologist,
+  deactivateRadiologist,
+} from "@/modules/radiologists/controllers/thunks/deactivate-thunk";
+import { RadiologistInterface } from "@/modules/radiologists/interfaces/radiologist-interface";
 
 export default function CreateUser({
   title,
@@ -31,24 +34,26 @@ export default function CreateUser({
   const [showConfirmationDialog, setShowConfirmationDialog] =
     useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const [userId, setUserID] = useState<string>('')
+  const [userId, setUserID] = useState<string>("");
 
   const handleToggle = async (item: RadiologistInterface) => {
     setTableItemData(item);
     if (!item.isdeactivated) {
-      await dispatch(deactivateRadiologist(item.id ?? ''));
+      await dispatch(deactivateRadiologist(item.id ?? ""));
     } else {
-      await dispatch(activateRadiologist(item.id ?? ''));
+      await dispatch(activateRadiologist(item.id ?? ""));
     }
   };
 
   function formatSpecializatopns(specializatopns: string[]) {
-    return specializatopns.map(specialization => {
-      return specialization
-        .toLowerCase()
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, char => char.toUpperCase());
-    }).join(', ');
+    return specializatopns
+      .map((specialization) => {
+        return specialization
+          .toLowerCase()
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (char) => char.toUpperCase());
+      })
+      .join(", ");
   }
 
   const updatedTableHeader: HeaderItem[] = [
@@ -63,10 +68,9 @@ export default function CreateUser({
       sortable: false,
       filterable: false,
       searchable: false,
-      onClick: () => { },
+      onClick: () => {},
     },
   ];
-
 
   return (
     <>
@@ -107,7 +111,7 @@ export default function CreateUser({
           data={tableList?.map((item: any) => {
             return {
               fullname: item.fname + " " + item.lname,
-              specialization:formatSpecializatopns(item.specializations),
+              specialization: formatSpecializatopns(item.specializations),
               ...item,
               update: (
                 <Box
@@ -122,7 +126,7 @@ export default function CreateUser({
                   <EditRoundedIcon
                     sx={{ cursor: "pointer", color: "primary.light" }}
                     onClick={() => {
-                      setTableItemData({ ...item, password: '' });
+                      setTableItemData({ ...item, password: "" });
                       setUserID(item.id);
                       setIsDialogOpen(true);
                     }}
@@ -134,7 +138,10 @@ export default function CreateUser({
                       setShowConfirmationDialog(true);
                     }}
                   /> */}
-                  <Switch checked={!item.isdeactivated} onClick={() => handleToggle(item)} />
+                  <Switch
+                    checked={!item.isdeactivated}
+                    onClick={() => handleToggle(item)}
+                  />
                 </Box>
               ),
             };
@@ -145,9 +152,7 @@ export default function CreateUser({
 
       {/* Create or Edit Item */}
       <CustomizedDialog
-        title={
-          tableItemData ? "Edit Radiologist" : "Add Radiologist"
-        }
+        title={tableItemData ? "Edit Radiologist" : "Add Radiologist"}
         open={isDialogOpen}
         setOpen={setIsDialogOpen}
         maxWidth={formDialogMaxWidth}
@@ -157,7 +162,6 @@ export default function CreateUser({
           setShowFormDialog={setIsDialogOpen}
           id={userId}
         />
-
       </CustomizedDialog>
     </>
   );

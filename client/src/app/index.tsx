@@ -1,6 +1,6 @@
 "use client";
 import NotificationService from "@/core/shared/utils/notification-service";
-import initCornerstone from "../initCornerstone";
+import initCornerstone from "../modules/viewers/initCornerstone";
 import { useEffect } from "react";
 import NotificationListener from "@/modules/notifications/view/compnents/NotificationListener";
 import { useAppDispatch } from "@/core/state/store";

@@ -3,7 +3,7 @@ import { AuthInterface } from "../interfaces/auth-interface";
 import { Yup } from "@/core/shared/utils/validation";
 import { UserInterface } from "../interfaces/user-interface";
 import { Role } from "@/core/shared/constants/enums";
-import RadiologistModel from "@/modules/admin/models/radiologist-model";
+import RadiologistModel from "@/modules/radiologists/models/radiologist-model";
 
 class UserModel extends BaseModel<UserInterface> {
   defaultValues: UserInterface = {

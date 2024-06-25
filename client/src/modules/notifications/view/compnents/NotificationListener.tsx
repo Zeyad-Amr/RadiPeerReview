@@ -6,7 +6,7 @@ import { getUserNotifications } from "../../controllers/thunks/notifications-thu
 import {
   getAssignedRequestsList,
   getCreatorRequestsList,
-} from "@/modules/radiologist/controllers/thunks/request-thunk";
+} from "@/modules/review-requests/controllers/thunks/request-thunk";
 
 const NotificationListener = () => {
   const dispatch = useAppDispatch();

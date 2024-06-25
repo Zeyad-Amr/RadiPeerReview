@@ -1,4 +1,4 @@
-import { RadiologistInterface } from "@/modules/admin/interfaces/radiologist-interface";
+import { RadiologistInterface } from "@/modules/radiologists/interfaces/radiologist-interface";
 
 interface Count {
   approved: number;
@@ -16,7 +16,7 @@ export interface dashboardInterface {
 
 export interface dashboardData {
   totalReports: number;
-  unassignedReports:number;
+  unassignedReports: number;
   acceptedReports: number;
   rejectedReports: number;
   pendingReports: number;

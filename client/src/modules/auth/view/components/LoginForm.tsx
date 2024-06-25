@@ -24,9 +24,9 @@ const LoginForm = () => {
       console.log(authState.user.role);
       console.log(Role.ADMIN);
       if (authState.user.role === Role.ADMIN) {
-        router.push("/dashboard");
+        router.push("/admin/dashboard");
       } else if (authState.user.role === Role.RADIOLOGIST) {
-        router.push("/radiologist");
+        router.push("/radiologist/dashboard");
       }
     }
   }, [authState.user, router]);

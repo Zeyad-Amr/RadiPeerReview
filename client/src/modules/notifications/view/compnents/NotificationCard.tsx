@@ -62,7 +62,7 @@ const NotificationCard = (props: NotificationCardProps) => {
         console.log("Notification Clicked", notification);
         disptach(markNotificationAsRead(notification.id));
         if (notification.type === NotificationType.UNASSIGNED_REVIEW_REQUEST) {
-          router.push("/reports");
+          router.push("/admin/dashboard/requests");
         } else if (
           notification.type === NotificationType.REQUEST_REVIEWED ||
           notification.type === NotificationType.REQUEST_APPROVED ||
@@ -71,7 +71,7 @@ const NotificationCard = (props: NotificationCardProps) => {
         ) {
           if (notification.entityId) {
             router.push(
-              `/radiologist/request/${notification.entityId}?role=creator`
+              `/radiologist/dashboard/request/${notification.entityId}?role=creator`
             );
           }
         } else if (
@@ -81,7 +81,7 @@ const NotificationCard = (props: NotificationCardProps) => {
         ) {
           if (notification.entityId) {
             router.push(
-              `/radiologist/request/${notification.entityId}?role=reviewer`
+              `/radiologist/dashboard/request/${notification.entityId}?role=reviewer`
             );
           }
         }
