@@ -71,7 +71,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             "Dashboard",
             "Add Radiologist",
             "Reports",
-            "Reminders",
             "Settings",
           ].map((text, index) => (
             <ListItem key={text} disablePadding>
@@ -158,14 +157,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <Divider />
         <List>
           {[
-            {
-              label: "Terms & Conditions",
-              route: "terms",
-            },
-            {
-              label: "Help",
-              route: "help",
-            },
             {
               label: "Logout",
               route: "login",
