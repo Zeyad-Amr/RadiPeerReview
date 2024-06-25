@@ -191,7 +191,7 @@ export class ReviewRequestController {
     try {
       const userId = req.user.sub;
       let request = await this.reviewRequestService.findOne(id)
-      if (request.reviewerId === userId) {
+      if (request.reviewerId !== userId) {
         throw new UnauthorizedException("Not Authorized")
       }
       
