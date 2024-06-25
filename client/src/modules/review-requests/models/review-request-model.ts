@@ -14,6 +14,7 @@ class ReviewRequestModel extends BaseModel<ReviewRequestInterface> {
         json.report[json.report.length - 1]?.Review?.overallAssessment
           .overallQuality,
       createdAt: fFullDateTime(json.createdAt),
+      updatedAt: fFullDateTime(json.updatedAt),
     };
   }
 

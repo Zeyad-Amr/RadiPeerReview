@@ -1,7 +1,10 @@
 import React, { Dispatch, SetStateAction, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
-import { GetReportInterface, GetRequestInterface } from "../../interfaces/request-interface";
-import RateReviewIcon from "@mui/icons-material/RateReview";
+import {
+  GetReportInterface,
+  GetRequestInterface,
+} from "../../interfaces/request-interface";
+
 
 interface DisplayedRequestProps {
   reportEl: GetReportInterface;
@@ -18,7 +21,7 @@ const DisplayedRequest = ({
   setReportData,
   reportEl,
   role,
-  requestData
+  requestData,
 }: DisplayedRequestProps) => {
   return (
     <Box
@@ -60,22 +63,8 @@ const DisplayedRequest = ({
             variant="body1"
             color="#fff"
           >
-            { requestData.name ?? "No name" }
+            {requestData.name ?? "No name"}
           </Typography>
-          {!reportEl.review && role === "reviewer" ? (
-            <RateReviewIcon
-              sx={{
-                color: "primary.light",
-                cursor: "pointer",
-                marginLeft: "0.5rem",
-              }}
-              onClick={(e: any) => {
-                e.stopPropagation();
-                e.preventDefault();
-                setRightSectionFlag("create-review");
-              }}
-            />
-          ) : null}
         </Box>
         <Typography
           sx={{

@@ -9,4 +9,5 @@ export interface ReviewRequestInterface {
   status: string | undefined;
   score?: number;
   createdAt: string;
+  updatedAt: string;
 }
