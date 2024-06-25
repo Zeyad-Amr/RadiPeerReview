@@ -4,20 +4,15 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
-
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AdminNavbar from "./AdminNavbar";
-
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
-import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
-import FeedIcon from "@mui/icons-material/Feed";
-import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
-import EventIcon from "@mui/icons-material/Event";
-import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
-import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+import LocalHospitalRoundedIcon from "@mui/icons-material/LocalHospitalRounded";
+import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -50,8 +45,45 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname, "pathname");
   const dispatch = useAppDispatch();
+
+  const handleListItemClick = (route: string, action?: () => void) => {
+    if (action) action();
+    router.push(route);
+  };
+
+  const menuItems = [
+    {
+      label: "Dashboard",
+      route: "/admin/dashboard",
+      icon: <DashboardRoundedIcon />,
+    },
+    {
+      label: "Radiologists",
+      route: "/admin/dashboard/radiologists",
+      icon: <LocalHospitalRoundedIcon />,
+    },
+    {
+      label: "Requests",
+      route: "/admin/dashboard/requests",
+      icon: <AssignmentRoundedIcon />,
+    },
+    {
+      label: "Settings",
+      route: "/admin/dashboard/settings",
+      icon: <SettingsRoundedIcon />,
+    },
+  ];
+
+  const actionItems = [
+    {
+      label: "Logout",
+      route: "/login",
+      icon: <LogoutRoundedIcon />,
+      action: () => dispatch(logout()),
+    },
+  ];
+
   return (
     <Box sx={{ display: "flex" }}>
       <Drawer
@@ -68,31 +100,14 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         open={open}
       >
         <List>
-          {[
-            {
-              label: "Dashboard",
-              route: "/admin/dashboard",
-            },
-            {
-              label: "Radiologists",
-              route: "/admin/dashboard/radiologists",
-            },
-            {
-              label: "Requests",
-              route: "/admin/dashboard/requests",
-            },
-            {
-              label: "Settings",
-              route: "/admin/dashboard/settings",
-            },
-          ].map((item, index) => (
+          {menuItems.map((item) => (
             <ListItem key={item.label} disablePadding>
               <Box
                 style={{
                   textDecoration: "none",
                   width: "100%",
                 }}
-                onClick={() => router.push(item.route)}
+                onClick={() => handleListItemClick(item.route)}
               >
                 <ListItemButton
                   sx={{
@@ -115,37 +130,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         color: "inherit",
                       }}
                     >
-                      {index === 0 ? (
-                        <DashboardRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : index === 1 ? (
-                        <PersonAddAlt1RoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : index === 2 ? (
-                        <FeedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : index === 3 ? (
-                        <EventIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : (
-                        <TuneRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      )}
+                      {item.icon}
                     </ListItemIcon>
                     <Typography
                       sx={{
@@ -164,23 +149,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         </List>
         <Divider />
         <List>
-          {[
-            {
-              label: "Logout",
-              route: "/login",
-              action: () => {
-                dispatch(logout());
-              },
-            },
-          ].map((item, index) => (
+          {actionItems.map((item) => (
             <ListItem key={item.label} disablePadding>
               <Box
-                onClick={() => {
-                  if (item.action) {
-                    item.action();
-                  }
-                  router.push(item.route);
-                }}
+                onClick={() => handleListItemClick(item.route, item.action)}
                 style={{
                   textDecoration: "none",
                   width: "100%",
@@ -207,25 +179,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         color: "inherit",
                       }}
                     >
-                      {index === 0 ? (
-                        <GavelRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : index === 1 ? (
-                        <HelpOutlineRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : (
-                        <LogoutRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      )}
+                      {item.icon}
                     </ListItemIcon>
                     <Typography
                       sx={{
@@ -267,4 +221,5 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     </Box>
   );
 };
+
 export default Layout;

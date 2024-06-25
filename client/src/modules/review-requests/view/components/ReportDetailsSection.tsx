@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
   GetReportInterface,
   GetRequestInterface,
 } from "../../interfaces/request-interface";
 import { useRouter } from "next/navigation";
+import LaunchIcon from '@mui/icons-material/Launch';
 
 interface ReportDetailsPropsInterface {
   reportDetails: GetReportInterface;
@@ -55,7 +55,7 @@ const ReportDetailsSection = ({
             {reportDetails?.resultUrl}
           </Typography>
           <Box>
-            <VisibilityIcon
+            <LaunchIcon
               sx={{ color: "primary.light", cursor: "pointer" }}
               onClick={() => {
                 router.push(`/dicom/viewer?file=${reportDetails?.resultUrl}`);
@@ -78,7 +78,7 @@ const ReportDetailsSection = ({
             {reportDetails?.reportUrl}
           </Typography>
           <Box>
-            <VisibilityIcon
+            <LaunchIcon
               sx={{ color: "primary.light", cursor: "pointer" }}
               onClick={() => {
                 router.push(`/pdf/viewer?file=${reportDetails?.reportUrl}`);

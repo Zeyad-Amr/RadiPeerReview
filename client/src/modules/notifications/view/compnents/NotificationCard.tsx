@@ -71,7 +71,7 @@ const NotificationCard = (props: NotificationCardProps) => {
         ) {
           if (notification.entityId) {
             router.push(
-              `/radiologist/dashboard/request/${notification.entityId}?role=creator`
+              `/radiologist/dashboard/request/${notification.entityId}`
             );
           }
         } else if (
@@ -81,7 +81,7 @@ const NotificationCard = (props: NotificationCardProps) => {
         ) {
           if (notification.entityId) {
             router.push(
-              `/radiologist/dashboard/request/${notification.entityId}?role=reviewer`
+              `/radiologist/dashboard/request/${notification.entityId}`
             );
           }
         }
