@@ -8,7 +8,7 @@ import {
 import Endpoints from "./endpoints";
 
 // Create a custom axios instance
-const axiosInstance = axios.create({ baseURL: Endpoints.base });
+const axiosInstance = axios.create({ baseURL: Endpoints.base() });
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use(
