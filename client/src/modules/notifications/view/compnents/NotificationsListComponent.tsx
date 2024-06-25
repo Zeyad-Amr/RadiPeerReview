@@ -67,22 +67,37 @@ const NotificationsListComponent = ({ scaleProp }: { scaleProp: boolean }) => {
             height: "calc(100% - 2rem)",
           }}
         >
-          {notificationsState.notifications.map(
-            (notification: NotificationInterface, i: number) => (
-              <>
-                <NotificationCard key={i} notification={notification} />
-                {i !== notificationsState.notifications.length - 1 ? (
-                  <Box
-                    sx={{
-                      width: "100%",
-                      height: "2px",
-                      backgroundColor: "primary.lighter",
-                      margin: "0.75rem 0",
-                    }}
-                  />
-                ) : null}
-              </>
+          {notificationsState.notifications.length > 0 ? (
+            notificationsState.notifications.map(
+              (notification: NotificationInterface, i: number) => (
+                <>
+                  <NotificationCard key={i} notification={notification} />
+                  {i !== notificationsState.notifications.length - 1 ? (
+                    <Box
+                      sx={{
+                        width: "100%",
+                        height: "2px",
+                        backgroundColor: "primary.lighter",
+                        margin: "0.75rem 0",
+                      }}
+                    />
+                  ) : null}
+                </>
+              )
             )
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
+              <Typography sx={{ color: "primary.light" }}>
+                No Notifications
+              </Typography>
+            </Box>
           )}
         </Box>
       </Box>

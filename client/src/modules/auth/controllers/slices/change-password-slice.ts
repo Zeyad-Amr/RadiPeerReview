@@ -1,18 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ErrorResponse, PaginatedListModel } from "@/core/api";
 import { getMe, login, logout } from "../thunks/auth-thunk";
-import { AuthState, changePasswordState } from "../types";
+import { AuthState, ChangePasswordState } from "../types";
 import AlertService from "@/core/shared/utils/alert-service";
 import { changePassoword } from "../thunks/change-password-thunk";
 
 //* Initial State
-const initialState: changePasswordState = {
+const initialState: ChangePasswordState = {
   loading: false,
   error: "",
-  password: null,
 };
 
-const changePasswordSlice = createSlice({
+const changePassword = createSlice({
   name: "changepassoword",
   initialState,
   reducers: {
@@ -32,7 +31,7 @@ const changePasswordSlice = createSlice({
     builder.addCase(changePassoword.fulfilled, (state, action) => {
       state.loading = false;
       state.error = "";
-      state.password = action.payload;
+
       AlertService.showAlert("Password Updated Successfully", "success");
     });
     builder.addCase(changePassoword.rejected, (state, action) => {
@@ -43,5 +42,5 @@ const changePasswordSlice = createSlice({
   },
 });
 
-export const { setLoading, setError } = changePasswordSlice.actions;
-export default changePasswordSlice.reducer;
+export const { setLoading, setError } = changePassword.actions;
+export default changePassword.reducer;

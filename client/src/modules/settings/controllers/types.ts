@@ -1,4 +1,4 @@
-import Settings from "../../../app/settings/page";
+import Settings from "../../../app/admin/dashboard/settings/page";
 
 export interface SettingsState {
   isAutoAssignMode: boolean;

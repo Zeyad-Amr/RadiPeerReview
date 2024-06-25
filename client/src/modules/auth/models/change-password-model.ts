@@ -3,29 +3,17 @@ import { ChangePasswordInterface } from "../interfaces/change-password-interface
 import { Yup } from "@/core/shared/utils/validation";
 
 class ChangePasswordModel extends BaseModel<ChangePasswordInterface> {
-  defaultValues: ChangePasswordInterface =
-    {
-      oldPassword: "",
-      newPassword: "",
-    };
-  validationSchema = Yup.object().shape(
-    {
-      oldPassword:
-        Yup.string().required(
-          "Old Password is required"
-        ),
-      newPassword:
-        Yup.string().required(
-          "New Password is required"
-        ),
-    }
-  );
+  defaultValues: ChangePasswordInterface = {
+    oldPassword: "",
+    newPassword: "",
+  };
+  validationSchema = Yup.object().shape({
+    oldPassword: Yup.string().required("Old Password is required"),
+    newPassword: Yup.string().required("New Password is required"),
+  });
   fromJson(json: any): any {}
-  toJson(
-    model: ChangePasswordInterface
-  ): any {
+  toJson(model: ChangePasswordInterface): any {
     return {
-      id: model.id,
       oldPassword: model.oldPassword,
       newPassword: model.newPassword,
     };

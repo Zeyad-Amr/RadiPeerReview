@@ -4,9 +4,10 @@ import NotificationService from "@/core/shared/utils/notification-service";
 import useSocketConnection from "@/core/shared/utils/socket";
 import { getUserNotifications } from "../../controllers/thunks/notifications-thunk";
 import {
+  getAllRequests,
   getAssignedRequestsList,
   getCreatorRequestsList,
-} from "@/modules/radiologist/controllers/thunks/request-thunk";
+} from "@/modules/review-requests/controllers/thunks/request-thunk";
 
 const NotificationListener = () => {
   const dispatch = useAppDispatch();
@@ -25,6 +26,7 @@ const NotificationListener = () => {
   const handleRefetching = useCallback(() => {
     dispatch(getCreatorRequestsList(true));
     dispatch(getAssignedRequestsList(true));
+    dispatch(getAllRequests(true));
   }, [dispatch]);
 
   useEffect(() => {
