@@ -40,26 +40,6 @@ export class AuthService {
     }
   }
 
-  async findAll() {
-    try {
-      const auths = await this.authRepo.getAll();
-      auths.map((auth) => delete auth.password);
-      return auths;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async findOne(id: string) {
-    try {
-      const auth = await this.authRepo.getByID(id);
-      delete auth.password;
-      return auth;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async changePassword(userID: string, dto: ChangePasswordDto) {
     try {
       const auth = await this.authRepo.getByID(userID);

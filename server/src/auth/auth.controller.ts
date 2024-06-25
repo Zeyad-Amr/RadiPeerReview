@@ -40,21 +40,4 @@ export class AuthController {
     }
   }
 
-  @Get()
-  async findAll() {
-    try {
-      return await this.authService.findAll();
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
-
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    try {
-      return await this.authService.findOne(id);
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
 }
