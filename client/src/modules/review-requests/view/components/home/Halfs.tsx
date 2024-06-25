@@ -31,7 +31,7 @@ const Halfs = () => {
     (state: RootState) => state.request
   );
 
-  const requestsTableHeader = ["Name", "Status"];
+  const requestsTableHeader = ["Name", "CreatedAt" ,"Status"];
 
   return (
     <>

@@ -4,8 +4,8 @@ import {
   GetReportInterface,
   GetRequestInterface,
 } from "../interfaces/request-interface";
-import BaseModel from "@/core/base/base-model";
 import reviewDataModel from "./review-model";
+import { fFullDateTime } from "@/core/shared/utils/format-time";
 
 class ReportModel {
   //*   Default form values
@@ -50,27 +50,6 @@ class ReportModel {
     }),
   });
 
-
-
-  formatDateTime = (dateString: string): string | null => {
-    if (!dateString) return null;
-
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return null;
-
-    const options: Intl.DateTimeFormatOptions = {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      //   second: '2-digit',
-      hour12: true,
-    };
-
-    return date.toLocaleString(undefined, options);
-  };
-
   // //* --------------------- Serialization: Convert the model to JSON ---------------------
   toJson(entity: CreateRequestInterface): any {
     return {
@@ -87,7 +66,7 @@ class ReportModel {
       name : json.name,
       reviewerId: json.reviewerId,
       status: json.status,
-      createdAt: this.formatDateTime(json.createdAt),
+      createdAt: fFullDateTime(json.createdAt),
       creatorId: json.creatorId,
       creator: json.creator,
       report: json?.report ? json?.report?.sort((a: any, b: any) => new Date(a.createdAt as string).getTime() - new Date(b.createdAt as string).getTime()).map((el: any) => this.fromReportJson(el)) : [],
@@ -98,13 +77,13 @@ class ReportModel {
     return {
       id: json.id,
       additionalComments: json.additionalComments,
-      createdAt: this.formatDateTime(json.createdAt),
+      createdAt: fFullDateTime(json.createdAt),
       reportUrl: json.reportUrl,
       resultUrl: json.resultUrl,
       reviewId: json.reviewId,
       review: json?.Review ? reviewDataModel.fromJson(json.Review) : null,
       reviewRequestId: json.reviewRequestId,
-      updatedAt: this.formatDateTime(json.updatedAt),
+      updatedAt: fFullDateTime(json.updatedAt),
     };
   }
 }

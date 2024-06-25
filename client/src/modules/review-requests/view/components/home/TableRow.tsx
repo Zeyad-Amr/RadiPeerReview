@@ -42,12 +42,13 @@ const TableRow = ({ isCreatorTable, data, light }: TableRowProps) => {
               color: light ? "white" : "primary.main",
               padding: "0.75rem 2rem",
               boxSizing: "border-box",
-              flexBasis: "66%",
+              flexBasis: "36%",
               textAlign: "center",
+              fontSize : "0.9rem"
             }}
           >
             {" "}
-            {requestEl.name ?? "No name"}
+            {requestEl.name ?? "--"}
           </Box>
           <Box
             sx={{
@@ -56,8 +57,24 @@ const TableRow = ({ isCreatorTable, data, light }: TableRowProps) => {
               color: light ? "white" : "primary.main",
               padding: "0.75rem 2rem",
               boxSizing: "border-box",
-              flexBasis: "34%",
+              flexBasis: "36%",
               textAlign: "center",
+              fontSize : "0.9rem"
+            }}
+          >
+            {" "}
+            {requestEl.createdAt ??"--"}
+          </Box>
+          <Box
+            sx={{
+              borderRadius: "0.5rem",
+              backgroundColor: light ? "primary.dark" : "primary.lighter",
+              color: light ? "white" : "primary.main",
+              padding: "0.75rem 2rem",
+              boxSizing: "border-box",
+              flexBasis: "28%",
+              textAlign: "center",
+              fontSize : "0.9rem"
             }}
           >
             {" "}

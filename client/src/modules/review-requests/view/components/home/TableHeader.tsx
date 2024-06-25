@@ -18,7 +18,7 @@ const TableHeader = ({ header, light }: TableHeaderProps) => {
                     color: light ? 'primary.main' : 'white',
                     padding: '0.75rem 2rem',
                     boxSizing: 'border-box',
-                    flexBasis: i === 0 ? '66%' : '34%',
+                    flexBasis: i === 0 ? '36%' : i === 1 ? '36%' : '28%',
                     textAlign: 'center',
                 }}> {headerEle}</Box>
             )}
