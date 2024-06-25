@@ -78,7 +78,7 @@ const ReportDetailsSection = ({
             {reportDetails?.reportUrl}
           </Typography>
           <Box>
-            <VisibilityIcon
+            <LaunchIcon
               sx={{ color: "primary.light", cursor: "pointer" }}
               onClick={() => {
                 router.push(`/pdf/viewer?file=${reportDetails?.reportUrl}`);
