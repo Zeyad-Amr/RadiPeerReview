@@ -30,26 +30,6 @@ export const login = createAsyncThunk(
   }
 );
 
-//*  Get all users
-export const getAllUsers = createAsyncThunk(
-  "auth/get-users",
-  async (_, thunkApi) => {
-      const { rejectWithValue } = thunkApi;
-      try {
-          const response = await ApiClient.get(Endpoints.auth.list);
-          return response.data.map((item: any) => userModel.fromJson(item));
-      } catch (error) {
-          let errorResponse: ErrorResponse;
-          if (error instanceof Error) {
-              errorResponse = ErrorMessage.get(error.message) as ErrorResponse;
-          } else {
-              errorResponse = error as ErrorResponse;
-          }
-          return rejectWithValue(errorResponse);
-      }
-  }
-);
-
 //* Logout thunk
 export const logout = createAsyncThunk(
   "auth/logout",

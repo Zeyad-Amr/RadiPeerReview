@@ -49,7 +49,8 @@ const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
-  const pathname = usePathname().substring(1);
+  const pathname = usePathname();
+  console.log(pathname, "pathname");
   const dispatch = useAppDispatch();
   return (
     <Box sx={{ display: "flex" }}>
@@ -68,26 +69,35 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       >
         <List>
           {[
-            "Dashboard",
-            "Add Radiologist",
-            "Reports",
-            "Reminders",
-            "Settings",
-          ].map((text, index) => (
-            <ListItem key={text} disablePadding>
+            {
+              label: "Dashboard",
+              route: "/admin/dashboard",
+            },
+            {
+              label: "Radiologists",
+              route: "/admin/dashboard/radiologists",
+            },
+            {
+              label: "Requests",
+              route: "/admin/dashboard/requests",
+            },
+            {
+              label: "Settings",
+              route: "/admin/dashboard/settings",
+            },
+          ].map((item, index) => (
+            <ListItem key={item.label} disablePadding>
               <Box
                 style={{
                   textDecoration: "none",
                   width: "100%",
                 }}
-                onClick={() =>
-                  router.push(`/${text.toLowerCase().replace(/\s/g, "")}`)
-                }
+                onClick={() => router.push(item.route)}
               >
                 <ListItemButton
                   sx={{
                     color:
-                      pathname === text.toLowerCase().replace(/\s/g, "")
+                      pathname === item.route
                         ? "secondary.main"
                         : "primary.light",
                     justifyContent: "space-between",
@@ -144,12 +154,9 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         fontWeight: "400",
                       }}
                     >
-                      {text}
+                      {item.label}
                     </Typography>
                   </Box>
-                  {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
-                    <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
-                    null} */}
                 </ListItemButton>
               </Box>
             </ListItem>
@@ -159,16 +166,8 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <List>
           {[
             {
-              label: "Terms & Conditions",
-              route: "terms",
-            },
-            {
-              label: "Help",
-              route: "help",
-            },
-            {
               label: "Logout",
-              route: "login",
+              route: "/login",
               action: () => {
                 dispatch(logout());
               },
@@ -180,7 +179,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   if (item.action) {
                     item.action();
                   }
-                  router.push(`/${item.route}`);
+                  router.push(item.route);
                 }}
                 style={{
                   textDecoration: "none",
@@ -190,7 +189,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                 <ListItemButton
                   sx={{
                     color:
-                      pathname === item.label.toLowerCase().replace(/\s/g, "")
+                      pathname === item.route
                         ? "secondary.main"
                         : "primary.light",
                     justifyContent: "space-between",
@@ -238,9 +237,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                       {item.label}
                     </Typography>
                   </Box>
-                  {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
-                    <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
-                    null} */}
                 </ListItemButton>
               </Box>
             </ListItem>

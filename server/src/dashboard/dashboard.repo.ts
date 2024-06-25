@@ -8,7 +8,7 @@ export class DashboardRepo {
 
   async getTotalReports() {
     try {
-      return await this.prisma.report.count({});
+      return await this.prisma.reviewRequest.count({});
     } catch (error) {
       throw error;
     }
@@ -16,11 +16,9 @@ export class DashboardRepo {
 
   async getAcceptedReports() {
     try {
-      return await this.prisma.report.count({
+      return await this.prisma.reviewRequest.count({
         where: {
-          ReviewRequest: {
-            status: Status.Completed
-          },
+          status: Status.Completed,
         },
       });
     } catch (error) {
@@ -30,11 +28,9 @@ export class DashboardRepo {
 
   async getRejectedReports() {
     try {
-      return await this.prisma.report.count({
+      return await this.prisma.reviewRequest.count({
         where: {
-          ReviewRequest: {
-            status: Status.Reviewed
-          },
+          status: Status.Reviewed,
         },
       });
     } catch (error) {
@@ -44,11 +40,9 @@ export class DashboardRepo {
 
   async getPendingReports() {
     try {
-      return await this.prisma.report.count({
+      return await this.prisma.reviewRequest.count({
         where: {
-          ReviewRequest: {
-            status: Status.Assigned
-          },
+          status: Status.Assigned,
         },
       });
     } catch (error) {
@@ -62,7 +56,7 @@ export class DashboardRepo {
       const overAllQuality = await this.prisma.report.findMany({
         where: {
           ReviewRequest: {
-            status: Status.Completed
+            status: Status.Completed,
           },
         },
         select: {
@@ -134,7 +128,7 @@ export class DashboardRepo {
           by: 'creatorId',
           _count: { status: true },
           where: {
-            status: Status.Completed
+            status: Status.Completed,
           },
           orderBy: {
             _count: {
