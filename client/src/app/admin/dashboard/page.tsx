@@ -1,12 +1,16 @@
 "use client";
 
 import Layout from "@/core/layout/Layout";
+import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
 import DashboardPage from "@/modules/dashboard/view/pages/DashboardPage";
+import { Role } from "@/core/shared/constants/enums";
 
 export default function Dashboard() {
   return (
-      <Layout >
-        <DashboardPage/>
+    <ProtectedLayout allowedRoles={[Role.ADMIN]}>
+      <Layout>
+        <DashboardPage />
       </Layout>
-  )
+    </ProtectedLayout>
+  );
 }

@@ -4,7 +4,11 @@ import React, { useState, useEffect } from "react";
 import CornerstoneViewport from "react-cornerstone-viewport";
 import * as cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import axios from "axios";
-import { SessionStorage, SessionStorageKeys } from "@/core/shared/utils/session-storage";
+import {
+  SessionStorage,
+  SessionStorageKeys,
+} from "@/core/shared/utils/session-storage";
+import initCornerstone from "./services/init-cornerstone";
 
 type ToolConfig = {
   name: string;
@@ -54,6 +58,7 @@ const DicomViewer = () => {
   const [isImageIDs, setIsImageIDs] = useState<boolean>(false);
 
   useEffect(() => {
+    initCornerstone();
     const params = new URLSearchParams(window.location.search);
     const fileUrl = params.get("file");
     console.log("fileUrl", fileUrl);
@@ -108,7 +113,7 @@ const DicomViewer = () => {
   return (
     <>
       {isImageIDs &&
-        config.imageIds.slice(0,1).map((imageId, viewportIndex) => (
+        config.imageIds.slice(0, 1).map((imageId, viewportIndex) => (
           <div
             key={viewportIndex}
             style={{ flex: "1", display: "flex", flexDirection: "row" }}

@@ -1,14 +1,16 @@
 "use client";
 
 import Layout from "@/core/layout/Layout";
-import DashboardPage from "@/modules/admin/view/pages/dashboard/DashboardPage";
+import ProtectedLayout from "@/core/shared/components/ProtectedLayout";
+import { Role } from "@/core/shared/constants/enums";
 import SettingsPage from "@/modules/settings/view/pages/SettingsPage";
-import { Typography } from "@mui/material";
 
 export default function Settings() {
   return (
-    <Layout>
-      <SettingsPage />
-    </Layout>
+    <ProtectedLayout allowedRoles={[Role.ADMIN]}>
+      <Layout>
+        <SettingsPage />
+      </Layout>
+    </ProtectedLayout>
   );
 }
