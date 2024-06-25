@@ -1,21 +1,17 @@
 import {
   Controller,
-  Get,
   Post,
   Body,
   Patch,
-  Param,
-  Delete,
   HttpCode,
   Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { UpdateAuthDto } from './dto/update-auth.dto';
 import { handleError } from '@/shared/http-error';
 import { LoginDTO } from './dto/login.dto';
 import { Public } from '@/shared/decorators/public.decorator';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { ChangePasswordDto } from './dto/create-auth.dto';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 @ApiBearerAuth()
 @ApiTags('auth')
@@ -34,14 +30,6 @@ export class AuthController {
     }
   }
 
-  @Get()
-  async findAll() {
-    try {
-      return await this.authService.findAll();
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
   @Patch('changepassword')
   async changePassword(@Body() dto: ChangePasswordDto, @Req() req) {
     try {
@@ -51,30 +39,4 @@ export class AuthController {
     }
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    try {
-      return await this.authService.findOne(id);
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
-
-  @Patch(':id')
-  async update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
-    try {
-      return await this.authService.update(id, updateAuthDto);
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
-
-  @Delete(':id')
-  async remove(@Param('id') id: string) {
-    try {
-      return await this.authService.remove(id);
-    } catch (error) {
-      throw handleError(error);
-    }
-  }
 }

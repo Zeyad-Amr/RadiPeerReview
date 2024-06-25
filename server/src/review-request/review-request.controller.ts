@@ -187,9 +187,16 @@ export class ReviewRequestController {
   }
 
   @Patch('approve/:id')
-  async update(@Param('id') id: string, @Body() approveReqDto: ApproveReqDto) {
+  async update(@Param('id') id: string, @Body() approveReqDto: ApproveReqDto, @Req() req
+) {
     try {
-      const request = await this.reviewRequestService.approveReviewRequest(
+      const userId = req.user.sub;
+      let request = await this.reviewRequestService.findOne(id)
+      if (request.reviewerId === userId) {
+        throw new UnauthorizedException("Not Authorized")
+      }
+      
+      request = await this.reviewRequestService.approveReviewRequest(
         id,
         approveReqDto.status,
       );

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { ReviewRequestRepo } from './review-request.repo';
 import { Status } from '@prisma/client';
 
@@ -58,7 +58,11 @@ export class ReviewRequestService {
   }
   async assignReviewRequest(id: string, reviewerId: string) {
     try {
-      const reviewRequest = await this.reviewRequestRepo.update(id, {
+      let reviewRequest = await this.reviewRequestRepo.getByID(id)
+      if (reviewRequest.creatorId === reviewerId) {
+        throw new BadRequestException("Can not assign review request to creator")
+      }
+      reviewRequest = await this.reviewRequestRepo.update(id, {
         reviewer: {
           connect: {
             id: reviewerId,
