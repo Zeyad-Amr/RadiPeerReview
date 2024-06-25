@@ -20,18 +20,12 @@ class ChangePasswordModel extends BaseModel<ChangePasswordInterface> {
         ),
     }
   );
-  fromJson(
-    json: any
-  ): ChangePasswordInterface {
-    return {
-      oldPassword: json.oldPassword,
-      newPassword: json.newPassword,
-    };
-  }
+  fromJson(json: any): any {}
   toJson(
     model: ChangePasswordInterface
   ): any {
     return {
+      id: model.id,
       oldPassword: model.oldPassword,
       newPassword: model.newPassword,
     };

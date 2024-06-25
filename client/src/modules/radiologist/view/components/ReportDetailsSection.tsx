@@ -1,19 +1,22 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { GetReportInterface } from "../../interfaces/request-interface";
+import { GetReportInterface, GetRequestInterface } from "../../interfaces/request-interface";
 import { useRouter } from "next/navigation";
 
 interface ReportDetailsPropsInterface {
-  reportData: GetReportInterface;
+  reportDetails: GetReportInterface;
+  requestData: GetRequestInterface;
 }
 
 const ReportDetailsSection = ({
-  reportData,
+  reportDetails,
+  requestData
 }: ReportDetailsPropsInterface) => {
   const router = useRouter()
   return (
     <Box>
+      <Box sx={{ display : "flex" , justifyContent : "space-between" }}>
       <Typography
         sx={{
           fontWeight: "700",
@@ -22,8 +25,19 @@ const ReportDetailsSection = ({
           fontSize: "1.5rem",
         }}
       >
-        {reportData?.createdAt}
+        {requestData?.name ?? "No name"}
       </Typography>
+      <Typography
+        sx={{
+          fontWeight: "700",
+          marginBottom: "20px",
+          lineHeight: "1.5",
+          fontSize: "1rem",
+        }}
+      >
+        {reportDetails?.createdAt}
+      </Typography>
+      </Box>
       {/* Start Dicom file name & view */}
       <Box sx={{ marginBottom: "1.5rem" }}>
         <Typography>Dicom File</Typography>
@@ -35,11 +49,11 @@ const ReportDetailsSection = ({
           }}
         >
           <Typography sx={{ fontSize: "13px", color: "primary.light" }}>
-            {reportData?.resultUrl}
+            {reportDetails?.resultUrl}
           </Typography>
           <Box>
             <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} onClick={() => {
-              router.push(`/dicom-viewer?file=${reportData?.resultUrl}`)
+              router.push(`/dicom-viewer?file=${reportDetails?.resultUrl}`)
             }} />
           </Box>
         </Box>
@@ -55,12 +69,12 @@ const ReportDetailsSection = ({
           }}
         >
           <Typography sx={{ fontSize: "13px", color: "primary.light" }}>
-          {reportData?.reportUrl}
+          {reportDetails?.reportUrl}
           </Typography>
           <Box>
             <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} 
             onClick={() => {
-              router.push(`/pdf-viewer?file=${reportData?.reportUrl}`)
+              router.push(`/pdf-viewer?file=${reportDetails?.reportUrl}`)
             }}
             />
           </Box>
@@ -82,7 +96,7 @@ const ReportDetailsSection = ({
             color: "primary.light",
           }}
         >
-         {reportData?.additionalComments}
+         {reportDetails?.additionalComments}
         </Box>
       </Box>
     </Box>

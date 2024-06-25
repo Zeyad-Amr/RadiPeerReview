@@ -34,10 +34,34 @@ export const updateRequest = createAsyncThunk(
     const { rejectWithValue } = thunkApi;
     try {
       await ApiClient.patch(
-        Endpoints.reviewRequest.update,
+        Endpoints.reviewRequest.assign,
         reportModel.toJson(data),
         {
           pathVariables: { id: data.id },
+        }
+      );
+      return true;
+    } catch (error: any) {
+      const errorResponse: ErrorResponse =
+        error instanceof Error ? ErrorMessage.get(error.message) : error;
+      return rejectWithValue(errorResponse);
+    }
+  }
+);
+
+//*  Approve Request
+export const approveRequest = createAsyncThunk(
+  "request/approve",
+  async (requestId: string | number, thunkApi) => {
+    const { rejectWithValue } = thunkApi;
+    try {
+      await ApiClient.patch(
+        Endpoints.reviewRequest.approve,
+        {
+          status: 1,
+        },
+        {
+          pathVariables: { id: requestId },
         }
       );
       return true;
@@ -91,7 +115,7 @@ export const getAssignedRequestsList = createAsyncThunk(
 //*  Get Request Details
 export const getRequestDetails = createAsyncThunk(
   "request/details",
-  async (id: string | number, thunkApi) => {
+  async (id: any, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
       const response = await ApiClient.get(Endpoints.reviewRequest.details, {

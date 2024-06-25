@@ -87,15 +87,17 @@ export class ReviewRequestController {
   ) {
     try {
       const creatorId = req.user.sub;
-      if (!creatorId) {
+      const creatorRole = req.user.role;
+      if (creatorRole === Role.ADMIN) {
         throw new UnauthorizedException(
-          'User not authorized to create review request',
+          'Admin not authorized to create review request',
         );
       }
       const report = await this.reportService.saveReport(files, {
         additionalComments: createReviewRequestDto.additionalComments,
       });
-      const request = await this.reviewRequestService.createReviewRequest(
+
+      let request = await this.reviewRequestService.createReviewRequest(
         createReviewRequestDto.name,
         report.id,
         creatorId,
@@ -107,7 +109,7 @@ export class ReviewRequestController {
 
       if (config.value.toLowerCase() === 'manual') {
         // If Assignment Mode is Manual, then notify the Admin
-        this.notificationsService.notifyUser({
+        await this.notificationsService.notifyUser({
           receiverRole: Role.ADMIN,
           type: NotificationType.UNASSIGNED_REVIEW_REQUEST,
           entityId: request.id,
@@ -117,7 +119,7 @@ export class ReviewRequestController {
           req.user.sub,
         );
 
-        await this.reviewRequestService.assignReviewer(
+        request = await this.reviewRequestService.assignReviewRequest(
           request.id,
           radiologist.id,
         );
@@ -185,9 +187,12 @@ export class ReviewRequestController {
   }
 
   @Patch('approve/:id')
-  async update(@Param('id') id: string,@Body() approveReqDto:ApproveReqDto) {
+  async update(@Param('id') id: string, @Body() approveReqDto: ApproveReqDto) {
     try {
-      const request = await this.reviewRequestService.approveReviewRequest(id,approveReqDto.status);
+      const request = await this.reviewRequestService.approveReviewRequest(
+        id,
+        approveReqDto.status,
+      );
 
       // Notify the Radiologist that the request has been approved
       await this.notificationsService.notifyUser({

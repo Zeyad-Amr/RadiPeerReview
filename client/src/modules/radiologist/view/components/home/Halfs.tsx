@@ -32,8 +32,7 @@ const Halfs = () => {
     (state: RootState) => state.request
   );
 
-  const requestsTableHeader = ["CreatedAt", "Status"];
-  const assignedRequestsTableHeader = ["CreatedAt", "Approved"];
+  const requestsTableHeader = ["Name", "Status"];
 
   return (
     <>
@@ -153,7 +152,7 @@ const Halfs = () => {
           >
             <RadiologistTable
               isCreatorTable={false}
-              tableHeader={assignedRequestsTableHeader}
+              tableHeader={requestsTableHeader}
               requestsArray={requestState?.assignedRequests}
               light={false}
             />

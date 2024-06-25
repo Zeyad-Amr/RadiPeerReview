@@ -34,8 +34,6 @@ export const updateRadiologist = createAsyncThunk(
   async (data: RadiologistInterface, thunkApi) => {
     const { rejectWithValue, dispatch } = thunkApi;
     try {
-      console.log(radiologistModel.toJson(data)),
-
       await ApiClient.patch(
         Endpoints.radiologist.update,
         radiologistModel.toJson(data),

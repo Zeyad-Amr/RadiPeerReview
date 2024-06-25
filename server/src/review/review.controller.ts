@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Req } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { handleError } from 'src/shared/http-error';
@@ -14,6 +14,7 @@ import {
 } from '@nestjs/swagger';
 import { NotificationsService } from '@/notifications/notifications.service';
 import { NotificationType, Role } from '@prisma/client';
+import { ReviewRequestService } from '@/review-request/review-request.service';
 
 
 @ApiTags('review')
@@ -23,18 +24,20 @@ import { NotificationType, Role } from '@prisma/client';
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService,
         private notificationsService: NotificationsService,
+        private reviewRequestService: ReviewRequestService
   ) {}
 
   @Post()
   @ApiOperation({ summary: 'Create review' })
   @ApiCreatedResponse({ description: 'created successfully' })
   @ApiBadRequestResponse({ description: 'Bad Request' })
-  async create(@Body() createReviewDto: CreateReviewDto) {
+  async create(@Body() createReviewDto: CreateReviewDto,@Req() req) {
     try {
-      const review: any =  await this.reviewService.create(createReviewDto);
-      
+      const creatorId = req.user.sub
+      const review: any =  await this.reviewService.create(createReviewDto,creatorId);
       // Notify the Radiologist that the review has been completed
       const reviewRequest = review.Report.ReviewRequest
+      await this.reviewRequestService.approveReviewRequest(reviewRequest.id,0)
       await  this.notificationsService.notifyUser({
         receiverRole: Role.RADIOLOGIST,
         receiverId: reviewRequest.creatorId,

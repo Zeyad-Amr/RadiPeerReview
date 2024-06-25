@@ -49,6 +49,18 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
     });
   }
 
+  async getOne(where: Prisma.ReviewRequestWhereInput) {
+    try {
+      const res = await this.prismaService.reviewRequest.findFirst({
+        where,
+        include: this.includesObj,
+      });
+      return res;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAllRequests(query: { [key: string]: any }, radiologistId: string) {
     try {
       const filters = Object.keys(query);
@@ -98,17 +110,6 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
     }
   }
 
-  checkBool(s: string) {
-    if (s === 'true') {
-      return true;
-    }
-    if (s === 'false') {
-      return false;
-    } else {
-      return s;
-    }
-  }
-
   async getBestRadMatch(reportOwnerID: string) {
     try {
       // get highes matching between specializations
@@ -125,20 +126,7 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
 
       if (!user) {
         // get one with least number of reports assigned
-        return await this.prismaService.auth.findFirst({
-          where: {
-            role: 'RADIOLOGIST',
-            isdeactivated: false,
-          },
-          select: {
-            id: true,
-          },
-          orderBy: {
-            ReviewRequestAsReviewer: {
-              _count: 'asc',
-            },
-          },
-        });
+        throw new NotFoundException('User not found');
       }
 
       const matchingRadiologists =
@@ -152,7 +140,7 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
             },
           },
           select: {
-            id: true,
+            auth: { select: { id: true } },
             specializations: true,
           },
         });
@@ -168,10 +156,88 @@ export class ReviewRequestRepo extends PrismaGenericRepo<
         .sort((a, b) => b.matchingCount - a.matchingCount);
 
       if (sortedRadiologists.length === 0) {
-        throw new NotFoundException('No radiologist found');
+        const result = await this.prismaService.reviewRequest.groupBy({
+          by: ['reviewerId'],
+          _count: {
+            _all: true,
+          },
+          where: {
+            reviewer: {
+              isdeactivated: false,
+            },
+            status: 'Assigned',
+          },
+        });
+
+        const radiologistsWithLeastReports = result.sort(
+          (a, b) => a._count._all - b._count._all,
+        );
+
+        return await this.prismaService.auth.findUnique({
+          where: {
+            id: radiologistsWithLeastReports[0].reviewerId,
+          },
+        });
+      }
+      // get the radiologists with the same matching count and select the one with the least number of reports
+      const highestMatchingCount = sortedRadiologists[0]?.matchingCount || 0;
+
+      // Get the radiologists with the same highest matching count
+      const radiologistsWithHighestMatchingCount = sortedRadiologists.filter(
+        (radiologist) => radiologist.matchingCount === highestMatchingCount,
+      );
+
+      // check if one of them does not have any reports assigned
+      const radiologistWithNoReports =
+        radiologistsWithHighestMatchingCount.find(async (radi) => {
+          const count = await this.prismaService.reviewRequest.count({
+            where: {
+              reviewerId: radi.auth.id,
+              status: 'Assigned',
+              reviewer: {
+                isdeactivated: false,
+              },
+            },
+          });
+          return count === 0;
+        });
+
+      if (radiologistWithNoReports) {
+        return await this.prismaService.auth.findUnique({
+          where: {
+            id: radiologistWithNoReports.auth.id,
+          },
+        });
       }
 
-      return sortedRadiologists[0];
+      // Get the radiologist with the least number of reports
+      const result = await this.prismaService.reviewRequest.groupBy({
+        by: ['reviewerId'],
+        _count: {
+          _all: true,
+        },
+        where: {
+          reviewerId: {
+            in: radiologistsWithHighestMatchingCount.map(
+              (radi) => radi.auth.id,
+            ),
+          },
+          reviewer: {
+            isdeactivated: false,
+          },
+          status: 'Assigned',
+        },
+      });
+
+      const radiologistsWithLeastReports = result.sort(
+        (a, b) => a._count._all - b._count._all,
+      );
+
+      return await this.prismaService.auth.findUnique({
+        where: {
+          id: radiologistsWithLeastReports[0].reviewerId,
+        },
+      });
     } catch (error) {
       throw error;
     }
