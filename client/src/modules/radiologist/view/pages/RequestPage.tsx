@@ -18,7 +18,6 @@ import {
 import ReviewResult from "../components/review-result/ReviewResult";
 import { ReviewDataInterface } from "../../interfaces/review-interface";
 import RequestStatus from "../components/RequestStatus";
-
 const RequestPage = () => {
   const [reportDetails, setReportDetails] = useState<GetReportInterface>();
   const [reviewDetails, setReviewDetails] = useState<ReviewDataInterface>();
@@ -69,7 +68,7 @@ const RequestPage = () => {
   };
 
   return (
-    <Grid container>
+    <Grid container >
       <Grid
         item
         lg={4}
@@ -77,9 +76,13 @@ const RequestPage = () => {
         sm={12}
         xs={12}
         sx={{
-          height: "100vh",
+          height: "85vh",
           backgroundColor: "#fff",
           overflow: "scroll",
+          borderTopLeftRadius: '1rem',
+          borderBottomLeftRadius: '1rem',
+          padding: '1.5rem 1rem'
+
         }}
       >
         { targetRequest && ( <RequestStatus requestData={targetRequest} role={roleParam}/> ) }
@@ -124,13 +127,16 @@ const RequestPage = () => {
         sm={12}
         xs={12}
         sx={{
-          height: "100vh",
+          height: "85vh",
           backgroundColor: "#fff",
-          padding: "1rem",
+          padding: "1.5rem 1rem",
           borderLeftWidth: "3px",
           borderLeftColor: "primary.lighter",
           borderLeftStyle: "solid",
           overflow: "scroll",
+          borderTopRightRadius: '1rem',
+          borderBottomRightRadius: '1rem',
+
         }}
       >
         {rightSectionFlag === "report-details" ? (

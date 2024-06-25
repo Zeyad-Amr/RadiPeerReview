@@ -1,8 +1,16 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
+<<<<<<< Updated upstream:client/src/modules/radiologist/view/components/ReportDetailsSection.tsx
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { GetReportInterface } from "../../interfaces/request-interface";
+=======
+import {
+  GetReportInterface,
+  GetRequestInterface,
+} from "../../interfaces/request-interface";
+>>>>>>> Stashed changes:client/src/modules/review-requests/view/components/ReportDetailsSection.tsx
 import { useRouter } from "next/navigation";
+import LaunchIcon from '@mui/icons-material/Launch';
 
 interface ReportDetailsPropsInterface {
   reportDetails: GetReportInterface;
@@ -38,9 +46,18 @@ const ReportDetailsSection = ({
             {reportDetails?.resultUrl}
           </Typography>
           <Box>
+<<<<<<< Updated upstream:client/src/modules/radiologist/view/components/ReportDetailsSection.tsx
             <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} onClick={() => {
               router.push(`/dicom-viewer?file=${reportDetails?.resultUrl}`)
             }} />
+=======
+            <LaunchIcon
+              sx={{ color: "primary.light", cursor: "pointer" }}
+              onClick={() => {
+                router.push(`/dicom/viewer?file=${reportDetails?.resultUrl}`);
+              }}
+            />
+>>>>>>> Stashed changes:client/src/modules/review-requests/view/components/ReportDetailsSection.tsx
           </Box>
         </Box>
       </Box>
@@ -58,10 +75,18 @@ const ReportDetailsSection = ({
           {reportDetails?.reportUrl}
           </Typography>
           <Box>
+<<<<<<< Updated upstream:client/src/modules/radiologist/view/components/ReportDetailsSection.tsx
             <VisibilityIcon sx={{ color: "primary.light" , cursor : "pointer" }} 
             onClick={() => {
               router.push(`/pdf-viewer?file=${reportDetails?.reportUrl}`)
             }}
+=======
+            <LaunchIcon
+              sx={{ color: "primary.light", cursor: "pointer" }}
+              onClick={() => {
+                router.push(`/pdf/viewer?file=${reportDetails?.reportUrl}`);
+              }}
+>>>>>>> Stashed changes:client/src/modules/review-requests/view/components/ReportDetailsSection.tsx
             />
           </Box>
         </Box>
