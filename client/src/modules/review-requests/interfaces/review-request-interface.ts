@@ -8,4 +8,5 @@ export interface ReviewRequestInterface {
   reviewer: RadiologistInterface | null;
   status: string | undefined;
   score?: number;
+  createdAt: string;
 }

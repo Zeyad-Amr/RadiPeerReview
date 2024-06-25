@@ -13,38 +13,15 @@ interface DisplayedReviewProps {
   setRightSectionFlag: Dispatch<
     SetStateAction<"report-details" | "review-details" | "create-review">
   >;
-  role: string | null;
-  requestData: GetRequestInterface;
-  reportIndex: number;
 }
 
 const DisplayedReview = ({
   setRightSectionFlag,
   setReviewData,
   reviewEl,
-  requestData,
-  reportIndex,
-  role,
 }: DisplayedReviewProps) => {
-
-  // useState
-  const [showResubmitFormDialog, setShowResubmitFormDialog] =
-    useState<boolean>(false);
-
   return (
     <>
-      {/* Create resubmit report form dialog */}
-      <CustomizedDialog
-        open={showResubmitFormDialog}
-        setOpen={setShowResubmitFormDialog}
-        title="Resubmit Report"
-        maxWidth="md"
-      >
-        <CreateRequestForm
-          reviewRequestId={requestData?.id}
-          setShowFormDialog={setShowResubmitFormDialog}
-        />
-      </CustomizedDialog>
       <Box
         sx={{
           display: "flex",
@@ -103,25 +80,6 @@ const DisplayedReview = ({
             )}
           </Box>
         </Box>
-        {role === "creator" &&
-          reviewEl &&
-          reportIndex === requestData?.report.length - 1 &&
-          requestData?.status !== Status.Completed && (
-            <Box
-              sx={{
-                color: "secondary.main",
-                display: "flex",
-                alignItems: "center",
-                cursor: "pointer",
-              }}
-              onClick={() => {
-                setShowResubmitFormDialog(true)
-              }}
-            >
-              <Typography sx={{ fontSize: "13px" }}>Resubmit</Typography>
-              <SendIcon sx={{ fontSize: "14px", marginLeft: "0.5rem" }} />
-            </Box>
-          )}
       </Box>
     </>
   );

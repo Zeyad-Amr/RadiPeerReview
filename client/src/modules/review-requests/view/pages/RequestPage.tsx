@@ -16,7 +16,7 @@ import { getRequestDetails } from "../../controllers/thunks/request-thunk";
 import ReviewResult from "../components/review-result/ReviewResult";
 import { ReviewDataInterface } from "../../interfaces/review-interface";
 import RequestStatus from "../components/RequestStatus";
-
+import { AuthState } from "@/modules/auth/controllers/types";
 const RequestPage = () => {
   const [reportDetails, setReportDetails] = useState<GetReportInterface>();
   const [reviewDetails, setReviewDetails] = useState<ReviewDataInterface>();
@@ -25,11 +25,10 @@ const RequestPage = () => {
     "report-details" | "review-details" | "create-review"
   >("report-details");
 
-  const params = new URLSearchParams(window.location.search);
-  const roleParam = params.get("role");
+  const [editorRole, setEditorRole] = useState<string | null>(null);
   const { requestId } = useParams();
   console.log(requestId, "requestId");
-  console.log(roleParam, "role");
+  console.log(editorRole, "role");
 
   const dispatch = useAppDispatch();
 
@@ -37,12 +36,25 @@ const RequestPage = () => {
     (state: RootState) => state.request
   );
 
+  const authState: AuthState = useAppSelector((state: RootState) => state.auth);
+
   // dispatch all requests to get their list in store
   useEffect(() => {
     if (requestId) {
-      dispatch(getRequestDetails(requestId));
+      dispatch(getRequestDetails(requestId)).then((res) => {
+        if (requestState.currentRequest.creatorId === authState.user?.id) {
+          setEditorRole("creator");
+        } else {
+          setEditorRole("reviewer");
+        }
+      });
     }
-  }, [dispatch, requestId]);
+  }, [
+    authState.user?.id,
+    dispatch,
+    requestId,
+    requestState.currentRequest.creatorId,
+  ]);
 
   // apply target request from requests list
   useEffect(() => {
@@ -52,7 +64,7 @@ const RequestPage = () => {
     console.log(targetRequest, "targetRequest");
     setTargetRequest(targetRequest);
     setReportDetails(targetRequest?.report?.[0]);
-  }, [requestState?.currentRequest, requestId, roleParam]);
+  }, [requestState?.currentRequest, requestId, editorRole]);
 
   // Function to get the ID of the last report
   const getLastReportId = () => {
@@ -71,13 +83,16 @@ const RequestPage = () => {
         sm={12}
         xs={12}
         sx={{
-          height: "100vh",
+          height: "85vh",
           backgroundColor: "#fff",
           overflow: "scroll",
+          borderTopLeftRadius: "1rem",
+          borderBottomLeftRadius: "1rem",
+          padding: "1.5rem 1rem",
         }}
       >
         {targetRequest && (
-          <RequestStatus requestData={targetRequest} role={roleParam} />
+          <RequestStatus requestData={targetRequest} role={editorRole} />
         )}
         <Box sx={{ margin: "1rem", position: "relative" }}>
           <Box
@@ -96,7 +111,7 @@ const RequestPage = () => {
               sx={{ position: "relative", marginLeft: "2rem" }}
             >
               <DisplayedRequest
-                role={roleParam}
+                role={editorRole}
                 setRightSectionFlag={setRightSectionFlag}
                 setReportData={setReportDetails}
                 requestData={targetRequest}
@@ -106,9 +121,6 @@ const RequestPage = () => {
                 reviewEl={reportEl?.review}
                 setReviewData={setReviewDetails}
                 setRightSectionFlag={setRightSectionFlag}
-                role={roleParam}
-                requestData={targetRequest}
-                reportIndex={index}
               />
             </Box>
           ))}
@@ -121,13 +133,15 @@ const RequestPage = () => {
         sm={12}
         xs={12}
         sx={{
-          height: "100vh",
+          height: "85vh",
           backgroundColor: "#fff",
-          padding: "1rem",
+          padding: "1.5rem 1rem",
           borderLeftWidth: "3px",
           borderLeftColor: "primary.lighter",
           borderLeftStyle: "solid",
           overflow: "scroll",
+          borderTopRightRadius: "1rem",
+          borderBottomRightRadius: "1rem",
         }}
       >
         {rightSectionFlag === "report-details" ? (

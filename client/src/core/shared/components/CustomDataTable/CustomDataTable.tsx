@@ -80,7 +80,7 @@ const CustomDataTable = <T,>({
           }}
         >
           <Table stickyHeader={stickyHeader} aria-label="sticky table">
-            <TableHead >
+            <TableHead>
               <TableRow>
                 {headerItems
                   .filter(
@@ -91,9 +91,15 @@ const CustomDataTable = <T,>({
                     <TableCell
                       key={item.id}
                       {...item.tableCellProps}
-                      sx={{ minWidth: item.minWidth, zIndex: 1, backgroundColor: 'primary.main', backgroundImage: 'none', color: 'primary.lighter' }}
+                      sx={{
+                        minWidth: item.minWidth,
+                        zIndex: 1,
+                        backgroundColor: "primary.main",
+                        backgroundImage: "none",
+                        color: "primary.lighter",
+                      }}
                     >
-                      <Box sx={{ display: "flex", justifyContent: "center", }}>
+                      <Box sx={{ display: "flex", justifyContent: "center" }}>
                         <Typography
                           sx={{
                             fontSize: "0.8rem",
@@ -171,7 +177,6 @@ const CustomDataTable = <T,>({
                               overflow: "hidden",
                               textOverflow: "ellipsis",
                             }}
-
                           >
                             <Typography
                               sx={{
@@ -199,7 +204,6 @@ const CustomDataTable = <T,>({
                               textOverflow: "ellipsis",
                             }}
                             onClick={headerItem.onClick}
-
                           >
                             <Tooltip
                               enterDelay={1000}

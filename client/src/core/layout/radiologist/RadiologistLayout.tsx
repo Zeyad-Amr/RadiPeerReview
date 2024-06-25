@@ -55,7 +55,7 @@ const RadiologistLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <RadiologistNavbar />
         <Box
-          sx={{ padding: "0.5rem 2rem", backgroundColor: "primary.lighter", height: "100%", boxSizing:'border-box'}}
+          sx={{ padding: "0.5rem 24px", backgroundColor: "primary.lighter", height: "100%", boxSizing:'border-box'}}
         >
           {children}
         </Box>

@@ -18,7 +18,8 @@ import { Role } from "@/core/shared/constants/enums";
 import { RequestState } from "@/modules/review-requests/controllers/types";
 import { getRadiologistList } from "@/modules/radiologists/controllers/thunks/radiologist-thunk";
 import { RadiologistState } from "@/modules/radiologists/controllers/types";
-const ReportsPage = () => {
+import { ReviewRequestInterface } from "@/modules/review-requests/interfaces/review-request-interface";
+const AdminRequestsPage = () => {
   const requestState: RequestState = useAppSelector(
     (state: RootState) => state.request
   );
@@ -87,9 +88,12 @@ const ReportsPage = () => {
   };
 
   let newTableData: any[] = [];
-  requestState.allRequests.forEach((item) => {
+  requestState.allRequests.forEach((item: ReviewRequestInterface) => {
     newTableData.push({
       reportName: item.name ?? "-",
+      date: (
+        <Typography sx={{ fontSize: "0.8rem" }}>{item.createdAt}</Typography>
+      ),
       reportAuther: item.creator?.fname + " " + item.creator?.lname,
       reportReviwer:
         item.reviewer === undefined ? (
@@ -138,6 +142,14 @@ const ReportsPage = () => {
       showBorder: true,
     },
     {
+      filterKey: "date",
+      id: "date",
+      label: "Date",
+      minWidth: 50,
+      tableCellProps: { align: "left" },
+      isComponent: true,
+    },
+    {
       filterKey: "reportAuther",
       id: "reportAuther",
       label: "Report Auther",
@@ -148,7 +160,7 @@ const ReportsPage = () => {
       filterKey: "reportReviwer",
       id: "reportReviwer",
       label: "Report Reviwer",
-      minWidth: 100,
+      minWidth: 50,
       tableCellProps: { align: "left" },
       isComponent: true,
     },
@@ -171,7 +183,7 @@ const ReportsPage = () => {
   ];
   return (
     <>
-      <PageTitle title="Reports" />
+      <PageTitle title="Review Requests" />
       <CustomDataTable
         data={newTableData}
         totalItems={newTableData.length}
@@ -187,4 +199,4 @@ const ReportsPage = () => {
   );
 };
 
-export default ReportsPage;
+export default AdminRequestsPage;

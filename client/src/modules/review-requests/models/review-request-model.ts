@@ -1,5 +1,6 @@
 import BaseModel from "@/core/base/base-model";
 import { ReviewRequestInterface } from "../interfaces/review-request-interface";
+import { fFullDateTime } from "@/core/shared/utils/format-time";
 
 class ReviewRequestModel extends BaseModel<ReviewRequestInterface> {
   fromJson(json: any): ReviewRequestInterface {
@@ -12,6 +13,7 @@ class ReviewRequestModel extends BaseModel<ReviewRequestInterface> {
       score:
         json.report[json.report.length - 1]?.Review?.overallAssessment
           .overallQuality,
+      createdAt: fFullDateTime(json.createdAt),
     };
   }
 

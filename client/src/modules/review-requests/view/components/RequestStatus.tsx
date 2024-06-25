@@ -1,15 +1,18 @@
 import { Box } from "@mui/system";
-import React from "react";
+import React, { useState } from "react";
 import { GetRequestInterface } from "../../interfaces/request-interface";
 import { Status } from "@/core/shared/constants/enums";
 import { Typography } from "@mui/material";
-import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import { useAppDispatch } from "@/core/state/store";
 import {
   approveRequest,
   getRequestDetails,
 } from "../../controllers/thunks/request-thunk";
-
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
+import ReplayRoundedIcon from "@mui/icons-material/ReplayRounded";
+import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
+import CreateRequestForm from "./CreateRequestForm";
 interface RequestStatusPropsInterface {
   requestData: GetRequestInterface;
   role: string | null;
@@ -18,71 +21,89 @@ interface RequestStatusPropsInterface {
 const RequestStatus = ({ requestData, role }: RequestStatusPropsInterface) => {
   // dispatch
   const dispatch = useAppDispatch();
+  // useState
+  const [showResubmitFormDialog, setShowResubmitFormDialog] =
+    useState<boolean>(false);
+  // Get the last report
+  const lastReport = requestData.report[requestData.report.length - 1];
   return (
     <Box
       sx={{
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        margin: "1rem 1rem 2rem 1rem",
+        backgroundColor: "primary.lighter",
+        borderRadius: "0.5rem",
+        padding: "0.5rem 1rem",
+        boxSizing: "border-box",
       }}
     >
+      <ArrowBackRoundedIcon
+        sx={{
+          color: "secondary.main",
+          fontSize: "1.3rem",
+          marginRight: "0.5rem",
+          cursor: "pointer",
+        }}
+        onClick={() => window.history.back()}
+      />
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            pointerEvents: "none",
-            borderRadius: "50%",
-            width: "0.9rem",
-            height: "0.9rem",
-            backgroundColor:
-              requestData.status === Status.Created ||
-              requestData.status === Status.Assigned
-                ? "error.main"
-                : requestData.status === Status.Completed
-                  ? "success.main"
-                  : requestData.status === Status.Reviewed
-                    ? "warning.main"
-                    : "primary.lighter",
-            marginRight: "0.5rem",
-          }}
-        ></Box>
-        <Box sx={{ fontSize: "16px", fontWeight: "bold" }}>
-          {requestData.status}
-        </Box>
+        <Box sx={{ fontSize: "0.8rem" }}>{requestData.status}</Box>
       </Box>
-      {role == "reviewer" && requestData.status !== Status.Completed && (
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            backgroundColor : "secondary.main",
-            padding: "0.5rem",
-            borderRadius: "10px",
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            dispatch(approveRequest(requestData.id as string)).then((res) => {
-              if (res.meta.requestStatus == "fulfilled") {
-                dispatch(getRequestDetails(requestData.id as string));
-              }
-            });
-          }}
-        >
+
+      <Box sx={{ display: "flex" }}>
+        {/* Create resubmit report form dialog */}
+        {role === "creator" &&
+          lastReport?.review &&
+          requestData?.status !== Status.Completed && (
+            <>
+              <CustomizedDialog
+                open={showResubmitFormDialog}
+                setOpen={setShowResubmitFormDialog}
+                title="Resubmit Report"
+                maxWidth="md"
+              >
+                <CreateRequestForm
+                  reviewRequestId={requestData?.id}
+                  setShowFormDialog={setShowResubmitFormDialog}
+                />
+              </CustomizedDialog>
+              <ReplayRoundedIcon
+                sx={{
+                  color: "secondary.main",
+                  fontSize: "1.3rem",
+                  marginRight: "0.5rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setShowResubmitFormDialog(true);
+                }}
+              />
+            </>
+          )}
+        {role == "reviewer" && lastReport?.review && requestData.status !== Status.Completed && (
           <CheckRoundedIcon
             sx={{
-              color: "#fff",
+              color: "secondary.main",
               fontSize: "1.3rem",
               marginRight: "0.5rem",
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              dispatch(approveRequest(requestData.id as string)).then((res) => {
+                if (res.meta.requestStatus == "fulfilled") {
+                  dispatch(getRequestDetails(requestData.id as string));
+                }
+              });
             }}
           />
-          <Typography sx={{ color: "#fff" }}>Approve</Typography>
-        </Box>
-      )}
+        )}
+      </Box>
     </Box>
   );
 };

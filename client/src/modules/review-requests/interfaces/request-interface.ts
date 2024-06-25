@@ -15,6 +15,7 @@ export interface GetRequestInterface {
   creatorId?: string | number;
   creator?: creatorInterface | null;
   createdAt: string | null;
+  updatedAt: string | null;
   status: string;
   name: string;
   report: GetReportInterface[];
