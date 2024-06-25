@@ -1,24 +1,21 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { ReviewDataInterface } from "../../interfaces/review-interface";
-import SendIcon from "@mui/icons-material/Send";
-import { GetRequestInterface } from "../../interfaces/request-interface";
-import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
-import CreateRequestForm from "./CreateRequestForm";
-import { Status } from "@/core/shared/constants/enums";
-
+import RateReviewIcon from "@mui/icons-material/RateReview";
 interface DisplayedReviewProps {
   reviewEl: ReviewDataInterface | null;
   setReviewData: (reviewData: any) => void;
   setRightSectionFlag: Dispatch<
     SetStateAction<"report-details" | "review-details" | "create-review">
   >;
+  role: string | null;
 }
 
 const DisplayedReview = ({
   setRightSectionFlag,
   setReviewData,
   reviewEl,
+  role,
 }: DisplayedReviewProps) => {
   return (
     <>
@@ -71,12 +68,36 @@ const DisplayedReview = ({
               </>
             ) : (
               // no review data
-              <Typography
-                sx={{ textAlign: "center", fontSize: "13px" }}
-                color="textSecondary"
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  cursor: "pointer",
+                }}
+                onClick={(e: any) => {
+                  if (role === "reviewer") {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    setRightSectionFlag("create-review");
+                  }
+                }}
               >
-                Not Reviewed Yet
-              </Typography>
+                <Typography
+                  sx={{ textAlign: "center", fontSize: "13px" }}
+                  color="textSecondary"
+                >
+                  Not Reviewed Yet
+                </Typography>
+                {role === "reviewer" ? (
+                  <RateReviewIcon
+                    sx={{
+                      color: "primary.light",
+                      cursor: "pointer",
+                      marginLeft: "0.5rem",
+                    }}
+                  />
+                ) : null}
+              </Box>
             )}
           </Box>
         </Box>

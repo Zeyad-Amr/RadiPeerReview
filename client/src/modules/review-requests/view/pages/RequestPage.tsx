@@ -121,6 +121,7 @@ const RequestPage = () => {
                 reviewEl={reportEl?.review}
                 setReviewData={setReviewDetails}
                 setRightSectionFlag={setRightSectionFlag}
+                role={editorRole}
               />
             </Box>
           ))}

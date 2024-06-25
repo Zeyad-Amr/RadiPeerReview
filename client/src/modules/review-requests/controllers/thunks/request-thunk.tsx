@@ -2,6 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
 import reportModel from "../../models/request-model";
 import reviewRequestModel from "@/modules/review-requests/models/review-request-model";
+import { ReviewRequestInterface } from "../../interfaces/review-request-interface";
+import { GetRequestInterface } from "../../interfaces/request-interface";
 
 //*  Create Request
 export const createRequest = createAsyncThunk(
@@ -114,9 +116,13 @@ export const getAllRequests = createAsyncThunk(
       const response = await ApiClient.get(Endpoints.reviewRequest.list, {
         config: { headers: { hideLoading: hideLoading } },
       });
-      return response.data.map((item: any) =>
-        reviewRequestModel.fromJson(item)
-      );
+      return response.data
+        .sort((a: any, b: any) => {
+          return (
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
+        })
+        .map((item: any) => reviewRequestModel.fromJson(item));
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
