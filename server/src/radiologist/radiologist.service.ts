@@ -30,7 +30,9 @@ export class RadiologistService {
 
   async findAll() {
     try {
-      return await this.radiologistRepo.getAll();
+      let radioligists = await this.radiologistRepo.getAll();
+      radioligists.map((radioligist) => delete radioligist.auth.password);
+      return radioligists
     } catch (error) {
       throw error;
     }
@@ -38,7 +40,9 @@ export class RadiologistService {
 
   async findOne(id: string) {
     try {
-      return await this.radiologistRepo.getByID(id);
+      const radioligist:any = await this.radiologistRepo.getByID(id);
+      delete radioligist.auth.password;
+      return radioligist
     } catch (error) {
       throw error;
     }
