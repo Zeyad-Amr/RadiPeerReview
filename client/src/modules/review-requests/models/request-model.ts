@@ -67,6 +67,7 @@ class ReportModel {
       reviewerId: json.reviewerId,
       status: json.status,
       createdAt: fFullDateTime(json.createdAt),
+      updatedAt: fFullDateTime(json.updatedAt),
       creatorId: json.creatorId,
       creator: json.creator,
       report: json?.report ? json?.report?.sort((a: any, b: any) => new Date(a.createdAt as string).getTime() - new Date(b.createdAt as string).getTime()).map((el: any) => this.fromReportJson(el)) : [],
