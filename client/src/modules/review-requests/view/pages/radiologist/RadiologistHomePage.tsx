@@ -1,5 +1,5 @@
 import React from 'react'
-import Halfs from '../../components/home/Halfs'
+import Halfs from '../../components/radiologist/Halfs'
 
 const RadiologistHomePage = () => {
   return (
