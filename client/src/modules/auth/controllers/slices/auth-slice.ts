@@ -1,9 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ErrorResponse, PaginatedListModel } from "@/core/api";
+import { ErrorResponse } from "@/core/api";
 import { getMe, login, logout } from "../thunks/auth-thunk";
 import { AuthState } from "../types";
 import AlertService from "@/core/shared/utils/alert-service";
-import userModel from "../../models/user-model";
 
 //* Initial State
 const initialState: AuthState = {

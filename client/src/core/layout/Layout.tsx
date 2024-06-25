@@ -8,16 +8,13 @@ import Divider from "@mui/material/Divider";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import AdminNavbar from "./AdminNavbar";
 
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
 import FeedIcon from "@mui/icons-material/Feed";
 import TuneRoundedIcon from "@mui/icons-material/TuneRounded";
-import EventIcon from "@mui/icons-material/Event";
-import GavelRoundedIcon from "@mui/icons-material/GavelRounded";
-import HelpOutlineRoundedIcon from "@mui/icons-material/HelpOutlineRounded";
+
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -133,12 +130,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                             color: "inherit",
                           }}
                         />
-                      ) : index === 3 ? (
-                        <EventIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
                       ) : (
                         <TuneRoundedIcon
                           sx={{
@@ -207,25 +198,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                         color: "inherit",
                       }}
                     >
-                      {index === 0 ? (
-                        <GavelRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : index === 1 ? (
-                        <HelpOutlineRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      ) : (
-                        <LogoutRoundedIcon
-                          sx={{
-                            color: "inherit",
-                          }}
-                        />
-                      )}
+                      <LogoutRoundedIcon
+                        sx={{
+                          color: "inherit",
+                        }}
+                      />
+
                     </ListItemIcon>
                     <Typography
                       sx={{

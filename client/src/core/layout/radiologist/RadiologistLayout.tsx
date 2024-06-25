@@ -4,8 +4,6 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import RadiologistNavbar from "./RadiologistNavbar";
 
-
-
 const drawerWidth = 240;
 
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })<{

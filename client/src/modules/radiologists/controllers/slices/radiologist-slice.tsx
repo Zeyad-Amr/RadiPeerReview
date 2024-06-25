@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RadiologistState } from "../types";
-import { ErrorResponse, PaginatedListModel } from "@/core/api";
+import { ErrorResponse } from "@/core/api";
 import AlertService from "@/core/shared/utils/alert-service";
 import {
   getRadiologistList,

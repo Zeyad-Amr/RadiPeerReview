@@ -1,6 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
 import { AuthState } from "../../controllers/types";
 import { useRouter } from "next/navigation";
@@ -63,7 +62,7 @@ const LoginForm = () => {
           width: "25rem",
           height: "30rem",
           backgroundColor: "white",
-          filter: "drop-shadow(0 0 3px #00000080)",
+          filter: "drop-shadow(0 0 10px #a3aed060)",
           position: "absolute",
           left: "50%",
           top: "50%",

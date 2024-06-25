@@ -59,10 +59,7 @@ const Halfs = () => {
           sx={{
             height: "100%",
             width: "50%",
-            borderTopLeftRadius: "2rem",
-            borderBottomLeftRadius: "2rem",
-            borderTopRightRadius: "1rem",
-            borderBottomRightRadius: "1rem",
+            borderRadius: '1rem',
             backgroundColor: "white",
             display: "flex",
             flexDirection: "column",
@@ -133,10 +130,7 @@ const Halfs = () => {
           sx={{
             height: "100%",
             width: "50%",
-            borderTopRightRadius: "2rem",
-            borderBottomRightRadius: "2rem",
-            borderTopLeftRadius: "1rem",
-            borderBottomLeftRadius: "1rem",
+            borderRadius: '1rem',
             backgroundColor: "white",
             display: "flex",
             flexDirection: "column",

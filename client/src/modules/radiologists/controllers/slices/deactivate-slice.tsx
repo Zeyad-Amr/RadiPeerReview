@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { DeactivateState } from "../types";
-import { ErrorResponse, PaginatedListModel } from "@/core/api";
+import { ErrorResponse } from "@/core/api";
 import AlertService from "@/core/shared/utils/alert-service";
-import { RadiologistInterface } from "../../interfaces/radiologist-interface";
 import {
     updateRadiologist,
 } from "../thunks/radiologist-thunk";

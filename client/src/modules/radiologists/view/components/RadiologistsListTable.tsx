@@ -9,7 +9,6 @@ import {
   activateRadiologist,
   deactivateRadiologist,
 } from "@/modules/radiologists/controllers/thunks/deactivate-thunk";
-import { RadiologistInterface } from "@/modules/radiologists/interfaces/radiologist-interface";
 import {
   CustomDataTable,
   HeaderItem,

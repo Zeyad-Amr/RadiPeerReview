@@ -2,7 +2,6 @@ import { Box } from "@mui/system";
 import React from "react";
 import { GetRequestInterface } from "../../interfaces/request-interface";
 import { Status } from "@/core/shared/constants/enums";
-import { Typography } from "@mui/material";
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import { useAppDispatch } from "@/core/state/store";
 import {

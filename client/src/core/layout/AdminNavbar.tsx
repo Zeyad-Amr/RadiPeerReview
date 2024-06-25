@@ -4,11 +4,8 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Badge from "@mui/material/Badge";
 import MenuIcon from "@mui/icons-material/Menu";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useRouter } from "next/navigation";
-import NotificationsListComponent from "../../modules/notifications/view/compnents/NotificationsListComponent";
 import NotificationsIconComponent from "@/modules/notifications/view/compnents/NotificationsIconComponent";
 
 export default function AdminNavbar({

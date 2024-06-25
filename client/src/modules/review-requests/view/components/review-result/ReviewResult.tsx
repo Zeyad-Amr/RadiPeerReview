@@ -1,8 +1,7 @@
 import { Box } from "@mui/system";
 import React from "react";
 import ReviewTag from "./ReviewTag";
-import PageTitle from "@/core/shared/components/PageTitle";
-import { Typography } from "@mui/material";
+
 import ReviewResultHeader from "./ReviewResultHeader";
 import ReviewResultRow from "./ReviewResultRow";
 import ErrorsRow from "./ErrorsRow";
@@ -11,51 +10,6 @@ import ReviewResultFooter from "./ReviewResultFooter";
 import { ReviewDataInterface } from "@/modules/review-requests/interfaces/review-interface";
 import { GetReportInterface } from "@/modules/review-requests/interfaces/request-interface";
 
-// const data = {
-//   id: 1,
-//   accuracyOfFindings: {
-//     correctnessOfFindings: false,
-//     commentsOnAccuracy: "The findings were not accurately described.",
-//     missedFindings: [
-//       {
-//         id: 1,
-//         description: "Small lesion in the lower left lobe was missed."
-//       },
-//       {
-//         id: 2,
-//         description: "Presence of fluid collection in the abdomen was not mentioned."
-//       }
-//     ]
-//   },
-//   clarityAndCompleteness: {
-//     clarityOfLanguage: 4,
-//     commentsOnLanguage: "The language used was clear and easy to understand.",
-//     completenessOfReport: 3,
-//     commentsOnCompleteness: "Some additional details could have been included for better clarity."
-//   },
-//   impressionAndRecommendations: {
-//     accuracyOfImpression: true,
-//     commentsOnImpression: "The diagnostic impression was accurate.",
-//     appropriatenessOfRecommendations: 4,
-//     suggestionsForRecommendations: "Consider providing more detailed recommendations for follow-up."
-//   },
-//   technicalQuality: {
-//     imagingTechnique: 5,
-//     commentsOnTechnique: "The imaging technique used was appropriate for the diagnosis.",
-//     imageQuality: 4,
-//     commentsOnImageQuality: "The image quality was generally good, but some areas could be clearer."
-//   },
-//   overallAssessment: {
-//     overallQuality: 4,
-//     generalComments: "Overall, the report was well-written and informative."
-//   },
-//   complianceAndStandardization: {
-//     adherenceToGuidelines: true,
-//     commentsOnCompliance: "The report adhered to standard reporting guidelines."
-//   },
-//   feedbackToRadiologist: "Excellent job on describing the findings accurately. Consider providing more comprehensive recommendations in future reports.",
-//   additionalReviewerComments: "The radiologist should pay closer attention to small lesions and mention all relevant findings in the report."
-// }
 
 interface ReviewResultPropsInterface {
   reviewDetails: ReviewDataInterface;

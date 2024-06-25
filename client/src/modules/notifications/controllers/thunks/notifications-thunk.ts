@@ -1,9 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
-import {
-  SessionStorage,
-  SessionStorageKeys,
-} from "@/core/shared/utils/session-storage";
 import notificationModel from "../../model/notification-model";
 
 //*  Get All User Notification

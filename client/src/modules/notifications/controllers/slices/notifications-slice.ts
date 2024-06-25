@@ -3,10 +3,8 @@ import {
   getUserNotifications,
   markNotificationAsRead,
 } from "../thunks/notifications-thunk";
-import AlertService from "@/core/shared/utils/alert-service";
 import { ErrorResponse } from "@/core/api";
 import { NotificationState } from "../types";
-import { NotificationStatus } from "@/core/shared/constants/enums";
 
 //* Initial State
 const initialState: NotificationState = {
