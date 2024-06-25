@@ -22,13 +22,14 @@ const initialState: RequestState = {
     creator: null,
     creatorId: "",
     createdAt: null,
+    updatedAt: null,
     report: [],
     reviewerId: "",
     status: "",
     name: "",
     id: "",
   },
-  isFetched: false,
+
   loading: false,
   error: "",
 };

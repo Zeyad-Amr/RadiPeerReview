@@ -13,7 +13,6 @@ export interface RequestState {
   assignedRequests: GetRequestInterface[];
   currentRequest: GetRequestInterface;
   allRequests: ReviewRequestInterface[];
-  isFetched: boolean;
   loading: boolean;
   error: string;
 }

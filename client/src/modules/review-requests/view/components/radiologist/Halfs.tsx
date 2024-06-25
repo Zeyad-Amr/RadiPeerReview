@@ -13,6 +13,7 @@ import {
   getCreatorRequestsList,
 } from "@/modules/review-requests/controllers/thunks/request-thunk";
 import { RequestState } from "@/modules/review-requests/controllers/types";
+import { GetRequestInterface } from "@/modules/review-requests/interfaces/request-interface";
 
 const Halfs = () => {
   // useState
@@ -31,7 +32,13 @@ const Halfs = () => {
     (state: RootState) => state.request
   );
 
-  const requestsTableHeader = ["Name", "Status"];
+  const sortingRequests = (requests : GetRequestInterface[]) => {
+    const requestsCopyList = [...requests]
+    const sortedRequests = requestsCopyList?.sort((a: GetRequestInterface, b: GetRequestInterface) => new Date(b.updatedAt as string).getTime() - new Date(a.updatedAt as string).getTime())
+    return sortedRequests
+  }
+
+  const requestsTableHeader = ["Name", "CreatedAt" ,"Status"];
 
   return (
     <>
@@ -124,7 +131,7 @@ const Halfs = () => {
             <RadiologistTable
               isCreatorTable={true}
               tableHeader={requestsTableHeader}
-              requestsArray={requestState?.requests}
+              requestsArray={sortingRequests(requestState?.requests)}
               light={false}
             />
           </Box>
@@ -168,7 +175,7 @@ const Halfs = () => {
             <RadiologistTable
               isCreatorTable={false}
               tableHeader={requestsTableHeader}
-              requestsArray={requestState?.assignedRequests}
+              requestsArray={sortingRequests(requestState?.assignedRequests)}
               light={false}
             />
           </Box>
