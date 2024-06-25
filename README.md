@@ -1,10 +1,12 @@
 # RadiPeerReview Documentation
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Portals](#portals)
   - [Radiologist Portal](#radiologist-portal)
   - [Admin Portal](#admin-portal)
+- [Demo and Running with Docker](#demo-and-running-with-docker)
 - [User Stories](#user-stories)
   - [Authentication \& Authorization](#authentication--authorization)
   - [Report Submission](#report-submission)
@@ -48,6 +50,51 @@ The Radiologist Portal is designed for radiologists to securely log in, submit r
 ### Admin Portal
 
 The Admin Portal is built for administrators to manage the overall review process. It includes features for user management, automatic and manual report assignment, configuring assignment modes, overseeing the review process, and generating analytics and reports. Admins also receive notifications to manage and oversee review requests.
+
+## Demo and Running with Docker
+
+### Demo
+
+You can check out the live demo of RadiPeerReview [here](#).
+
+### Running with Docker
+
+To run the RadiPeerReview project using Docker, follow these steps:
+
+1. **Clone the Repository**:
+
+   ```sh
+   git clone https://github.com/your-repo/radipeerreview.git
+   cd radipeerreview
+   ```
+
+2. **Create Environment File**:
+   Create a `.env` file in the project root with the necessary environment variables. For example:
+
+   ```env
+    DATABASE_URL=postgresql://postgres:password@postgres:5432/nestdb
+    JWT_SECRET=your_jwt_secret
+    BASE_URL=http://localhost:4000
+   ```
+
+3. **Build and Run Docker Containers**:
+
+   ```sh
+   docker-compose up --build
+   ```
+
+4. **Access the Application**:
+
+   - The application will be available at `http://localhost:3000` for the frontend.
+   - The backend API will be available at `http://localhost:4000`.
+
+5. **Stopping the Containers**:
+   To stop the running containers, use:
+   ```sh
+   docker-compose down
+   ```
+
+By following these steps, you can easily set up and run the RadiPeerReview project locally using Docker.
 
 ## User Stories
 
@@ -230,6 +277,7 @@ Use uppercase with underscores.
 - **Example**: `const API_BASE_URL: string = "https://api.example.com";`
 
 ## Contributors
+
 <table style="width:100%; table-layout: fixed;">
     <tbody>
         <tr>
@@ -286,7 +334,5 @@ Use uppercase with underscores.
         </tr>
     </tbody>
 </table>
-
-
 
 All rights reserved © 2024

@@ -142,7 +142,6 @@ export class ReviewRequestController {
   @Get()
   @ApiQuery({ name: 'user_is', required: false })
   @ApiQuery({ name: 'status', required: false })
-  @ApiQuery({ name: 'approved', required: false })
   async findAll(@Query() query, @Req() req) {
     try {
       const radioligistId = req.user.sub;

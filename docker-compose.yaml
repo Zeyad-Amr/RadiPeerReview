@@ -9,10 +9,10 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: "postgresql://postgres:password@postgres:5432/nestdb"
+      DATABASE_URL: ${DATABASE_URL}
       UPLOAD_DIR: "/usr/src/app/dist/upload"
-      JWT_SECRET: "8yCHXlQql79QEOnnZ6fQ0YFA8tTPFa2T"
-      BASE_URL: "http://localhost:4000"
+      JWT_SECRET: ${JWT_SECRET}
+      BASE_URL: ${BASE_URL}
     volumes:
       - .:/usr/src/app
       - upload_data:/usr/src/app/dist/upload
