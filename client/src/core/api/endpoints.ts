@@ -1,8 +1,6 @@
 const Endpoints = {
-  host: "https://radipeerreview-1.onrender.com",
-  hostDev: "http://localhost:4000",
-  base: "https://radipeerreview-1.onrender.com/api",
-  baseDev: "http://localhost:4000/api",
+  host: process.env.NEXT_PUBLIC_API_URL as string ,
+  base: function(){return this.host + "/api"},
   auth: {
     list: "/auth",
     login: "/auth/login",
