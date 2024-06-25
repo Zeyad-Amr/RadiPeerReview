@@ -108,10 +108,12 @@ export const getRequestDetails = createAsyncThunk(
 //*  Get All Requests
 export const getAllRequests = createAsyncThunk(
   "requests/get/all",
-  async (_, thunkApi) => {
+  async (hideLoading: boolean, thunkApi) => {
     const { rejectWithValue } = thunkApi;
     try {
-      const response = await ApiClient.get(Endpoints.reviewRequest.list);
+      const response = await ApiClient.get(Endpoints.reviewRequest.list, {
+        config: { headers: { hideLoading: hideLoading } },
+      });
       return response.data.map((item: any) =>
         reviewRequestModel.fromJson(item)
       );
@@ -140,7 +142,7 @@ export const AssignReviewRequest = createAsyncThunk(
           pathVariables: { id: data.id },
         }
       ).then((response) => {
-        dispatch(getAllRequests());
+        dispatch(getAllRequests(false));
       });
       return true;
     } catch (error) {

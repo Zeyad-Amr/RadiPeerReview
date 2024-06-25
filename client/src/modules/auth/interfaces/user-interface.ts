@@ -5,9 +5,22 @@ import { RadiologistInterface } from "@/modules/radiologists/interfaces/radiolog
 export interface UserInterface {
   id: string;
   username: string;
-  email: string;
+  password?: string;
+  isdeactivated: boolean;
   role: Role;
   createdAt: string;
   updatedAt: string;
   radiologist?: RadiologistInterface;
+}
+
+// mainly RadiologistInterface
+export interface UserFormInterface {
+  id?: string;
+  username: string;
+  password: string;
+  fname: string;
+  lname: string;
+  email: string;
+  specializations: string[];
+  phone: string;
 }

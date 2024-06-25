@@ -1,16 +1,17 @@
 import CustomSelectField from "@/core/shared/components/CustomSelectField";
 import CustomTextField from "@/core/shared/components/CustomTextField";
-import { ExaminationFormComponentPropsInterface } from "@/core/shared/components/ExaminationAccordion";
 import PrimaryButton from "@/core/shared/components/btns/PrimaryButton";
 import { Specialization } from "@/core/shared/constants/enums";
 import { useAppDispatch } from "@/core/state/store";
 import {
+  UserFormInterface,
+  UserInterface,
+} from "@/modules/auth/interfaces/user-interface";
+import userModel from "@/modules/auth/models/user-model";
+import {
   createRadiologist,
   updateRadiologist,
 } from "@/modules/radiologists/controllers/thunks/radiologist-thunk";
-import { RadiologistInterface } from "@/modules/radiologists/interfaces/radiologist-interface";
-import radiologistModel from "@/modules/radiologists/models/radiologist-model";
-import RadiologistModel from "@/modules/radiologists/models/radiologist-model";
 import { Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import { Formik } from "formik";
@@ -25,7 +26,7 @@ const RadiologistForm = ({
   isViewMode: boolean;
   id?: string;
   visitCode?: string;
-  initialValues: any;
+  initialValues: UserInterface | null;
   setShowFormDialog: Dispatch<SetStateAction<boolean>>;
 }) => {
   const specializationList = Object.values(Specialization).map(
@@ -44,19 +45,16 @@ const RadiologistForm = ({
       initialValues={
         initialValues
           ? ({
+              ...initialValues.radiologist,
               ...initialValues,
-            } as RadiologistInterface)
-          : RadiologistModel.defaultValues
+            } as UserFormInterface)
+          : userModel.defaultFormValues
       }
       onSubmit={async (values) => {
         const action = initialValues
           ? updateRadiologist({
-              id: id,
-              email: values.email,
-              fname: values.fname,
-              lname: values.lname,
-              phone: values.phone,
-              specializations: values.specializations,
+              ...values,
+              id: initialValues.radiologist?.id,
             })
           : createRadiologist(values);
 
@@ -68,8 +66,8 @@ const RadiologistForm = ({
       }}
       validationSchema={
         initialValues
-          ? radiologistModel.editValidationSchema
-          : radiologistModel.validationSchema
+          ? userModel.editValidationSchema
+          : userModel.validationSchema
       }
     >
       {({
@@ -123,7 +121,6 @@ const RadiologistForm = ({
                 value={values.specializations}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                // error={errors.specializations}
                 touched={touched.specializations}
                 width="100%"
                 multiple

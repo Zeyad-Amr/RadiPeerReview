@@ -8,8 +8,6 @@ import { Box } from "@mui/system";
 import React, { ReactNode, useEffect } from "react";
 import AssignReview from "../../components/admin/AssignReview";
 import { RootState, useAppDispatch, useAppSelector } from "@/core/state/store";
-import { getAllUsers } from "@/modules/auth/controllers/thunks/auth-thunk";
-import { allUsersState } from "@/modules/auth/controllers/types";
 import { UserInterface } from "@/modules/auth/interfaces/user-interface";
 import PersonAddAlt1RoundedIcon from "@mui/icons-material/PersonAddAlt1Rounded";
 import HourglassTopRoundedIcon from "@mui/icons-material/HourglassTopRounded";
@@ -18,6 +16,8 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import { getAllRequests } from "@/modules/review-requests/controllers/thunks/request-thunk";
 import { Role } from "@/core/shared/constants/enums";
 import { RequestState } from "@/modules/review-requests/controllers/types";
+import { getRadiologistList } from "@/modules/radiologists/controllers/thunks/radiologist-thunk";
+import { RadiologistState } from "@/modules/radiologists/controllers/types";
 const ReportsPage = () => {
   const requestState: RequestState = useAppSelector(
     (state: RootState) => state.request
@@ -26,8 +26,8 @@ const ReportsPage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getAllRequests());
-    dispatch(getAllUsers());
+    dispatch(getAllRequests(false));
+    dispatch(getRadiologistList());
   }, [dispatch]);
 
   // get all radiologists //
@@ -47,8 +47,8 @@ const ReportsPage = () => {
     });
     return usersArray;
   }
-  const allRadiologistsState: allUsersState = useAppSelector(
-    (state: RootState) => state.allUsersSlice
+  const radiologistState: RadiologistState = useAppSelector(
+    (state: RootState) => state.radiologists
   );
 
   const getIcon = (status?: string): ReactNode => {
@@ -96,7 +96,7 @@ const ReportsPage = () => {
           <AssignReview
             id={item.id ?? ""}
             users={formatRadiologists(
-              allRadiologistsState.users,
+              radiologistState.radiologists,
               item.creator?.fname + " " + item.creator?.lname
             )}
           />

@@ -4,6 +4,7 @@ import NotificationService from "@/core/shared/utils/notification-service";
 import useSocketConnection from "@/core/shared/utils/socket";
 import { getUserNotifications } from "../../controllers/thunks/notifications-thunk";
 import {
+  getAllRequests,
   getAssignedRequestsList,
   getCreatorRequestsList,
 } from "@/modules/review-requests/controllers/thunks/request-thunk";
@@ -25,6 +26,7 @@ const NotificationListener = () => {
   const handleRefetching = useCallback(() => {
     dispatch(getCreatorRequestsList(true));
     dispatch(getAssignedRequestsList(true));
+    dispatch(getAllRequests(true));
   }, [dispatch]);
 
   useEffect(() => {

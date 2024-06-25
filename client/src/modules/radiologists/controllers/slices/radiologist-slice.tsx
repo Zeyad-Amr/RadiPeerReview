@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { RadiologistState } from "../types";
 import { ErrorResponse, PaginatedListModel } from "@/core/api";
 import AlertService from "@/core/shared/utils/alert-service";
-import { RadiologistInterface } from "../../interfaces/radiologist-interface";
 import {
   getRadiologistList,
   createRadiologist,
@@ -10,12 +9,13 @@ import {
   getRadiologistDetails,
   updateRadiologist,
 } from "../thunks/radiologist-thunk";
-import radiologistModel from "../../models/radiologist-model";
+import { UserInterface } from "@/modules/auth/interfaces/user-interface";
+import userModel from "@/modules/auth/models/user-model";
 
 //* Initial State
 const initialState: RadiologistState = {
   radiologists: [],
-  currentRadiologist: radiologistModel.defaultValues,
+  currentRadiologist: userModel.defaultValues,
   loading: false,
   error: "",
 };
@@ -35,13 +35,13 @@ const radiologistSlice = createSlice({
     },
     setCurrentRadiologist(
       state,
-      action: { payload: RadiologistInterface; type: string }
+      action: { payload: UserInterface; type: string }
     ) {
       state.currentRadiologist = action.payload;
     },
     setRadiologistList(
       state,
-      action: { payload: RadiologistInterface[]; type: string }
+      action: { payload: UserInterface[]; type: string }
     ) {
       state.radiologists = action.payload;
     },

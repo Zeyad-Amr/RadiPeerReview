@@ -7,14 +7,7 @@ export interface AuthState {
   user: UserInterface | null;
 }
 
-export interface changePasswordState {
+export interface ChangePasswordState {
   loading: boolean;
   error: string;
-  password: ChangePasswordInterface | null;
-}
-
-export interface allUsersState {
-  loading: boolean;
-  error: string;
-  users: UserInterface[];
 }

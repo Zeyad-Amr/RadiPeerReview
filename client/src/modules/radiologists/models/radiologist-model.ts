@@ -9,8 +9,6 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
     email: "",
     specializations: [],
     phone: "",
-    username: "",
-    password: "",
   };
 
   validationSchema = Yup.object({
@@ -25,9 +23,8 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
     phone: Yup.string()
       .matches(/^01\d{9}$/, "Phone number is not valid")
       .required("Phone number is required"),
-    username: Yup.string().required("Username is required"),
-    password: Yup.string().required("Password is required"),
   });
+
   editValidationSchema = Yup.object({
     fname: Yup.string().required("First name is required"),
     lname: Yup.string().required("Last name is required"),
@@ -49,8 +46,6 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
       email: json.email,
       specializations: json.specializations,
       phone: json.phone,
-      username: json.auth?.username,
-      isdeactivated: json.auth?.isdeactivated,
     };
   }
   toJson(model: RadiologistInterface): any {
@@ -60,8 +55,6 @@ class RadiologistModel extends BaseModel<RadiologistInterface> {
       email: model.email,
       specializations: model.specializations,
       phone: model.phone,
-      username: model.username,
-      password: model.password,
     };
   }
 }

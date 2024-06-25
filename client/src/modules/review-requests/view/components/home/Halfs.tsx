@@ -4,7 +4,6 @@ import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import RateReviewRoundedIcon from "@mui/icons-material/RateReviewRounded";
 import { Typography } from "@mui/material";
 import RadiologistTable from "./RadiologistTable";
-import IconBtn from "@/core/shared/components/btns/IconBtn";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
 import CreateRequestForm from "../CreateRequestForm";
@@ -47,7 +46,15 @@ const Halfs = () => {
       </CustomizedDialog>
 
       {/* Start two tables */}
-      <Box sx={{ display: "flex", gap: 1, width: "100%", height: "80vh" }}>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 1,
+          width: "100%",
+          height: "83vh",
+          overflow: "hidden",
+        }}
+      >
         <Box
           sx={{
             height: "100%",
@@ -57,6 +64,8 @@ const Halfs = () => {
             borderTopRightRadius: "1rem",
             borderBottomRightRadius: "1rem",
             backgroundColor: "white",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Box
@@ -108,6 +117,8 @@ const Halfs = () => {
             sx={{
               padding: "1rem",
               boxSizing: "border-box",
+              flex: "1",
+              overflow: "auto",
             }}
           >
             <RadiologistTable
@@ -127,6 +138,8 @@ const Halfs = () => {
             borderTopLeftRadius: "1rem",
             borderBottomLeftRadius: "1rem",
             backgroundColor: "white",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Box
@@ -148,6 +161,8 @@ const Halfs = () => {
             sx={{
               padding: "1rem",
               boxSizing: "border-box",
+              flex: "1",
+              overflow: "auto",
             }}
           >
             <RadiologistTable

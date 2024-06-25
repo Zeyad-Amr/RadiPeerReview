@@ -50,6 +50,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const [open, setOpen] = React.useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  console.log(pathname, "pathname");
   const dispatch = useAppDispatch();
   return (
     <Box sx={{ display: "flex" }}>
@@ -70,19 +71,19 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           {[
             {
               label: "Dashboard",
-              route: "admin/dashboard",
+              route: "/admin/dashboard",
             },
             {
               label: "Radiologists",
-              route: "admin/dashboard/radiologists",
+              route: "/admin/dashboard/radiologists",
             },
             {
               label: "Requests",
-              route: "admin/dashboard/requests",
+              route: "/admin/dashboard/requests",
             },
             {
               label: "Settings",
-              route: "admin/dashboard/settings",
+              route: "/admin/dashboard/settings",
             },
           ].map((item, index) => (
             <ListItem key={item.label} disablePadding>
@@ -91,7 +92,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   textDecoration: "none",
                   width: "100%",
                 }}
-                onClick={() => router.push(`/${item.route}`)}
+                onClick={() => router.push(item.route)}
               >
                 <ListItemButton
                   sx={{
@@ -166,7 +167,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           {[
             {
               label: "Logout",
-              route: "login",
+              route: "/login",
               action: () => {
                 dispatch(logout());
               },
@@ -178,7 +179,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                   if (item.action) {
                     item.action();
                   }
-                  router.push(`/${item.route}`);
+                  router.push(item.route);
                 }}
                 style={{
                   textDecoration: "none",
@@ -236,9 +237,6 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
                       {item.label}
                     </Typography>
                   </Box>
-                  {/* {pathname === text.toLowerCase().replace(/\s/g, "") ?
-                    <Box sx={{ height: '15px', width: '2px', backgroundColor: 'secondary.main' }} /> :
-                    null} */}
                 </ListItemButton>
               </Box>
             </ListItem>

@@ -7,9 +7,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import notificationsSlice from "@/modules/notifications/controllers/slices/notifications-slice";
 import settingsSlice from "@/modules/settings/controllers/slices/settings-slice";
-import dashboardSlice from "@/modules/dashboard/controllers/slices/dashboard-slice";
-import allUsersSlice from "@/modules/auth/controllers/slices/get-users-slice";
-import changePasswordSlice from "@/modules/auth/controllers/slices/change-password-slice";
+import analytics from "@/modules/analytics/controllers/slices/dashboard-slice";
+import changePassword from "@/modules/auth/controllers/slices/change-password-slice";
 
 const store = configureStore({
   reducer: {
@@ -20,9 +19,8 @@ const store = configureStore({
     report,
     notifications: notificationsSlice,
     settings: settingsSlice,
-    dashboardSlice,
-    allUsersSlice,
-    changePasswordSlice,
+    analytics,
+    changePassword,
   },
 });
 

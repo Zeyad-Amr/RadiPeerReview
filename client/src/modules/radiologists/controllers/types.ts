@@ -1,9 +1,8 @@
-import { DeactivateInterface } from "../interfaces/deactivate-interface";
-import { RadiologistInterface } from "../interfaces/radiologist-interface";
+import { UserInterface } from "@/modules/auth/interfaces/user-interface";
 
 export interface RadiologistState {
-  radiologists: RadiologistInterface[];
-  currentRadiologist: RadiologistInterface;
+  radiologists: UserInterface[];
+  currentRadiologist: UserInterface;
   loading: boolean;
   error: string;
 }

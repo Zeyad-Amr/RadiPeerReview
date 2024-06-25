@@ -1,52 +1,55 @@
 import * as React from "react";
 import { useState } from "react";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
-import CustomizedDialog from "./CustomizeDialog";
-import { CustomDataTable, HeaderItem } from "./CustomDataTable";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useAppDispatch } from "@/core/state/store";
 import { Box } from "@mui/system";
-import ConfirmationDialog from "./ConfirmationDialog";
-import PrimaryButton from "./btns/PrimaryButton";
-import PageTitle from "./PageTitle";
-import IconBtn from "./btns/IconBtn";
 import { Switch } from "@mui/material";
-import { updateRadiologist } from "@/modules/radiologists/controllers/thunks/radiologist-thunk";
 import {
   activateRadiologist,
   deactivateRadiologist,
 } from "@/modules/radiologists/controllers/thunks/deactivate-thunk";
 import { RadiologistInterface } from "@/modules/radiologists/interfaces/radiologist-interface";
+import {
+  CustomDataTable,
+  HeaderItem,
+} from "@/core/shared/components/CustomDataTable";
+import PageTitle from "@/core/shared/components/PageTitle";
+import IconBtn from "@/core/shared/components/btns/IconBtn";
+import CustomizedDialog from "@/core/shared/components/CustomizeDialog";
+import { UserInterface } from "@/modules/auth/interfaces/user-interface";
 
-export default function CreateUser({
+export default function RadiologistsListTable({
   title,
   FormComponent,
   tableList,
   tableHeader,
   getListThunk,
-  deleteThunk,
   formDialogMaxWidth = "sm",
-}: any) {
+}: {
+  title: string;
+  FormComponent: any;
+  tableList: UserInterface[];
+  tableHeader: HeaderItem[];
+  getListThunk: any;
+  formDialogMaxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
+}) {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [tableItemData, setTableItemData] = useState<any>();
-  const [showConfirmationDialog, setShowConfirmationDialog] =
-    useState<boolean>(false);
   const dispatch = useAppDispatch();
   const [userId, setUserID] = useState<string>("");
 
-  const handleToggle = async (item: RadiologistInterface) => {
+  const handleToggle = async (item: UserInterface) => {
     setTableItemData(item);
     if (!item.isdeactivated) {
-      await dispatch(deactivateRadiologist(item.id ?? ""));
+      await dispatch(deactivateRadiologist(item.radiologist?.id ?? ""));
     } else {
-      await dispatch(activateRadiologist(item.id ?? ""));
+      await dispatch(activateRadiologist(item.radiologist?.id ?? ""));
     }
   };
 
-  function formatSpecializatopns(specializatopns: string[]) {
-    return specializatopns
+  function formatSpecializations(specializations: string[]) {
+    return specializations
       .map((specialization) => {
         return specialization
           .toLowerCase()
@@ -87,7 +90,7 @@ export default function CreateUser({
         <IconBtn
           icon={<AddCircleOutlineIcon />}
           title="Add Radiologist"
-          onClick={(event) => {
+          onClick={(event: any) => {
             event.stopPropagation();
             setTableItemData(undefined);
             setIsDialogOpen(true);
@@ -108,10 +111,12 @@ export default function CreateUser({
           noDataMessage={
             "No data available, press the add button to add a new item."
           }
-          data={tableList?.map((item: any) => {
+          data={tableList?.map((item: UserInterface) => {
             return {
-              fullname: item.fname + " " + item.lname,
-              specialization: formatSpecializatopns(item.specializations),
+              fullname: item.radiologist?.fname + " " + item.radiologist?.lname,
+              specialization: formatSpecializations(
+                item.radiologist?.specializations ?? []
+              ),
               ...item,
               update: (
                 <Box
@@ -131,13 +136,6 @@ export default function CreateUser({
                       setIsDialogOpen(true);
                     }}
                   />
-                  {/* <DeleteRoundedIcon
-                    sx={{ cursor: "pointer", color: "primary.light" }}
-                    onClick={() => {
-                      setTableItemData(item);
-                      setShowConfirmationDialog(true);
-                    }}
-                  /> */}
                   <Switch
                     checked={!item.isdeactivated}
                     onClick={() => handleToggle(item)}

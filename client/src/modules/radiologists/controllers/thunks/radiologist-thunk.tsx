@@ -1,17 +1,20 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ApiClient, Endpoints, ErrorMessage, ErrorResponse } from "@/core/api";
-import {  RadiologistInterface } from "../../interfaces/radiologist-interface";
-import radiologistModel from "../../models/radiologist-model";
+import {
+  UserFormInterface,
+  UserInterface,
+} from "@/modules/auth/interfaces/user-interface";
+import userModel from "@/modules/auth/models/user-model";
 
 //*  Create Radiologist
 export const createRadiologist = createAsyncThunk(
   "radiologist/add",
-  async (data: RadiologistInterface, thunkApi) => {
+  async (data: UserFormInterface, thunkApi) => {
     const { rejectWithValue, dispatch } = thunkApi;
     try {
       await ApiClient.post(
         Endpoints.radiologist.add,
-        radiologistModel.toJson(data)
+        userModel.toJsonCreate(data)
       ).then((response) => {
         dispatch(getRadiologistList());
       });
@@ -31,12 +34,12 @@ export const createRadiologist = createAsyncThunk(
 //*  Update Radiologist
 export const updateRadiologist = createAsyncThunk(
   "radiologist/update",
-  async (data: RadiologistInterface, thunkApi) => {
+  async (data: UserFormInterface, thunkApi) => {
     const { rejectWithValue, dispatch } = thunkApi;
     try {
       await ApiClient.patch(
         Endpoints.radiologist.update,
-        radiologistModel.toJson(data),
+        userModel.toJsonUpdate(data),
         {
           pathVariables: { id: data.id },
         }
@@ -56,8 +59,6 @@ export const updateRadiologist = createAsyncThunk(
   }
 );
 
-
-
 //*  Get All AddRadiologist
 export const getRadiologistList = createAsyncThunk(
   "radiologist/list",
@@ -66,7 +67,9 @@ export const getRadiologistList = createAsyncThunk(
     try {
       const response = await ApiClient.get(Endpoints.radiologist.list);
       console.log(response, "response");
-      return response.data.map((item: any) => radiologistModel.fromJson(item));
+      return response.data.map((item: any) =>
+        userModel.fromRadiologistJson(item)
+      );
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
@@ -88,7 +91,7 @@ export const getRadiologistDetails = createAsyncThunk(
       const response = await ApiClient.get(Endpoints.radiologist.details, {
         pathVariables: { id: id },
       });
-      return radiologistModel.fromJson(response.data);
+      return userModel.fromJson(response.data);
     } catch (error) {
       let errorResponse: ErrorResponse;
       if (error instanceof Error) {
