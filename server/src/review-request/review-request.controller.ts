@@ -107,14 +107,14 @@ export class ReviewRequestController {
         ConfigKeys.ASSIGNMENT_MODE,
       );
 
-      if (config.value.toLowerCase() === 'manual') {
+      if (config === 'manual') {
         // If Assignment Mode is Manual, then notify the Admin
         await this.notificationsService.notifyUser({
           receiverRole: Role.ADMIN,
           type: NotificationType.UNASSIGNED_REVIEW_REQUEST,
           entityId: request.id,
         });
-      } else if (config.value.toLowerCase() === 'auto') {
+      } else if (config === 'auto') {
         const radiologist = await this.reviewRequestService.allocateRadiologist(
           req.user.sub,
         );
