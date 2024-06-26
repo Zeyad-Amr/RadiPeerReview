@@ -7,17 +7,18 @@
   - [Radiologist Portal](#radiologist-portal)
   - [Admin Portal](#admin-portal)
 - [Demo and Running with Docker](#demo-and-running-with-docker)
+- [Swagger API Documentation](#swagger-api-documentation)
 - [User Stories](#user-stories)
-  - [Authentication \& Authorization](#authentication--authorization)
-  - [Report Submission](#report-submission)
-  - [Peer Review Assignment](#peer-review-assignment)
-  - [Review Process](#review-process)
-  - [Report Resubmission](#report-resubmission)
-  - [Final Approval](#final-approval)
-  - [Admin Management](#admin-management)
-  - [Files Viewer](#files-viewer)
-  - [Change Password](#change-password)
-  - [Real-time Notifications](#real-time-notifications)
+  - [Authentication \& Authorization](#1-authentication--authorization)
+  - [Report Submission](#2-report-submission)
+  - [Peer Review Assignment](#3-peer-review-assignment)
+  - [Review Process](#4-review-process)
+  - [Report Resubmission](#5-report-resubmission)
+  - [Final Approval](#6-final-approval)
+  - [Admin Management](#7-admin-management)
+  - [Files Viewer](#8-files-viewer)
+  - [Change Password](#9-change-password)
+  - [Real-time Notifications](#10-real-time-notifications)
 - [Request Status](#request-status)
 - [Specializations](#specializations)
 - [Notification Types](#notification-types)
@@ -96,57 +97,61 @@ To run the RadiPeerReview project using Docker, follow these steps:
 
 By following these steps, you can easily set up and run the RadiPeerReview project locally using Docker.
 
+## Swagger API Documentation
+The API documentation for RadiPeerReview is available at the following URL:
+[Swagger API Documentation](#).
+
 ## User Stories
 
-### Authentication & Authorization
+### 1. Authentication & Authorization
 
-1. **Radiologist Login**: As a radiologist, I want to log in to the platform securely to access my reports and assigned review requests.
-2. **Admin Login**: As an admin, I want to log in to manage users and oversee the review process.
+- **Radiologist Login**: As a radiologist, I want to log in to the platform securely to access my reports and assigned review requests.
+- **Admin Login**: As an admin, I want to log in to manage users and oversee the review process.
 
-### Report Submission
+### 2. Report Submission
 
-1. **Upload Reports**: As a radiologist, I want to upload and submit my reports within review requests to be stored so that peers can review them.
+- **Upload Reports**: As a radiologist, I want to upload and submit my reports within review requests to be stored so that peers can review them.
 
-### Peer Review Assignment
+### 3. Peer Review Assignment
 
-1. **Automatic Assignment**: As an admin, I want to automatically assign reports to peer reviewers based on specialization and workload, ensuring an efficient review process.
-2. **Manual Assignment**: As an admin, I want to manually assign reports to reviewers when necessary.
-3. **Configure Assignment Mode**: As an admin, I want to configure the assignment mode to be either automatic or manual through settings.
+- **Automatic Assignment**: As an admin, I want to automatically assign reports to peer reviewers based on specialization and workload, ensuring an efficient review process.
+- **Manual Assignment**: As an admin, I want to manually assign reports to reviewers when necessary.
+- **Configure Assignment Mode**: As an admin, I want to configure the assignment mode to be either automatic or manual through settings.
 
-### Review Process
+### 4. Review Process
 
-1. **Access & Annotate Reports**: As a reviewer, I want to access, annotate, and comment on assigned reports, providing valuable feedback within a well-structured review form.
-2. **View Annotations & Comments**: As a radiologist, I want to view annotations and comments made by reviewers on my reports.
+- **Access & Annotate Reports**: As a reviewer, I want to access, annotate, and comment on assigned reports, providing valuable feedback within a well-structured review form.
+- **View Annotations & Comments**: As a radiologist, I want to view annotations and comments made by reviewers on my reports.
 
-### Report Resubmission
+### 5. Report Resubmission
 
-1. **Resubmit Reports**: As a radiologist, I want to resubmit the report to peer reviews after making necessary adjustments based on feedback.
+- **Resubmit Reports**: As a radiologist, I want to resubmit the report to peer reviews after making necessary adjustments based on feedback.
 
-### Final Approval
+### 6. Final Approval
 
-1. **Streamlined Workflow for Approval**: As a radiologist, I want a streamlined workflow for the final approval of reviewed reports.
+- **Streamlined Workflow for Approval**: As a radiologist, I want a streamlined workflow for the final approval of reviewed reports.
 
-### Admin Management
+### 7. Admin Management
 
-1. **Manage User Accounts**: As an admin, I want to manage user accounts, including adding, editing, and deactivating users.
-2. **View Reports and Reviews**: As an admin, I want to view a list of all reports and reviews for oversight and quality control.
-3. **Generate Analytics and Reports**: As an admin, I want to generate analytics and reports to monitor the review process.
+- **Manage User Accounts**: As an admin, I want to manage user accounts, including adding, editing, and deactivating users.
+- **View Reports and Reviews**: As an admin, I want to view a list of all reports and reviews for oversight and quality control.
+- **Generate Analytics and Reports**: As an admin, I want to generate analytics and reports to monitor the review process.
 
-### Files Viewer
+### 8. Files Viewer
 
-1. **View DICOM Files**: As a radiologist, I want to view DICOM files in a viewer.
-2. **View PDF Files**: As a radiologist, I want to view PDF files in a viewer.
+- **View DICOM Files**: As a radiologist, I want to view DICOM files in a viewer.
+- **View PDF Files**: As a radiologist, I want to view PDF files in a viewer.
 
-### Change Password
+### 9. Change Password
 
-1. **Change Account Password**: As a user, I want to change my account password.
+- **Change Account Password**: As a user, I want to change my account password.
 
-### Real-time Notifications
+### 10. Real-time Notifications
 
-1. **User Notifications**: As a user, I want to be notified of any actions related to me.
-2. **Admin Notifications for Manual Assignment**: As an admin, I want to receive notifications to assign new requests in manual mode.
-3. **Reviewer Notifications**: As a reviewer, I want to receive notifications for new assigned requests and new resubmissions.
-4. **Radiologist Notifications**: As a radiologist, I want to receive notifications for new reviews and approvals.
+- **User Notifications**: As a user, I want to be notified of any actions related to me.
+- **Admin Notifications for Manual Assignment**: As an admin, I want to receive notifications to assign new requests in manual mode.
+- **Reviewer Notifications**: As a reviewer, I want to receive notifications for new assigned requests and new resubmissions.
+- **Radiologist Notifications**: As a radiologist, I want to receive notifications for new reviews and approvals.
 
 ## Request Status
 
