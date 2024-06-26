@@ -56,7 +56,7 @@ The Admin Portal is built for administrators to manage the overall review proces
 
 ### Demo
 
-You can check out the live demo of RadiPeerReview [here](#).
+You can check out the live demo of RadiPeerReview [here](https://drive.google.com/file/d/1ZcwjXnqfPHjFRs0VFxpVKQtbrozcZ4fR/view?usp=sharing).
 
 ### Running with Docker
 
@@ -99,7 +99,7 @@ By following these steps, you can easily set up and run the RadiPeerReview proje
 
 ## Swagger API Documentation
 The API documentation for RadiPeerReview is available at the following URL:
-[Swagger API Documentation](#).
+[Swagger API Documentation](https://radipeerreview-1.onrender.com/api/docs#/).
 
 ## User Stories
 
