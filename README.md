@@ -282,62 +282,62 @@ Use uppercase with underscores.
 - **Example**: `const API_BASE_URL: string = "https://api.example.com";`
 
 ## Contributors
-
 <table style="width:100%; table-layout: fixed;">
     <tbody>
         <tr>
-            <td align="center" valign="top" style="width:20%; height:200px;">
+            <td align="center" valign="top" style="width:20%; padding:10px;">
                 <a href="https://github.com/Zeyad-Amr">
-                    <img alt="Zeyad Amr Fekry" src="https://avatars.githubusercontent.com/Zeyad-Amr" style="width:150px; height:150px; object-fit: cover;">
+                    <img alt="Zeyad Amr" src="https://avatars.githubusercontent.com/Zeyad-Amr" style="width:100%; max-width:150px; height:auto; object-fit: cover;">
                     <br/>
-                    <sub style="font-size:medium; padding-top:5px;"><b>Zeyad Amr Fekry</b></sub>
+                    <sub style="font-size:medium; padding-top:5px;"><b>Zeyad Amr</b></sub>
                 </a>
                 <br/>
-                <span>Full Stack</span><br/>
-                <span>@Zeyad-Amr</span>
+                <span>Full Stack Software Engineer</span>
             </td>
-            <td align="center" valign="top" style="width:20%; height:200px;">
+            <td align="center" valign="top" style="width:20%; padding:10px;">
                 <a href="https://github.com/AhmedRaouf481">
-                    <img alt="Ahmed Abd ElRaouf" src="https://avatars.githubusercontent.com/AhmedRaouf481" style="width:150px; height:150px; object-fit: cover;">
+                    <img alt="Ahmed Abd ElRaouf" src="https://avatars.githubusercontent.com/AhmedRaouf481" style="width:100%; max-width:150px; height:auto; object-fit: cover;">
                     <br/>
                     <sub style="font-size:medium; padding-top:5px;"><b>Ahmed Abd ElRaouf</b></sub>
                 </a>
                 <br/>
-                <span>Full Stack</span><br/>
-                <span>@AhmedRaouf481</span>
+                <span>Full Stack Software Engineer</span>
             </td>
-            <td align="center" valign="top" style="width:20%; height:200px;">
+            <td align="center" valign="top" style="width:20%; padding:10px;">
                 <a href="https://github.com/Abdelrhman012">
-                    <img alt="Abdelrahman Yasser" src="https://avatars.githubusercontent.com/Abdelrhman012" style="width:150px; height:150px; object-fit: cover;">
+                    <img alt="Abdelrahman Yasser" src="https://avatars.githubusercontent.com/Abdelrhman012" style="width:100%; max-width:150px; height:auto; object-fit: cover;">
                     <br/>
                     <sub style="font-size:medium; padding-top:5px;"><b>Abdelrahman Yasser</b></sub>
                 </a>
                 <br/>
-                <span>Frontend</span><br/>
-                <span>@Abdelrhman012</span>
+                <span>Frontend Software Engineer</span>
             </td>
-            <td align="center" valign="top" style="width:20%; height:200px;">
+            <td align="center" valign="top" style="width:20%; padding:10px;">
                 <a href="https://github.com/momen882001">
-                    <img alt="Mo'men Mohamed" src="https://avatars.githubusercontent.com/momen882001" style="width:150px; height:150px; object-fit: cover;">
+                    <img alt="Mo'men Mohamed" src="https://avatars.githubusercontent.com/momen882001" style="width:100%; max-width:150px; height:auto; object-fit: cover;">
                     <br/>
                     <sub style="font-size:medium; padding-top:5px;"><b>Mo'men Mohamed</b></sub>
                 </a>
                 <br/>
-                <span>Frontend</span><br/>
-                <span>@momen882001</span>
+                <span>Frontend Software Engineer</span>
             </td>
-            <td align="center" valign="top" style="width:20%; height:200px;">
+            <td align="center" valign="top" style="width:20%; padding:10px;">
                 <a href="https://github.com/diaabadr">
-                    <img alt="Diaa Badr Eldin" src="https://avatars.githubusercontent.com/diaabadr" style="width:150px; height:150px; object-fit: cover;">
+                    <img alt="Diaa Badr" src="https://avatars.githubusercontent.com/diaabadr" style="width:100%; max-width:150px; height:auto; object-fit: cover;">
                     <br/>
-                    <sub style="font-size:medium; padding-top:5px;"><b>Diaa Badr Eldin</b></sub>
+                    <sub style="font-size:medium; padding-top:5px;"><b>Diaa Badr</b></sub>
                 </a>
                 <br/>
-                <span>Backend</span><br/>
-                <span>@diaabadr</span>
+                <span>Backend Software Engineer</span>
             </td>
         </tr>
     </tbody>
 </table>
+
+
+
+
+
+
 
 All rights reserved © 2024
