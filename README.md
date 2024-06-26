@@ -290,7 +290,7 @@ Use uppercase with underscores.
                 <a href="https://github.com/Zeyad-Amr">
                     <img alt="Zeyad Amr Fekry" src="https://avatars.githubusercontent.com/Zeyad-Amr" style="width:150px; height:150px; object-fit: cover;">
                     <br/>
-                    <sub style="font-size:medium; padding-top:5px;"><b>Zeyad Amr</b></sub>
+                    <sub style="font-size:medium; padding-top:5px;"><b>Zeyad Amr Fekry</b></sub>
                 </a>
                 <br/>
                 <span>Full Stack</span><br/>
@@ -330,7 +330,7 @@ Use uppercase with underscores.
                 <a href="https://github.com/diaabadr">
                     <img alt="Diaa Badr Eldin" src="https://avatars.githubusercontent.com/diaabadr" style="width:150px; height:150px; object-fit: cover;">
                     <br/>
-                    <sub style="font-size:medium; padding-top:5px;"><b>Diaa Badr</b></sub>
+                    <sub style="font-size:medium; padding-top:5px;"><b>Diaa Badr Eldin</b></sub>
                 </a>
                 <br/>
                 <span>Backend</span><br/>
